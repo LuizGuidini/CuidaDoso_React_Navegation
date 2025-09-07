@@ -1,50 +1,146 @@
-# Welcome to your Expo app 👋
+# Bem Vindo ao app CuidaDoso
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![Expo](https://img.shields.io/badge/Expo-48D1CC?style=for-the-badge&logo=expo) 
+![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=react) 
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js)
 
-## Get started
+Aplicativo móvel desenvolvido em **React Native** com **Expo Router**, voltado para auxiliar idosos na organização de consultas, exercícios, transporte, medicamentos, atividades, receitas e lugares recomendados. Possui **botão de pânico** e acompanhamento por usuário secundário.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 📲 Demonstração do App
 
-2. Start the app
+> Substitua os GIFs abaixo pelos seus próprios, exportados do Expo Go ou de emuladores.
 
-   ```bash
-   npx expo start
-   ```
+![Home Screen GIF](assets/gifs/home.gif)  
+*Tela inicial com cards de funcionalidades.*
 
-In the output, you'll find options to open the app in a
+![Agenda GIF](assets/gifs/agenda.gif)  
+*Agenda de consultas e exercícios.*
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+![Transporte GIF](assets/gifs/transporte.gif)  
+*Agendamento de transporte.*
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+![Medicamentos GIF](assets/gifs/medicamentos.gif)  
+*Controle de medicamentos.*
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 📂 Estrutura do Projeto
 
-```bash
-npm run reset-project
-```
+CuidaDoso/
+├─ .gitignore
+├─ App.js
+├─ package.json
+├─ app/
+│ ├─ (auth)/ # Login e cadastro
+│ ├─ (main)/ # Telas principais
+│ └─ _layout.js # Layout com Tabs
+├─ assets/
+│ ├─ images/ # Logos e imagens
+│ └─ gifs/ # GIFs animados das telas
+├─ components/ # Header e botões
+├─ hooks/ # useAuth, useWeather
+├─ services/ # APIs externas
+├─ config/ # firebaseConfig.js
+└─ README.md
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## ⚡ Funcionalidades
 
-To learn more about developing your project with Expo, look at the following resources:
+- Tela inicial dinâmica com **cards de navegação**.
+- **Botão de pânico** acionando chamada direta.
+- Previsão do tempo baseada na localização.
+- Cadastro de usuários:
+  - Principal (idoso)  
+  - Amigo (usuário secundário)  
+  - Cooperadores (clínicas/motoristas)
+- Agenda de consultas e exercícios.
+- Agendamento de transporte.
+- Controle de medicamentos com alertas.
+- Seções de atividades, receitas e lugares recomendados.
+- Preparado para integração com APIs externas (Google Agenda, GPT para receitas).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 🎨 Design e Usabilidade
 
-Join our community of developers creating universal apps.
+- Interface **amigável para idosos**.
+- Cores suaves e botões grandes:
+  - Fundo: `#f1f4f8`
+  - Botões principais: `#d2ecff`
+  - Botão de pânico: `#e90404`
+- Ícones claros com **Ionicons**.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 🚀 Tecnologias
+
+- **React Native**  
+- **Expo Router**  
+- **Firebase Authentication**  
+- **Expo Location**  
+- **OpenWeatherMap API**  
+- **React Native Vector Icons (Ionicons)**  
+
+---
+
+## ⚙️ Instalação
+
+1. Clone o repositório:
+
+
+git clone https://github.com/LuizGuidini/CuidaDoso_React.git
+cd CuidaDoso_React
+
+---
+
+### Instale as dependências:
+
+npm install
+
+ ou
+
+yarn install
+
+---
+
+### Inicie o Expo:
+
+npx expo start -c
+
+---
+
+### Abra o QR Code com Expo Go no seu celular.
+
+---
+
+## 🔑 Configuração
+
+- **Firebase:** Crie o arquivo `config/firebaseConfig.js` com suas credenciais do Firebase.
+
+- **API de previsão do tempo:** crie um arquivo `.env` na raiz do projeto e adicione:
+
+OPENWEATHER_API_KEY=SUA_CHAVE_OPENWEATHERMAP
+
+---
+
+## 💡 Observações
+Estrutura modular para manutenção e escalabilidade.
+
+Preparado para múltiplos usuários e notificações.
+
+Todos os recursos podem ser testados sem autenticação, para testes rápidos.
+
+---
+
+## 📥 Instalação no celular
+Android/iOS: Baixe o Expo Go e escaneie o QR Code exibido no terminal.
+
+Link direto: Expo Go
+
+---
+
+## 📝 Licença
+Este projeto é open source. Pode ser usado, modificado e compartilhado livremente.
