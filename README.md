@@ -4,6 +4,10 @@
 ![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=react) 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js)
 
+![Open Weather](https://openweathermap.org/themes/openweathermap/assets/img/logo_white_cropped.png)
+
+![GeoAPIfy]([https://openweathermap.org/themes/openweathermap/assets/img/logo_white_cropped.png](https://myprojects.geoapify.com/assets/img/logo-geoapify-myprojects.png))
+
 Aplicativo móvel desenvolvido em **React Native** com **Expo Router**, voltado para auxiliar idosos na organização de consultas, exercícios, transporte, medicamentos, atividades, receitas e lugares recomendados. Possui **botão de pânico** e acompanhamento por usuário secundário.
 
 ---
