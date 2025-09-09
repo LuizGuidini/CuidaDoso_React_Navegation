@@ -1,11 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getWeather } from '../services/weather';
 
-export default function Header({ title, iconName, panicNumber = '123456789', }) {
+export default function Header({ title, iconName, panicNumber = '123456789' }) {
   const [weather, setWeather] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -36,15 +38,27 @@ export default function Header({ title, iconName, panicNumber = '123456789', }) 
     );
   };
 
+  const goHome = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Inicio' }],
+      })
+    );
+  };
+
   return (
     <View style={styles.container}>
-      {/* Topo: logo e botão de pânico */}
+      {/* Topo: logo (volta para Home) e botão de pânico */}
       <View style={styles.topRow}>
-        <Image
-          source={require('../assets/images/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <TouchableOpacity onPress={goHome}>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.panicButton} onPress={handlePanic}>
           <Ionicons name="alert-circle" size={28} color="#fff" />
           <Text style={styles.panicText}>PÂNICO</Text>

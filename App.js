@@ -1,46 +1,84 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Importando suas telas
-import AgendaScreen from './screens/AgendaScreen';
-import AtividadesScreen from './screens/AtividadesScreen';
-import HomeScreen from './screens/HomeScreen';
-import LugaresScreen from './screens/LugaresScreen';
-import MedicamentosScreen from './screens/MedicamentosScreen';
-import PerfilScreen from './screens/PerfilScreen';
-import ReceitasScreen from './screens/ReceitasScreen';
-import TransportesScreen from './screens/TransportesScreen';
+import AgendaScreen from "./screens/AgendaScreen";
+import AtividadesScreen from "./screens/AtividadesScreen";
+import HomeScreen from "./screens/HomeScreen";
+import LugaresScreen from "./screens/LugaresScreen";
+import MedicamentosScreen from "./screens/MedicamentosScreen";
+import PerfilScreen from "./screens/PerfilScreen";
+import ReceitaDetalheScreen from './screens/ReceitaDetalheScreen';
+import ReceitasScreen from "./screens/ReceitasScreen";
+import TransportesScreen from "./screens/TransportesScreen";
 
-// Crie os demais conforme for precisando
-
-
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// 🔹 Tab Navigator (menu fixo)
+function MainTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Inicio"
+      screenOptions={({ route }) => ({
+        headerShown: false, // o header é controlado pelo Stack
+        tabBarActiveTintColor: "#007AFF",
+        tabBarInactiveTintColor: "gray",
+        tabBarStyle: { backgroundColor: "#fff", height: 70 },
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+
+          switch (route.name) {
+            case "Inicio": iconName = "home-outline"; break;
+            case "Agenda": iconName = "calendar-outline"; break;
+            case "Transportes": iconName = "car-outline"; break;
+            case "Medicamentos": iconName = "medkit-outline"; break;
+            case "Perfil": iconName = "person-outline"; break;
+            case "Atividades": iconName = "fitness-outline"; break;
+            case "Receitas": iconName = "restaurant-outline"; break;
+            case "Lugares": iconName = "location-outline"; break;
+            default: iconName = "ellipse-outline";
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name="Inicio" component={HomeScreen} />
+      <Tab.Screen name="Agenda" component={AgendaScreen} />
+      <Tab.Screen name="Transportes" component={TransportesScreen} />
+      <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
+      <Tab.Screen name="Perfil" component={PerfilScreen} />
+      <Tab.Screen name="Atividades" component={AtividadesScreen} />
+      <Tab.Screen name="Receitas" component={ReceitasScreen} />
+      <Tab.Screen name="Lugares" component={LugaresScreen} />
+    </Tab.Navigator>
+  );
+}
+
+// 🔹 Stack Navigator (envolve o Tab + futuras telas extras)
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        {/* Tela inicial */}
+      <Stack.Navigator initialRouteName="MainTabs">
+        {/* Tabs ficam como a tela principal */}
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }} // usamos o Header personalizado
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: false }} // tira o header duplicado
         />
-
-        {/* Telas secundárias */}
-        <Stack.Screen name="Agenda" component={AgendaScreen} />
-        <Stack.Screen name="Transportes" component={TransportesScreen} />
-        <Stack.Screen name="Medicamentos" component={MedicamentosScreen} />
-        <Stack.Screen name="Perfil" component={PerfilScreen} />
-        <Stack.Screen name="Atividades" component={AtividadesScreen} />
-        <Stack.Screen name="Receitas" component={ReceitasScreen} />
-        <Stack.Screen name="Lugares" component={LugaresScreen} />
-
-        {/* Exemplo de como adicionar as demais: */}
-        {/* <Stack.Screen name="Transporte" component={TransporteScreen} /> */}
-
+          {/* Tela de detalhes da receita */}
+        <Stack.Screen
+          name="ReceitaDetalhe"
+          component={ReceitaDetalheScreen}
+          options={{ headerShown: false }}
+        />
+        {/* Aqui você pode adicionar telas extras fora do tab,
+            elas terão botão de voltar automaticamente */}
+        {/* <Stack.Screen name="Detalhes" component={DetalhesScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-

@@ -36,7 +36,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       {/* Header personalizado */}
       <Header
-        title="Home"
+        title="Inicio"
         iconName="home-outline"
         onPanicPress={handlePanic}
         weather={weather}

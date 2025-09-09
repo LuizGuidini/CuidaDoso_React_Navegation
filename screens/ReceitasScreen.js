@@ -1,65 +1,108 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Header from '../components/Header';
-import { getWeather } from '../services/weather';
+import { getRandomRecipes, searchRecipes } from '../services/receitas';
+import { useNavigation } from '@react-navigation/native';
 
-export default function ReceitassScreen() {
-  const [weather, setWeather] = useState(null);
+export default function ReceitasScreen() {
+  const navigation = useNavigation();
+  const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
 
-  const handlePanic = () => alert('Botão de pânico acionado!');
+  const fetchRandomRecipes = async () => {
+    setLoading(true);
+    const data = await getRandomRecipes(10);
+    setRecipes(data);
+    setLoading(false);
+  };
+
+  const handleSearch = async () => {
+    if (!searchText) return fetchRandomRecipes();
+    setLoading(true);
+    const data = await searchRecipes(searchText, 10);
+    setRecipes(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchWeather = async () => {
-      const data = await getWeather();
-      setWeather(data);
-      setLoading(false);
-    };
-    fetchWeather();
+    fetchRandomRecipes();
   }, []);
 
-  const activities = [
-    { title: 'Exercício físico - 07:30', icon: 'fitness-outline' },
-    { title: 'Aula de piano - 10:00', icon: 'musical-notes-outline' },
-    { title: 'Alongamento - 18:00', icon: 'body-outline' },
-  ];
+  const renderCard = ({ item }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('ReceitaDetalhe', { recipe: item })}
+    >
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.title}>{item.title}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <Header title="Atividades" iconName="fitness-outline" onPanicPress={handlePanic} weather={weather} />
+      <Header title="Receitas" iconName="restaurant-outline" />
+      
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Pesquisar receitas..."
+          value={searchText}
+          onChangeText={setSearchText}
+          onSubmitEditing={handleSearch}
+        />
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+          <Text style={styles.searchButtonText}>Buscar</Text>
+        </TouchableOpacity>
+      </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        )}
-
-        {activities.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Ionicons name={item.icon} size={28} color="#007AFF" />
-            <Text style={styles.cardText}>{item.title}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      {loading ? (
+        <ActivityIndicator size="large" color="#007AFF" style={{ marginTop: 20 }} />
+      ) : (
+        <FlatList
+          data={recipes}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderCard}
+          contentContainerStyle={styles.list}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f4f8' },
-  scrollContainer: { paddingVertical: 15, alignItems: 'center', paddingBottom: 30 },
-  loadingContainer: { width: '100%', marginVertical: 20, alignItems: 'center' },
+  searchContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    marginVertical: 10,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    height: 40,
+    backgroundColor: '#fff',
+  },
+  searchButton: {
+    marginLeft: 10,
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+  },
+  searchButtonText: { color: '#fff', fontWeight: 'bold' },
+  list: { paddingHorizontal: 15, paddingBottom: 30 },
   card: {
-    width: '90%',
+    backgroundColor: '#ffe0a3',
     borderRadius: 12,
-    padding: 20,
     marginVertical: 8,
+    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffd2ec',
   },
-  cardText: { marginLeft: 15, fontSize: 18, fontWeight: '600', color: '#007AFF' },
+  image: { width: 80, height: 80, borderRadius: 8 },
+  title: { marginLeft: 15, fontSize: 16, fontWeight: '600', flex: 1 },
 });
- 
