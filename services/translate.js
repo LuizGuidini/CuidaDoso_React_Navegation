@@ -1,22 +1,25 @@
 // services/translate.js
 import axios from "axios";
 
-const BASE_URL = "https://libretranslate.de/translate";
+const API_URL = "https://libretranslate.de/translate"; // servidor público
 
 export async function translateText(text, targetLang = "pt") {
-  if (!text) return "";
-
   try {
-    const response = await axios.post(BASE_URL, {
-      q: text,
-      source: "en",
-      target: targetLang,
-      format: "text",
-    });
-
+    const response = await axios.post(
+      API_URL,
+      {
+        q: text,
+        source: "en",
+        target: targetLang,
+        format: "text",
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     return response.data.translatedText;
   } catch (error) {
-    console.error("Erro ao traduzir com LibreTranslate:", error.message);
-    return text; // fallback
+    console.error("Erro na tradução:", error.message);
+    return text; // fallback: retorna o original se falhar
   }
 }

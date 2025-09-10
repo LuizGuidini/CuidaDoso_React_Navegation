@@ -24,11 +24,11 @@ export default function ReceitasScreen() {
     setLoading(true);
     const data = await getRandomRecipes(4);
 
-    // traduz títulos
+    // Traduz os títulos para PT
     const translated = await Promise.all(
       data.map(async (recipe) => ({
         ...recipe,
-        title: await translateText(recipe.title, 'pt'),
+        title: await translateText(recipe.title, "pt"),
       }))
     );
 
@@ -39,14 +39,13 @@ export default function ReceitasScreen() {
   const handleSearch = async () => {
     if (!searchText) return fetchRandomRecipes();
     setLoading(true);
-
     const data = await searchRecipes(searchText, 4);
 
-    // traduz títulos
+    // Traduz os títulos para PT
     const translated = await Promise.all(
       data.map(async (recipe) => ({
         ...recipe,
-        title: await translateText(recipe.title, 'pt'),
+        title: await translateText(recipe.title, "pt"),
       }))
     );
 
@@ -72,7 +71,6 @@ export default function ReceitasScreen() {
     <View style={styles.container}>
       <Header title="Receitas" iconName="restaurant-outline" />
 
-      {/* barra de busca */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
   searchButtonText: { color: '#fff', fontWeight: 'bold' },
   list: { paddingHorizontal: 15, paddingBottom: 30 },
   card: {
-    backgroundColor: '#d7d5ebff',
+    backgroundColor: '#d8e6eeff',
     borderRadius: 12,
     marginVertical: 8,
     padding: 10,
