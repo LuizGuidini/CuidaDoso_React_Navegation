@@ -1,65 +1,88 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../components/Header';
-import { getWeather } from '../services/weather';
+
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = (screenWidth - 155) / 2; // Margens e espaçamento
 
 export default function AtividadesScreen() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
-  const handlePanic = () => alert('Botão de pânico acionado!');
-
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const data = await getWeather();
-      setWeather(data);
-      setLoading(false);
-    };
-    fetchWeather();
-  }, []);
-
-  const activities = [
-    { title: 'Exercício físico - 07:30', icon: 'fitness-outline' },
-    { title: 'Aula de piano - 10:00', icon: 'musical-notes-outline' },
-    { title: 'Alongamento - 18:00', icon: 'body-outline' },
+  const atividadesFisicas = [
+    { id: '1', title: 'Caminhada leve de 15 minutos', icon: 'walk-outline' },
+    { id: '2', title: 'Alongamento matinal', icon: 'body-outline' },
+    { id: '3', title: 'Subir escadas devagar', icon: 'fitness-outline' },
+    { id: '4', title: 'Exercícios de respiração e postura', icon: 'heart-outline' },
   ];
 
+  const atividadesMentais = [
+    { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline' },
+    { id: '2', title: 'Sudoku', icon: 'help-circle-outline' },
+    { id: '3', title: 'Memória: lembrar 10 objetos', icon: 'brain-outline' },
+  ];
+
+  const renderCard = ({ item }) => (
+    <TouchableOpacity style={styles.card}>
+      <Ionicons name={item.icon} size={30} color="#007AFF" />
+      <Text style={styles.cardText}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <View style={styles.container}>
-      <Header title="Atividades" iconName="fitness-outline" onPanicPress={handlePanic} weather={weather} />
+    <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
+      <Header title="Atividades" iconName="barbell-outline" />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        )}
+      <Text style={styles.sectionTitle}>Atividades Físicas</Text>
+      <FlatList
+        data={atividadesFisicas}
+        keyExtractor={(item) => item.id}
+        renderItem={renderCard}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        contentContainerStyle={styles.listContainer}
+      />
 
-        {activities.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Ionicons name={item.icon} size={28} color="#007AFF" />
-            <Text style={styles.cardText}>{item.title}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <Text style={styles.sectionTitle}>Atividades Mentais</Text>
+      <FlatList
+        data={atividadesMentais}
+        keyExtractor={(item) => item.id}
+        renderItem={renderCard}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        contentContainerStyle={styles.listContainer}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f4f8' },
-  scrollContainer: { paddingVertical: 15, alignItems: 'center', paddingBottom: 30 },
-  loadingContainer: { width: '100%', marginVertical: 20, alignItems: 'center' },
-  card: {
-    width: '90%',
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffd2ec',
+  listContainer: {
+    paddingHorizontal: 55,
+    paddingBottom: 20,
   },
-  cardText: { marginLeft: 15, fontSize: 18, fontWeight: '600', color: '#007AFF' },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#007AFF',
+    marginHorizontal: 15,
+    marginVertical: 10,
+  },
+  card: {
+    backgroundColor: '#ffe0a3',
+    width: cardWidth,
+    height: cardWidth,
+    borderRadius: 12,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+  },
+  cardText: {
+    marginTop: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#333',
+  },
 });
- 
