@@ -1,8 +1,18 @@
+import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Header from '../components/Header';
 import { getRandomRecipes, searchRecipes } from '../services/receitas';
-import { useNavigation } from '@react-navigation/native';
+import { translateText } from '../services/translate';
 
 export default function ReceitasScreen() {
   const navigation = useNavigation();
@@ -12,16 +22,35 @@ export default function ReceitasScreen() {
 
   const fetchRandomRecipes = async () => {
     setLoading(true);
-    const data = await getRandomRecipes(10);
-    setRecipes(data);
+    const data = await getRandomRecipes(4);
+
+    // traduz títulos
+    const translated = await Promise.all(
+      data.map(async (recipe) => ({
+        ...recipe,
+        title: await translateText(recipe.title, 'pt'),
+      }))
+    );
+
+    setRecipes(translated);
     setLoading(false);
   };
 
   const handleSearch = async () => {
     if (!searchText) return fetchRandomRecipes();
     setLoading(true);
-    const data = await searchRecipes(searchText, 10);
-    setRecipes(data);
+
+    const data = await searchRecipes(searchText, 4);
+
+    // traduz títulos
+    const translated = await Promise.all(
+      data.map(async (recipe) => ({
+        ...recipe,
+        title: await translateText(recipe.title, 'pt'),
+      }))
+    );
+
+    setRecipes(translated);
     setLoading(false);
   };
 
@@ -42,7 +71,8 @@ export default function ReceitasScreen() {
   return (
     <View style={styles.container}>
       <Header title="Receitas" iconName="restaurant-outline" />
-      
+
+      {/* barra de busca */}
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
@@ -96,7 +126,7 @@ const styles = StyleSheet.create({
   searchButtonText: { color: '#fff', fontWeight: 'bold' },
   list: { paddingHorizontal: 15, paddingBottom: 30 },
   card: {
-    backgroundColor: '#ffe0a3',
+    backgroundColor: '#d7d5ebff',
     borderRadius: 12,
     marginVertical: 8,
     padding: 10,
