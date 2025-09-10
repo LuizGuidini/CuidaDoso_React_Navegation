@@ -22,34 +22,42 @@ export default function ReceitasScreen() {
 
   const fetchRandomRecipes = async () => {
     setLoading(true);
-    const data = await getRandomRecipes(4);
+    try {
+      const data = await getRandomRecipes(4);
 
-    // Traduz os títulos para PT
-    const translated = await Promise.all(
-      data.map(async (recipe) => ({
-        ...recipe,
-        title: await translateText(recipe.title, "pt"),
-      }))
-    );
+      // Traduzir títulos
+      const translated = await Promise.all(
+        data.map(async (recipe) => ({
+          ...recipe,
+          title: recipe.title ? await translateText(recipe.title, 'pt') : 'Sem título',
+        }))
+      );
 
-    setRecipes(translated);
+      setRecipes(translated);
+    } catch (error) {
+      console.error('Erro ao buscar receitas aleatórias:', error.message);
+    }
     setLoading(false);
   };
 
   const handleSearch = async () => {
     if (!searchText) return fetchRandomRecipes();
     setLoading(true);
-    const data = await searchRecipes(searchText, 4);
+    try {
+      const data = await searchRecipes(searchText, 4);
 
-    // Traduz os títulos para PT
-    const translated = await Promise.all(
-      data.map(async (recipe) => ({
-        ...recipe,
-        title: await translateText(recipe.title, "pt"),
-      }))
-    );
+      // Traduzir títulos
+      const translated = await Promise.all(
+        data.map(async (recipe) => ({
+          ...recipe,
+          title: recipe.title ? await translateText(recipe.title, 'pt') : 'Sem título',
+        }))
+      );
 
-    setRecipes(translated);
+      setRecipes(translated);
+    } catch (error) {
+      console.error('Erro ao buscar receitas:', error.message);
+    }
     setLoading(false);
   };
 
