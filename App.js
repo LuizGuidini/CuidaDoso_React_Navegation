@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AgendaScreen from "./screens/AgendaScreen";
 import AmigoScreen from "./screens/AmigoScreen";
 import AtividadesScreen from "./screens/AtividadesScreen";
+import AuthScreen from "./screens/AuthScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
 import MedicamentosScreen from "./screens/MedicamentosScreen";
@@ -41,6 +42,7 @@ function MainTabs() {
             case "Receitas": iconName = "restaurant-outline"; break;
             case "Lugares": iconName = "location-outline"; break;
             case "Amigo": iconName = "people-outline"; break;
+            case "Auth": iconName = "alert-circle-outline"; break;
             default: iconName = "ellipse-outline";
           }
 
@@ -57,6 +59,7 @@ function MainTabs() {
       <Tab.Screen name="Receitas" component={ReceitasScreen} />
       <Tab.Screen name="Lugares" component={LugaresScreen} />
       <Tab.Screen name="Amigo" component={AmigoScreen} />
+      <Tab.Screen name="Auth" component={AuthScreen} />
     </Tab.Navigator>
   );
 }
