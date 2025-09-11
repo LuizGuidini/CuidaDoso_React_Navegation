@@ -4,7 +4,7 @@ import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from '
 import Header from '../components/Header';
 
 const screenWidth = Dimensions.get('window').width;
-const cardWidth = (screenWidth - 155) / 2; // Margens e espaçamento
+const cardWidth = (screenWidth - 170) / 2; // Margens e espaçamento
 
 export default function AtividadesScreen() {
   const navigation = useNavigation();
@@ -19,11 +19,18 @@ export default function AtividadesScreen() {
   const atividadesMentais = [
     { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline' },
     { id: '2', title: 'Sudoku', icon: 'help-circle-outline' },
-    { id: '3', title: 'Memória: lembrar 10 objetos', icon: 'brain-outline' },
+    { id: '3', title: 'Memória: lembrar 10 objetos', icon: 'school-outline' },
   ];
 
-  const renderCard = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
+  const renderCardFisica = ({ item }) => (
+    <TouchableOpacity style={[styles.card, { backgroundColor: '#d2ecff' }]}>
+      <Ionicons name={item.icon} size={30} color="#007AFF" />
+      <Text style={styles.cardText}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderCardMental = ({ item }) => (
+    <TouchableOpacity style={[styles.card, { backgroundColor: '#d2ffd2' }]}>
       <Ionicons name={item.icon} size={30} color="#007AFF" />
       <Text style={styles.cardText}>{item.title}</Text>
     </TouchableOpacity>
@@ -37,7 +44,7 @@ export default function AtividadesScreen() {
       <FlatList
         data={atividadesFisicas}
         keyExtractor={(item) => item.id}
-        renderItem={renderCard}
+        renderItem={renderCardFisica}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentContainerStyle={styles.listContainer}
@@ -47,7 +54,7 @@ export default function AtividadesScreen() {
       <FlatList
         data={atividadesMentais}
         keyExtractor={(item) => item.id}
-        renderItem={renderCard}
+        renderItem={renderCardMental}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentContainerStyle={styles.listContainer}
@@ -69,15 +76,15 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   card: {
-    backgroundColor: '#ffe0a3',
     width: cardWidth,
     height: cardWidth,
-    borderRadius: 12,
+    borderRadius: 15,
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
   },
+  
   cardText: {
     marginTop: 8,
     fontSize: 14,

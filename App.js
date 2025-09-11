@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // Importando suas telas
 import AgendaScreen from "./screens/AgendaScreen";
+import AmigoScreen from "./screens/AmigoScreen";
 import AtividadesScreen from "./screens/AtividadesScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
@@ -33,12 +34,13 @@ function MainTabs() {
           switch (route.name) {
             case "Inicio": iconName = "home-outline"; break;
             case "Agenda": iconName = "calendar-outline"; break;
-            case "Transportes": iconName = "car-outline"; break;
+            case "Transporte": iconName = "car-outline"; break;
             case "Medicamentos": iconName = "medkit-outline"; break;
             case "Perfil": iconName = "person-outline"; break;
             case "Atividades": iconName = "fitness-outline"; break;
             case "Receitas": iconName = "restaurant-outline"; break;
             case "Lugares": iconName = "location-outline"; break;
+            case "Amigo": iconName = "people-outline"; break;
             default: iconName = "ellipse-outline";
           }
 
@@ -48,12 +50,13 @@ function MainTabs() {
     >
       <Tab.Screen name="Inicio" component={HomeScreen} />
       <Tab.Screen name="Agenda" component={AgendaScreen} />
-      <Tab.Screen name="Transportes" component={TransportesScreen} />
+      <Tab.Screen name="Transporte" component={TransportesScreen} />
       <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
       <Tab.Screen name="Perfil" component={PerfilScreen} />
       <Tab.Screen name="Atividades" component={AtividadesScreen} />
       <Tab.Screen name="Receitas" component={ReceitasScreen} />
       <Tab.Screen name="Lugares" component={LugaresScreen} />
+      <Tab.Screen name="Amigo" component={AmigoScreen} />
     </Tab.Navigator>
   );
 }

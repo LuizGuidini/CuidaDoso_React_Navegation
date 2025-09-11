@@ -1,10 +1,21 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import Header from '../components/Header';
 import { getWeather } from '../services/weather';
+
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = (screenWidth - 115) / 2; // espaçamento para 2 colunas
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -23,14 +34,25 @@ export default function HomeScreen() {
   }, []);
 
   const features = [
-    { title: 'Agenda', icon: 'calendar-outline', screen: 'Agenda', color: '#a3d5ff' },
-    { title: 'Transporte', icon: 'car-outline', screen: 'Transporte', color: '#ffe0a3' },
-    { title: 'Medicamentos', icon: 'medkit-outline', screen: 'Medicamentos', color: '#d2ecff' },
-    { title: 'Perfil', icon: 'person-outline', screen: 'Perfil', color: '#ffd2ec' },
-    { title: 'Atividades', icon: 'fitness-outline', screen: 'Atividades', color: '#d2ffd2' },
-    { title: 'Receitas', icon: 'restaurant-outline', screen: 'Receitas', color: '#ffe0e0' },
-    { title: 'Lugares', icon: 'map-outline', screen: 'Lugares', color: '#e0e0ff' },
+    { id: '1', title: 'Agenda', icon: 'calendar-outline', screen: 'Agenda', color: '#a3d5ff' },
+    { id: '2', title: 'Transporte', icon: 'car-outline', screen: 'Transporte', color: '#ffe0a3' },
+    { id: '3', title: 'Medicamentos', icon: 'medkit-outline', screen: 'Medicamentos', color: '#d2ecff' },
+    { id: '4', title: 'Perfil', icon: 'person-outline', screen: 'Perfil', color: '#ffd2ec' },
+    { id: '5', title: 'Atividades', icon: 'fitness-outline', screen: 'Atividades', color: '#d2ffd2' },
+    { id: '6', title: 'Receitas', icon: 'restaurant-outline', screen: 'Receitas', color: '#ffe0e0' },
+    { id: '7', title: 'Lugares', icon: 'map-outline', screen: 'Lugares', color: '#e0e0ff' },
+    { id: '8', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#ffb3b3' },
   ];
+
+  const renderCard = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: item.color }]}
+      onPress={() => navigation.navigate(item.screen)}
+    >
+      <Ionicons name={item.icon} size={36} color="#007AFF" />
+      <Text style={styles.cardText}>{item.title}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
@@ -43,40 +65,46 @@ export default function HomeScreen() {
       />
 
       {/* Conteúdo principal */}
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        )}
-
-        {/* Cards das funcionalidades */}
-        {features.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.card, { backgroundColor: item.color }]}
-            onPress={() => navigation.navigate(item.screen)}
-          >
-            <Ionicons name={item.icon} size={36} color="#007AFF" />
-            <Text style={styles.cardText}>{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#007AFF" />
+        </View>
+      ) : (
+        <FlatList
+          data={features}
+          keyExtractor={(item) => item.id}
+          renderItem={renderCard}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f4f8' },
-  scrollContainer: { paddingVertical: 15, alignItems: 'center', paddingBottom: 30 },
-  loadingContainer: { width: '100%', marginVertical: 20, alignItems: 'center' },
-  card: {
-    width: '90%',
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  listContainer: {
+    paddingHorizontal: 35,
+    paddingTop: 15,
+    paddingBottom: 30,
   },
-  cardText: { marginLeft: 15, fontSize: 18, fontWeight: '600', color: '#007AFF' },
+  card: {
+    width: cardWidth,
+    height: cardWidth,
+    borderRadius: 12,
+    marginBottom: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+  },
+  cardText: {
+    marginTop: 8,
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#007AFF',
+  },
 });
