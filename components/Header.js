@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getWeather } from '../services/weather';
 
-export default function Header({ title, iconName, panicNumber = '123456789' }) {
+export default function Header({ title, iconName, panicNumber = '190' }) {
   const [weather, setWeather] = useState(null);
   const navigation = useNavigation();
 

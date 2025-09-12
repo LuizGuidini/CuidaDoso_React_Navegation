@@ -1,16 +1,117 @@
+import { Ionicons } from "@expo/vector-icons"; // Para o ícone de lupa
+import * as Contacts from "expo-contacts";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Image, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Header from "../components/Header";
+import styles from "../styles/AuthScreen.styles";
 
 export default function AuthScreen() {
-  const [tab, setTab] = useState("entrar"); // entrar | cadastrar
+  const [tab, setTab] = useState("entrar");
   const [tipoCadastro, setTipoCadastro] = useState(null);
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [senha, setSenha] = useState("");
+  const [amigo, setAmigo] = useState("");
+  const [telefoneAmigo, setTelefoneAmigo] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [contatos, setContatos] = useState([]);
+  const [busca, setBusca] = useState(""); // Para pesquisa no modal
+
+  // Função para abrir contatos e mostrar modal
+  const escolherContato = async () => {
+    const { status } = await Contacts.requestPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permissão negada", "Não foi possível acessar os contatos.");
+      return;
+    }
+    const { data } = await Contacts.getContactsAsync({
+      fields: [Contacts.Fields.PhoneNumbers],
+    });
+    if (data.length === 0) {
+      Alert.alert("Nenhum contato encontrado");
+      return;
+    }
+    // Filtra contatos que têm telefone
+    const contatosComTelefone = data.filter(
+      (c) => c.phoneNumbers && c.phoneNumbers.length > 0
+    );
+    setContatos(contatosComTelefone);
+    setBusca("");
+    setModalVisible(true);
+  };
+
+  // Função para selecionar contato do modal
+  const selecionarContato = (contato) => {
+    setAmigo(contato.name);
+    setTelefoneAmigo(contato.phoneNumbers[0].number);
+    setModalVisible(false);
+  };
+
+  // Filtra contatos conforme busca
+  const contatosFiltrados = contatos.filter((c) =>
+    c.name.toLowerCase().includes(busca.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
       <Header title="Bem-vindo" />
 
-      {/* Tabs */}
+      {/* Modal para escolher contato */}
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={{ flex: 1, backgroundColor: "#fff", padding: 24 }}>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 16 }}>
+            Selecione um amigo
+          </Text>
+          {/* Campo de busca com lupa */}
+          <View style={{
+            flexDirection: "row",
+            alignItems: "center",
+            borderWidth: 1,
+            borderColor: "#ccc",
+            borderRadius: 8,
+            marginBottom: 16,
+            paddingHorizontal: 8,
+            backgroundColor: "#f1f1f1"
+          }}>
+            <Ionicons name="search" size={20} color="#888" style={{ marginRight: 6 }} />
+            <TextInput
+              placeholder="Buscar contato"
+              style={{ flex: 1, height: 40 }}
+              value={busca}
+              onChangeText={setBusca}
+              autoFocus
+            />
+          </View>
+          <FlatList
+            data={contatosFiltrados}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={{
+                  padding: 12,
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#eee",
+                }}
+                onPress={() => selecionarContato(item)}
+              >
+                <Text style={{ fontSize: 16 }}>{item.name}</Text>
+                <Text style={{ color: "#666" }}>
+                  {item.phoneNumbers[0].number}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+          <TouchableOpacity
+            style={[styles.button, { marginTop: 24 }]}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text style={styles.buttonText}>Cancelar</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      {/* Abas de navegação */}
       <View style={styles.tabsContainer}>
         <TouchableOpacity
           style={[
@@ -50,7 +151,6 @@ export default function AuthScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Conteúdo das Abas */}
       <View style={styles.contentContainer}>
         {tab === "entrar" ? (
           // Tela de Login
@@ -70,6 +170,20 @@ export default function AuthScreen() {
             <TouchableOpacity style={styles.loginButton}>
               <Text style={styles.loginButtonText}>Entrar</Text>
             </TouchableOpacity>
+            {/* Botões sociais (exemplo visual) */}
+            <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 16 }}>
+              <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#fff" }]}>
+                <Image
+                  source={require("../assets/logoGmail.png")} 
+                  style={{ width: 24, height: 24, marginRight: 8 }}
+                  resizeMode="contain"
+                />
+                <Text style={{ color: "#333" }}>Entrar com Google</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#000", marginLeft: 10 }]}>
+                <Text style={{ color: "#fff" }}>Entrar com Apple</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
           // Tela de Cadastro
@@ -89,25 +203,84 @@ export default function AuthScreen() {
                 ))}
               </View>
             ) : tipoCadastro === "Usuário" ? (
-              // Formulário de cadastro de usuário
               <View>
                 <Text style={styles.title}>Dados do Usuário</Text>
-                <TextInput placeholder="Nome completo" style={styles.input} />
-                <TextInput placeholder="E-mail" style={styles.input} />
-                <TextInput placeholder="Telefone" style={styles.input} />
-                <TextInput placeholder="Senha" secureTextEntry style={styles.input} />
+                <TextInput
+                  placeholder="Nome completo"
+                  style={styles.input}
+                  value={nome}
+                  onChangeText={setNome}
+                />
+                <TextInput
+                  placeholder="E-mail"
+                  style={styles.input}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+                <TextInput
+                  placeholder="Telefone"
+                  style={styles.input}
+                  value={telefone}
+                  onChangeText={setTelefone}
+                  keyboardType="phone-pad"
+                />
+                <TextInput
+                  placeholder="Senha"
+                  secureTextEntry
+                  style={styles.input}
+                  value={senha}
+                  onChangeText={setSenha}
+                />
+                <TouchableOpacity onPress={escolherContato}>
+                  <TextInput
+                    placeholder="Amigo"
+                    style={[styles.input, { backgroundColor: "#f1f1f1" }]}
+                    value={amigo}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                  {/* Ícone de lupa sobreposto ao campo */}
+                  <Ionicons
+                    name="search"
+                    size={20}
+                    color="#888"
+                    style={{
+                      position: "absolute",
+                      right: 16,
+                      top: 18,
+                      zIndex: 1,
+                    }}
+                  />
+                </TouchableOpacity>
+                <TextInput
+                  placeholder="Telefone do Amigo"
+                  style={[styles.input, { backgroundColor: "#f1f1f1" }]}
+                  value={telefoneAmigo}
+                  editable={false}
+                  pointerEvents="none"
+                />
                 <TouchableOpacity style={styles.button}>
                   <Text style={styles.buttonText}>Salvar</Text>
                 </TouchableOpacity>
+                {/* Botões sociais para cadastro */}
+                <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 16 }}>
+                  <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#fff" }]}>
+                    <Text style={{ color: "#333" }}>Cadastrar com Google</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#000", marginLeft: 10 }]}>
+                    <Text style={{ color: "#fff" }}>Cadastrar com Apple</Text>
+                  </TouchableOpacity>
+                </View>
                 <TouchableOpacity onPress={() => setTipoCadastro(null)} style={{ marginTop: 10 }}>
                   <Text style={{ color: "#2563eb", textAlign: "center" }}>Voltar</Text>
                 </TouchableOpacity>
               </View>
             ) : (
-              // Formulário genérico para Amigo/Parceiro (você pode personalizar)
               <View>
                 <Text style={styles.title}>Cadastro de {tipoCadastro}</Text>
-                {/* Adicione campos específicos para Amigo/Parceiro aqui */}
+                {/* Campos para Amigo/Parceiro */}
                 <TouchableOpacity onPress={() => setTipoCadastro(null)} style={{ marginTop: 10 }}>
                   <Text style={{ color: "#2563eb", textAlign: "center" }}>Voltar</Text>
                 </TouchableOpacity>
@@ -119,100 +292,3 @@ export default function AuthScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc" },
-  tabsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 16,
-  },
-  tabButton: {
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  tabButtonActive: {
-    backgroundColor: "#2563eb",
-  },
-  tabButtonInactive: {
-    backgroundColor: "#e5e7eb",
-  },
-  tabButtonText: {
-    fontWeight: "600",
-    fontSize: 16,
-  },
-  tabButtonTextActive: {
-    color: "#fff",
-  },
-  tabButtonTextInactive: {
-    color: "#374151",
-  },
-  contentContainer: {
-    flex: 1,
-    padding: 24,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#374151",
-    marginBottom: 16,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#d1d5db",
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 16,
-    backgroundColor: "#fff",
-  },
-  loginButton: {
-    backgroundColor: "#2563eb",
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  loginButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  cardRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  card: {
-    width: "48%",
-    aspectRatio: 1,
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-  },
-  cardText: {
-    fontSize: 16,
-    color: "#374151",
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  button: {
-    backgroundColor: "#2563eb",
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});

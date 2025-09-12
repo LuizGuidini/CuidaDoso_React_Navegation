@@ -59,7 +59,14 @@ function MainTabs() {
       <Tab.Screen name="Receitas" component={ReceitasScreen} />
       <Tab.Screen name="Lugares" component={LugaresScreen} />
       <Tab.Screen name="Amigo" component={AmigoScreen} />
-      <Tab.Screen name="Auth" component={AuthScreen} />
+      <Tab.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={{
+          tabBarStyle: { display: 'none' }, // Esconde o menu/tab bar só nessa tela
+          headerShown: false, // Se quiser esconder o header do navigator
+        }}
+     />
     </Tab.Navigator>
   );
 }
