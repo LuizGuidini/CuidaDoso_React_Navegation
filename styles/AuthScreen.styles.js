@@ -49,7 +49,7 @@ export default StyleSheet.create({
   loginButton: {
     backgroundColor: "#a3d5ff",
     borderRadius: 12,
-    paddingVertical: 12,
+    paddingVertical: 10,
     alignItems: "center",
     marginTop: 8,
   },
@@ -84,24 +84,25 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#a3d5ff",
     borderRadius: 12,
-    paddingVertical: 14,
+    paddingVertical: 12,
     alignItems: "center",
     marginTop: 8,
   },
   buttonText: {
-    color: "#fff",
+    color: "#007AFF",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 18,
   },
   socialButton: {
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 80,
     borderWidth: 1,
     borderColor: "#ccc",
     alignItems: "center",
     flexDirection: "row",
+    marginTop: 16
 },
 });

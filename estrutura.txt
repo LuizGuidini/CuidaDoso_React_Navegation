@@ -1,0 +1,89 @@
+Listagem de caminhos de pasta
+C:\Users\Maria\Desktop\Luiz\CuidaDoso\CuidaDoso
+
+CUIDADOSO
+|   .env
+|   .gitignore
+|   App.js
+|   app.json
+|   babel.config.js
+|   eslint.config.js
+|   estrutura.txt
+|   package-lock.json
+|   package.json
+|   README.md
+|   tsconfig.json
+|   
++---.expo
+|             
++---.vscode
+|   
++---assets
+|   +---fonts
+|  
+|   \---images
+|           adaptive-icon.png
+|           favicon.png
+|           freepik__atividade_de_caminhada.png
+|           freepik__atividade_de_caminhada_com_amigos.png
+|           freepik__icone_para_botao_do_panico_em_apps.png
+|           icon.png
+|           logo.png
+|           logoApple.png
+|           logoGmail.png
+|           Logo_semfundo.png
+|           partial-react-logo.png
+|           react-logo.png
+|           react-logo@2x.png
+|           react-logo@3x.png
+|           splash-icon.png
+|           
++---components
+|       Header.js
+|       
++---config
+|       firebaseConfig.js
+|       
++---constants
+|       Colors.ts
+|       
++---hooks
+|       useAuth.js
+|       
++---node_modules
+|
+|   
++---screens
+|       AgendaScreen.js
+|       AmigoScreen.js
+|       AtividadesScreen.js
+|       AuthScreen.js
+|       CadastroAmigoForm.js
+|       CadastroParceiroForm.js
+|       CadastroUsuarioForm.js
+|       HomeScreen.js
+|       LoginForm.js
+|       LugaresScreen.js
+|       MedicamentosScreen.js
+|       PerfilScreen.js
+|       ReceitaDetalheScreen.js
+|       ReceitaDetalheScreen2.js
+|       ReceitasScreen.js
+|       TransportesScreen.js
+|       
++---scripts
+|       reset-project.js
+|       
++---services
+|       geoapify.js
+|       places.js
+|       receitas.js
+|       recipes.js
+|       translate.js
+|       weather.js
+|       
+\---styles
+        AuthScreen.styles.js
+        colors.js
+        fonts.js
+        globalStyles.js

@@ -1,24 +1,24 @@
-import { Ionicons } from "@expo/vector-icons"; // Para o ícone de lupa
+import { Ionicons } from "@expo/vector-icons";
 import * as Contacts from "expo-contacts";
 import { useState } from "react";
-import { Alert, FlatList, Image, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Header from "../components/Header";
 import styles from "../styles/AuthScreen.styles";
+import CadastroAmigoForm from "./CadastroAmigoForm";
+import CadastroParceiroForm from "./CadastroParceiroForm";
+import CadastroUsuarioForm from "./CadastroUsuarioForm";
+import LoginForm from "./LoginForm";
 
 export default function AuthScreen() {
   const [tab, setTab] = useState("entrar");
   const [tipoCadastro, setTipoCadastro] = useState(null);
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [senha, setSenha] = useState("");
   const [amigo, setAmigo] = useState("");
   const [telefoneAmigo, setTelefoneAmigo] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [contatos, setContatos] = useState([]);
-  const [busca, setBusca] = useState(""); // Para pesquisa no modal
+  const [busca, setBusca] = useState("");
 
-  // Função para abrir contatos e mostrar modal
+  // Função para abrir contatos
   const escolherContato = async () => {
     const { status } = await Contacts.requestPermissionsAsync();
     if (status !== "granted") {
@@ -32,7 +32,6 @@ export default function AuthScreen() {
       Alert.alert("Nenhum contato encontrado");
       return;
     }
-    // Filtra contatos que têm telefone
     const contatosComTelefone = data.filter(
       (c) => c.phoneNumbers && c.phoneNumbers.length > 0
     );
@@ -41,7 +40,7 @@ export default function AuthScreen() {
     setModalVisible(true);
   };
 
-  // Função para selecionar contato do modal
+  // Função para selecionar contato
   const selecionarContato = (contato) => {
     setAmigo(contato.name);
     setTelefoneAmigo(contato.phoneNumbers[0].number);
@@ -63,7 +62,7 @@ export default function AuthScreen() {
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 16 }}>
             Selecione um amigo
           </Text>
-          {/* Campo de busca com lupa */}
+          {/* lupa */}
           <View style={{
             flexDirection: "row",
             alignItems: "center",
@@ -111,7 +110,7 @@ export default function AuthScreen() {
         </View>
       </Modal>
 
-      {/* Abas de navegação */}
+      {/* Tabs de navegação */}
       <View style={styles.tabsContainer}>
         <TouchableOpacity
           style={[
@@ -151,42 +150,10 @@ export default function AuthScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.contentContainer}>
+      <ScrollView style={styles.contentContainer} keyboardShouldPersistTaps="handled">
         {tab === "entrar" ? (
-          // Tela de Login
-          <View>
-            <Text style={styles.title}>Entrar na sua conta</Text>
-            <TextInput
-              placeholder="E-mail"
-              style={styles.input}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-            <TextInput
-              placeholder="Senha"
-              secureTextEntry
-              style={styles.input}
-            />
-            <TouchableOpacity style={styles.loginButton}>
-              <Text style={styles.loginButtonText}>Entrar</Text>
-            </TouchableOpacity>
-            {/* Botões sociais (exemplo visual) */}
-            <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 16 }}>
-              <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#fff" }]}>
-                <Image
-                  source={require("../assets/logoGmail.png")} 
-                  style={{ width: 24, height: 24, marginRight: 8 }}
-                  resizeMode="contain"
-                />
-                <Text style={{ color: "#333" }}>Entrar com Google</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#000", marginLeft: 10 }]}>
-                <Text style={{ color: "#fff" }}>Entrar com Apple</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <LoginForm />
         ) : (
-          // Tela de Cadastro
           <View>
             <Text style={styles.title}>Escolha o tipo de cadastro</Text>
             {tipoCadastro === null ? (
@@ -203,91 +170,22 @@ export default function AuthScreen() {
                 ))}
               </View>
             ) : tipoCadastro === "Usuário" ? (
-              <View>
-                <Text style={styles.title}>Dados do Usuário</Text>
-                <TextInput
-                  placeholder="Nome completo"
-                  style={styles.input}
-                  value={nome}
-                  onChangeText={setNome}
-                />
-                <TextInput
-                  placeholder="E-mail"
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-                <TextInput
-                  placeholder="Telefone"
-                  style={styles.input}
-                  value={telefone}
-                  onChangeText={setTelefone}
-                  keyboardType="phone-pad"
-                />
-                <TextInput
-                  placeholder="Senha"
-                  secureTextEntry
-                  style={styles.input}
-                  value={senha}
-                  onChangeText={setSenha}
-                />
-                <TouchableOpacity onPress={escolherContato}>
-                  <TextInput
-                    placeholder="Amigo"
-                    style={[styles.input, { backgroundColor: "#f1f1f1" }]}
-                    value={amigo}
-                    editable={false}
-                    pointerEvents="none"
-                  />
-                  {/* Ícone de lupa sobreposto ao campo */}
-                  <Ionicons
-                    name="search"
-                    size={20}
-                    color="#888"
-                    style={{
-                      position: "absolute",
-                      right: 16,
-                      top: 18,
-                      zIndex: 1,
-                    }}
-                  />
-                </TouchableOpacity>
-                <TextInput
-                  placeholder="Telefone do Amigo"
-                  style={[styles.input, { backgroundColor: "#f1f1f1" }]}
-                  value={telefoneAmigo}
-                  editable={false}
-                  pointerEvents="none"
-                />
-                <TouchableOpacity style={styles.button}>
-                  <Text style={styles.buttonText}>Salvar</Text>
-                </TouchableOpacity>
-                {/* Botões sociais para cadastro */}
-                <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 16 }}>
-                  <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#fff" }]}>
-                    <Text style={{ color: "#333" }}>Cadastrar com Google</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#000", marginLeft: 10 }]}>
-                    <Text style={{ color: "#fff" }}>Cadastrar com Apple</Text>
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity onPress={() => setTipoCadastro(null)} style={{ marginTop: 10 }}>
-                  <Text style={{ color: "#2563eb", textAlign: "center" }}>Voltar</Text>
-                </TouchableOpacity>
-              </View>
+              <CadastroUsuarioForm
+                amigo={amigo}
+                telefoneAmigo={telefoneAmigo}
+                escolherContato={escolherContato}
+                onVoltar={() => setTipoCadastro(null)}
+              />
+            ) : tipoCadastro === "Amigo" ? (
+              <CadastroAmigoForm onVoltar={() => setTipoCadastro(null)} />
             ) : (
-              <View>
-                <Text style={styles.title}>Cadastro de {tipoCadastro}</Text>
-                {/* Campos para Amigo/Parceiro */}
-                <TouchableOpacity onPress={() => setTipoCadastro(null)} style={{ marginTop: 10 }}>
-                  <Text style={{ color: "#2563eb", textAlign: "center" }}>Voltar</Text>
-                </TouchableOpacity>
-              </View>
+              <CadastroParceiroForm onVoltar={() => setTipoCadastro(null)} />
             )}
           </View>
         )}
+      </ScrollView>
+      <View style={{ alignItems: "center", padding: 12, backgroundColor: "#f8fafc" }}>
+        <Text style={{ color: "#888", fontSize: 14 }}>CuidaDoso by L2M Smart</Text>
       </View>
     </View>
   );
