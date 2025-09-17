@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { auth, db } from "../config/firebaseConfig";
+import { auth, db } from "../config/firebaseInit";
 import styles from "../styles/AuthScreen.styles";
 
 export default function ComplementoCadastroScreen() {
@@ -24,6 +24,11 @@ export default function ComplementoCadastroScreen() {
 
   const handleSalvar = async () => {
     try {
+      if (!auth.currentUser) {
+        alert("Usuário não autenticado. Faça login novamente.");
+        return;
+      }
+
       const uid = auth.currentUser.uid;
 
       const dados = {

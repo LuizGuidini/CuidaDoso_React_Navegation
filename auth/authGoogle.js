@@ -1,5 +1,7 @@
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
-import { auth } from '../config/firebaseConfig';
+import { auth } from '../config/firebaseInit';
+
+//import { auth } from '../config/firebaseConfig';
 
 export const loginComGoogle = async (response, navigation, tipoInicial = null) => {
   if (response?.type === 'success') {

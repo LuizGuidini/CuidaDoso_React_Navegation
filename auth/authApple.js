@@ -1,7 +1,9 @@
 // auth/authApple.js
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { OAuthProvider, signInWithCredential } from 'firebase/auth';
-import { auth } from '../config/firebaseConfig';
+import { auth } from '../config/firebaseInit';
+
+//import { auth } from '../config/firebaseConfig';
 
 export const loginComApple = async (navigation, tipoInicial = null) => {
   try {

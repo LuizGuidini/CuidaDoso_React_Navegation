@@ -1,5 +1,7 @@
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import { db } from '../config/firebaseConfig';
+import { db } from '../config/firebaseInit';
+
+//import { db } from '../config/firebaseConfig';
 
 export const criarUsuarioTesteSemAuth = async () => {
   try {

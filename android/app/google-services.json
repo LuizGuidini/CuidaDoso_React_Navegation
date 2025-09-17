@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "880044616059",
+    "project_id": "cuidadoso-app",
+    "storage_bucket": "cuidadoso-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880044616059:android:bea386a6132abb838ff5de",
+        "android_client_info": {
+          "package_name": "com.cuidadoso.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRlByTkTicEI_GUuc-KjEXmuc4lzVKncM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880044616059:android:48a898bd83bb1a498ff5de",
+        "android_client_info": {
+          "package_name": "com.example.cuidadoso"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRlByTkTicEI_GUuc-KjEXmuc4lzVKncM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,6 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
+import "./config/firebaseInit"; // força inicialização antes de tudo
+import { auth } from "./config/firebaseInit"; // importa o auth corretamente
 
 // Importando suas telas
 import AgendaScreen from "./screens/AgendaScreen";
@@ -13,7 +17,7 @@ import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
 import MedicamentosScreen from "./screens/MedicamentosScreen";
 import PerfilScreen from "./screens/PerfilScreen";
-import ReceitaDetalheScreen from './screens/ReceitaDetalheScreen';
+import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
 
@@ -65,30 +69,21 @@ function MainTabs() {
 
 // 🔹 Stack Navigator (envolve Auth + Tabs + extras)
 export default function App() {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Usuário detectado:", user?.uid || "Nenhum usuário logado");
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Auth">
-        {/* Tela inicial agora é Auth */}
-        <Stack.Screen
-          name="Auth"
-          component={AuthScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="MainTabs"
-          component={MainTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ReceitaDetalhe"
-          component={ReceitaDetalheScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ComplementoCadastro"
-          component={ComplementoCadastroScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="ReceitaDetalhe" component={ReceitaDetalheScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ComplementoCadastro" component={ComplementoCadastroScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

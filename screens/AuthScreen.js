@@ -9,6 +9,7 @@ import CadastroParceiroForm from "./CadastroParceiroForm";
 import CadastroUsuarioForm from "./CadastroUsuarioForm";
 import LoginForm from "./LoginForm";
 
+
 export default function AuthScreen() {
   const [tab, setTab] = useState("entrar");
   const [tipoCadastro, setTipoCadastro] = useState(null);

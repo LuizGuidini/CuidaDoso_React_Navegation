@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { loginComApple } from "../auth/authApple";
 import { loginComGoogle } from "../auth/authGoogle";
+import { auth } from "../config/firebaseInit";
 import { cadastrarUsuario } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
 
@@ -22,33 +23,40 @@ export default function CadastroUsuarioForm({
   const [senha, setSenha] = useState("");
 
   const handleSalvar = async () => {
-    if (!email || !senha || !nome || !telefone || !amigo || !telefoneAmigo) {
-      alert("Preencha todos os campos");
+  if (!email || !senha || !nome || !telefone || !amigo || !telefoneAmigo) {
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  try {
+    // Verificação extra para garantir que o auth está pronto
+    if (!auth || !auth.app?.name) {
+      alert("Firebase Auth não está pronto. Tente novamente em instantes.");
       return;
     }
 
-    try {
-      const { uid, tokenConvite } = await cadastrarUsuario({
-        nome,
-        email,
-        telefone,
-        senha,
-        amigo,
-        telefoneAmigo,
-      });
+    const { uid, tokenConvite } = await cadastrarUsuario({
+      nome,
+      email,
+      telefone,
+      senha,
+      amigo,
+      telefoneAmigo,
+    });
 
-      const mensagem = `Olá! Fui cadastrado no app CuidaDoso e gostaria de te convidar como meu amigo. Use este token: ${tokenConvite} para se cadastrar. Baixe o app aqui: https://seu-link-de-download.com`;
-      const numeroFormatado = telefoneAmigo.replace(/\D/g, "");
-      const url = `https://wa.me/55${numeroFormatado}?text=${encodeURIComponent(mensagem)}`;
-      Linking.openURL(url);
+    const mensagem = `Olá! Fui cadastrado no app CuidaDoso e gostaria de te convidar como meu amigo. Use este token: ${tokenConvite} para se cadastrar. Baixe o app aqui: https://seu-link-de-download.com`;
+    const numeroFormatado = telefoneAmigo.replace(/\D/g, "");
+    const url = `https://wa.me/55${numeroFormatado}?text=${encodeURIComponent(mensagem)}`;
+    Linking.openURL(url);
 
-      alert("Cadastro realizado com sucesso!");
-      navigation.replace("MainTabs"); // redireciona para o app principal
-    } catch (error) {
-      console.error("Erro ao cadastrar:", error.message);
-      alert("Erro ao cadastrar usuário");
-    }
-  };
+    alert("Cadastro realizado com sucesso!");
+    navigation.replace("MainTabs");
+  } catch (error) {
+    console.error("Erro ao cadastrar:", error.message);
+    alert("Erro ao cadastrar usuário");
+  }
+};
+
 
   return (
     <View>

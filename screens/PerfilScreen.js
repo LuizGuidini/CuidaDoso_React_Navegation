@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../components/Header';
-import { auth } from '../config/firebaseConfig';
+import { auth } from '../config/firebaseInit';
 import { cadastrarUsuarioTeste } from '../services/authService';
 import { criarUsuarioTesteSemAuth } from '../services/testFirestore';
 import { getWeather } from '../services/weather';

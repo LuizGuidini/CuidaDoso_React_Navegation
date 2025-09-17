@@ -1,10 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import styles from "../styles/AuthScreen.styles";
-
 import { loginComApple } from '../auth/authApple';
 import { loginComGoogle } from '../auth/authGoogle';
+import styles from "../styles/AuthScreen.styles";
 
 
 export default function CadastroAmigoForm({ onVoltar }) {
