@@ -1,6 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import * as Linking from "expo-linking";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { loginComApple } from "../auth/authApple";
+import { loginComGoogle } from "../auth/authGoogle";
+import { cadastrarUsuario } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
 
 export default function CadastroUsuarioForm({
@@ -9,14 +14,46 @@ export default function CadastroUsuarioForm({
   escolherContato,
   onVoltar,
 }) {
+  const navigation = useNavigation();
+
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [senha, setSenha] = useState("");
 
+  const handleSalvar = async () => {
+    if (!email || !senha || !nome || !telefone || !amigo || !telefoneAmigo) {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    try {
+      const { uid, tokenConvite } = await cadastrarUsuario({
+        nome,
+        email,
+        telefone,
+        senha,
+        amigo,
+        telefoneAmigo,
+      });
+
+      const mensagem = `Olá! Fui cadastrado no app CuidaDoso e gostaria de te convidar como meu amigo. Use este token: ${tokenConvite} para se cadastrar. Baixe o app aqui: https://seu-link-de-download.com`;
+      const numeroFormatado = telefoneAmigo.replace(/\D/g, "");
+      const url = `https://wa.me/55${numeroFormatado}?text=${encodeURIComponent(mensagem)}`;
+      Linking.openURL(url);
+
+      alert("Cadastro realizado com sucesso!");
+      navigation.replace("MainTabs"); // redireciona para o app principal
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error.message);
+      alert("Erro ao cadastrar usuário");
+    }
+  };
+
   return (
     <View>
       <Text style={styles.title}>Dados do Usuário</Text>
+
       <TextInput
         placeholder="Nome completo"
         style={styles.input}
@@ -45,6 +82,7 @@ export default function CadastroUsuarioForm({
         value={senha}
         onChangeText={setSenha}
       />
+
       <TouchableOpacity onPress={escolherContato}>
         <TextInput
           placeholder="Amigo"
@@ -65,6 +103,7 @@ export default function CadastroUsuarioForm({
           }}
         />
       </TouchableOpacity>
+
       <TextInput
         placeholder="Telefone do Amigo"
         style={[styles.input, { backgroundColor: "#f1f1f1" }]}
@@ -72,20 +111,28 @@ export default function CadastroUsuarioForm({
         editable={false}
         pointerEvents="none"
       />
-      <TouchableOpacity style={styles.button}>
+
+      <TouchableOpacity style={styles.button} onPress={handleSalvar}>
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
-      
+
       {/* Botões sociais para cadastro */}
-      <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#fff" }]}>
+      <TouchableOpacity
+        style={[styles.socialButton, { backgroundColor: "#fff" }]}
+        onPress={() => loginComGoogle(navigation, "Usuario")}
+      >
         <Ionicons name="logo-google" size={20} color="#e90404" />
         <Text style={{ color: "#333", fontWeight: "bold" }}>   Entrar com Google</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.socialButton, { backgroundColor: "#000"}]}>
+
+      <TouchableOpacity
+        style={[styles.socialButton, { backgroundColor: "#000" }]}
+        onPress={() => loginComApple(navigation, "Usuario")}
+      >
         <Ionicons name="logo-apple" size={20} color="#fff" />
         <Text style={{ color: "#fff", fontWeight: "bold" }}>   Entrar com Apple</Text>
       </TouchableOpacity>
-      
+
       <TouchableOpacity onPress={onVoltar} style={{ marginTop: 10 }}>
         <Text style={{ color: "#2563eb", textAlign: "center" }}>Voltar</Text>
       </TouchableOpacity>

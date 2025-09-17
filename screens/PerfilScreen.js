@@ -1,8 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../components/Header';
+import { auth } from '../config/firebaseConfig';
+import { cadastrarUsuarioTeste } from '../services/authService';
+import { criarUsuarioTesteSemAuth } from '../services/testFirestore';
 import { getWeather } from '../services/weather';
+
+console.log("Auth UID:", auth?.currentUser?.uid);
+
 
 export default function PerfilScreen() {
   const [weather, setWeather] = useState(null);
@@ -42,7 +48,30 @@ export default function PerfilScreen() {
             <Text style={styles.cardText}>{item.title}</Text>
           </View>
         ))}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+          cadastrarUsuarioTeste(
+            'teste@cuidadoso.com',
+            '123456',
+            'Maria Teste',
+            '11999999999'
+          )
+        }
+        >
+          <Text style={styles.cardText}>Criar Usuário de Teste</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+          criarUsuarioTesteSemAuth()
+        }
+        >
+          <Text style={styles.cardText}>Criar Usuário de Teste sem Auth</Text>
+        </TouchableOpacity>
+
       </ScrollView>
+      
     </View>
   );
 }

@@ -26,7 +26,7 @@ function MainTabs() {
     <Tab.Navigator
       initialRouteName="Inicio"
       screenOptions={({ route }) => ({
-        headerShown: false,
+        headerShown: false, // o header é controlado pelo Stack
         tabBarActiveTintColor: "#007AFF",
         tabBarInactiveTintColor: "gray",
         tabBarStyle: { backgroundColor: "#fff", height: 70 },
@@ -43,6 +43,7 @@ function MainTabs() {
             case "Receitas": iconName = "restaurant-outline"; break;
             case "Lugares": iconName = "location-outline"; break;
             case "Amigo": iconName = "people-outline"; break;
+            case "Auth": iconName = "alert-circle-outline"; break;
             default: iconName = "ellipse-outline";
           }
 
@@ -59,26 +60,30 @@ function MainTabs() {
       <Tab.Screen name="Receitas" component={ReceitasScreen} />
       <Tab.Screen name="Lugares" component={LugaresScreen} />
       <Tab.Screen name="Amigo" component={AmigoScreen} />
+      <Tab.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={{
+          tabBarStyle: { display: 'none' }, // Esconde o menu/tab bar só nessa tela
+          headerShown: false, // Se quiser esconder o header do navigator
+        }}
+      />
     </Tab.Navigator>
   );
 }
 
-// 🔹 Stack Navigator (envolve Auth + Tabs + extras)
+// 🔹 Stack Navigator (envolve o Tab + futuras telas extras)
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Auth">
-        {/* Tela inicial agora é Auth */}
-        <Stack.Screen
-          name="Auth"
-          component={AuthScreen}
-          options={{ headerShown: false }}
-        />
+      <Stack.Navigator initialRouteName="MainTabs">
+        {/* Tabs ficam como a tela principal */}
         <Stack.Screen
           name="MainTabs"
           component={MainTabs}
-          options={{ headerShown: false }}
+          options={{ headerShown: false }} // tira o header duplicado
         />
+          {/* Tela de detalhes da receita */}
         <Stack.Screen
           name="ReceitaDetalhe"
           component={ReceitaDetalheScreen}
@@ -89,7 +94,11 @@ export default function App() {
           component={ComplementoCadastroScreen}
           options={{ headerShown: false }}
         />
+        {/* Aqui você pode adicionar telas extras fora do tab,
+            elas terão botão de voltar automaticamente */}
+        {/* <Stack.Screen name="Detalhes" component={DetalhesScreen} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+

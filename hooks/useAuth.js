@@ -1,11 +1,10 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { firebaseApp } from '../config/firebaseConfig';
+import { auth } from '../config/firebaseConfig'; // ✅ usa o auth já inicializado
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // opcional, para saber se está carregando
-  const auth = getAuth(firebaseApp);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -13,7 +12,7 @@ export default function useAuth() {
       setLoading(false);
     });
 
-    return () => unsubscribe(); // limpa o listener ao desmontar
+    return () => unsubscribe();
   }, []);
 
   return { user, loading };
