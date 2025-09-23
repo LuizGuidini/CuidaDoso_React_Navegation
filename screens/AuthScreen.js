@@ -186,7 +186,7 @@ export default function AuthScreen() {
         )}
       </ScrollView>
       <View style={{ alignItems: "center", padding: 12, backgroundColor: "#f8fafc" }}>
-        <Text style={{ color: "#888", fontSize: 14 }}>CuidaDoso by L2M Smart</Text>
+        <Text style={{ color: "#888", fontSize: 14 }}>CuidaDoso by L2M DeploySmart</Text>
       </View>
     </View>
   );

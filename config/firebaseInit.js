@@ -21,7 +21,7 @@ try {
   auth = initializeAuth(app, {
     persistence: getReactNativePersistence(AsyncStorage),
   });
-} catch (e) {
+} catch (_e) {
   console.log("Auth já foi inicializado.");
 }
 

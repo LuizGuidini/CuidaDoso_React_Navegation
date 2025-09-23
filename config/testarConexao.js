@@ -1,5 +1,5 @@
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebaseConfig';
+import { db } from './firebaseInit';
 
 const testarFirebase = async () => {
   const querySnapshot = await getDocs(collection(db, "usuarios"));

@@ -13,6 +13,7 @@ import AmigoScreen from "./screens/AmigoScreen";
 import AtividadesScreen from "./screens/AtividadesScreen";
 import AuthScreen from "./screens/AuthScreen";
 import ComplementoCadastroScreen from "./screens/ComplementoCadastroScreen";
+import CriarCompromissoScreen from "./screens/CriarCompromissoScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
 import MedicamentosScreen from "./screens/MedicamentosScreen";
@@ -20,6 +21,8 @@ import PerfilScreen from "./screens/PerfilScreen";
 import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
+
+// Configurando navegadores
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,6 +50,7 @@ function MainTabs() {
             case "Receitas": iconName = "restaurant-outline"; break;
             case "Lugares": iconName = "location-outline"; break;
             case "Amigo": iconName = "people-outline"; break;
+            case "Auth": iconName = "alert-circle-outline"; break;
             default: iconName = "ellipse-outline";
           }
 
@@ -63,6 +67,9 @@ function MainTabs() {
       <Tab.Screen name="Receitas" component={ReceitasScreen} />
       <Tab.Screen name="Lugares" component={LugaresScreen} />
       <Tab.Screen name="Amigo" component={AmigoScreen} />
+      <Tab.Screen name="Auth" component={AuthScreen} />
+      <Tab.Screen name="CriarCompromisso" component={CriarCompromissoScreen} />
+
     </Tab.Navigator>
   );
 }
@@ -84,6 +91,7 @@ export default function App() {
         <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
         <Stack.Screen name="ReceitaDetalhe" component={ReceitaDetalheScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ComplementoCadastro" component={ComplementoCadastroScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="CriarCompromisso" component={CriarCompromissoScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,10 +1,8 @@
-apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
-apply plugin: "com.facebook.react"
-
 plugins {
-  id 'com.android.application'
-  id 'com.google.gms.google-services' // plugin do Firebase
+    id 'com.android.application'
+    id 'com.google.gms.google-services' // plugin do Firebase
+    id 'org.jetbrains.kotlin.android'
+    id 'com.facebook.react'
 }
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
@@ -92,9 +90,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.cuidadoso"
+    namespace "com.cuidadoso.app"
     defaultConfig {
-        applicationId "com.cuidadoso"
+        applicationId "com.cuidadoso.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
