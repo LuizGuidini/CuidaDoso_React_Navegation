@@ -33,7 +33,7 @@ export default function LoginForm() {
         value={senha}
         onChangeText={setSenha}
       />
-      <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('MainTabs')}>
+      <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('MainDrawer')}>
         <Text style={styles.loginButtonText}>Entrar</Text>
       </TouchableOpacity>
 

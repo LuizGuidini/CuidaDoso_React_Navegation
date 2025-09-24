@@ -15,7 +15,7 @@ import Header from '../components/Header';
 import { getWeather } from '../services/weather';
 
 const screenWidth = Dimensions.get('window').width;
-const cardWidth = (screenWidth - 115) / 2; // espaçamento para 2 colunas
+const cardWidth = (screenWidth - 155) / 2; // espaçamento para 2 colunas
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -36,9 +36,9 @@ export default function HomeScreen() {
   const features = [
     { id: '1', title: 'Agenda', icon: 'calendar-outline', screen: 'Agenda', color: '#a3d5ff' },
     { id: '2', title: 'Transporte', icon: 'car-outline', screen: 'Transporte', color: '#ffe0a3' },
-    { id: '3', title: 'Medicamentos', icon: 'medkit-outline', screen: 'Medicamentos', color: '#d2ecff' },
+    { id: '3', title: 'Meus Cuidados', icon: 'fitness-outline', screen: 'Medicamentos', color: '#d2ecff' },
     { id: '4', title: 'Perfil', icon: 'person-outline', screen: 'Perfil', color: '#ffd2ec' },
-    { id: '5', title: 'Atividades', icon: 'fitness-outline', screen: 'Atividades', color: '#d2ffd2' },
+    { id: '5', title: 'Saúde e Bem-Estar', icon: 'bicycle-outline', screen: 'Atividades', color: '#d2ffd2' },
     { id: '6', title: 'Receitas', icon: 'restaurant-outline', screen: 'Receitas', color: '#ffe0e0' },
     { id: '7', title: 'Lugares', icon: 'map-outline', screen: 'Lugares', color: '#e0e0ff' },
     { id: '8', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#ffb3b3' },
@@ -99,7 +99,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5,
+    padding: 10,
+    elevation: 4,
+    marginHorizontal: 15,    
   },
   cardText: {
     marginTop: 8,

@@ -1,64 +1,68 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import {
+  Alert,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import Header from '../components/Header';
-import { getWeather } from '../services/weather';
+import styles from '../styles/AppScreens.styles';
 
 export default function MedicamentosScreen() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
+   const navigation = useNavigation();
+  const [medicamentos, setMedicamentos] = useState([
+    { id: '1', nome: 'Losartana', horario: '08:00', tomado: false },
+    { id: '2', nome: 'Metformina', horario: '12:00', tomado: false },
+    { id: '3', nome: 'Omeprazol', horario: '18:00', tomado: false },
+  ]);
 
-  const handlePanic = () => alert('Botão de pânico acionado!');
+  const marcarComoTomado = (id) => {
+    const atualizados = medicamentos.map((med) =>
+      med.id === id ? { ...med, tomado: !med.tomado } : med
+    );
+    setMedicamentos(atualizados);
+    const status = atualizados.find(m => m.id === id).tomado ? 'tomado' : 'não tomado';
+    Alert.alert(`Medicamento marcado como ${status}.`);
+  };
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const data = await getWeather();
-      setWeather(data);
-      setLoading(false);
-    };
-    fetchWeather();
-  }, []);
-
-  const meds = [
-    { title: 'Remédio: Paracetamol - 08:00', icon: 'medkit-outline' },
-    { title: 'Remédio: Ibuprofeno - 14:00', icon: 'medkit-outline' },
-    { title: 'Remédio: Vitamina D - 20:00', icon: 'medkit-outline' },
-  ];
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <Text style={styles.title}>{item.nome}</Text>
+      <Text>Horário: {item.horario}</Text>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          { backgroundColor: item.tomado ? '#d2ffd2' : '#ffe2e2' },
+        ]}
+        onPress={() => marcarComoTomado(item.id)}
+      >
+        <Text style={styles.buttonText}>
+          {item.tomado ? 'Tomado ✅' : 'Marcar como tomado'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Header title="Medicamentos" iconName="medkit-outline" onPanicPress={handlePanic} weather={weather} />
+      <Header title="Medicamentos" iconName="medkit-outline" />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        )}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('NovoMedicamento')}
+      >
+        <Text style={styles.buttonText}>+ Novo medicamento</Text>
+      </TouchableOpacity>
 
-        {meds.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Ionicons name={item.icon} size={28} color="#007AFF" />
-            <Text style={styles.cardText}>{item.title}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <View contentContainerStyle={styles.list}>
+        <FlatList
+          data={medicamentos}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f4f8' },
-  scrollContainer: { paddingVertical: 15, alignItems: 'center', paddingBottom: 30 },
-  loadingContainer: { width: '100%', marginVertical: 20, alignItems: 'center' },
-  card: {
-    width: '90%',
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#d2ecff',
-  },
-  cardText: { marginLeft: 15, fontSize: 18, fontWeight: '600', color: '#007AFF' },
-});

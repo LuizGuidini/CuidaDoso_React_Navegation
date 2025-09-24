@@ -1,9 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
+
 import "./config/firebaseInit"; // força inicialização antes de tudo
 import { auth } from "./config/firebaseInit"; // importa o auth corretamente
 
@@ -14,9 +16,12 @@ import AtividadesScreen from "./screens/AtividadesScreen";
 import AuthScreen from "./screens/AuthScreen";
 import ComplementoCadastroScreen from "./screens/ComplementoCadastroScreen";
 import CriarCompromissoScreen from "./screens/CriarCompromissoScreen";
+import EscolherMotoristaScreen from "./screens/EscolherMotoristaScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
 import MedicamentosScreen from "./screens/MedicamentosScreen";
+import NovoMedicamentoScreen from "./screens/NovoMedicamentoScreen";
+import NovoTransporteScreen from "./screens/NovoTransporteScreen";
 import PerfilScreen from "./screens/PerfilScreen";
 import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
@@ -26,6 +31,7 @@ import TransportesScreen from "./screens/TransportesScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 // 🔹 Tab Navigator (menu fixo)
 function MainTabs() {
@@ -36,7 +42,7 @@ function MainTabs() {
         headerShown: false,
         tabBarActiveTintColor: "#007AFF",
         tabBarInactiveTintColor: "gray",
-        tabBarStyle: { backgroundColor: "#fff", height: 70 },
+        tabBarStyle: { backgroundColor: "#fff", height: 80, paddingTop: 10 },
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
@@ -60,19 +66,36 @@ function MainTabs() {
     >
       <Tab.Screen name="Inicio" component={HomeScreen} />
       <Tab.Screen name="Agenda" component={AgendaScreen} />
-      <Tab.Screen name="Transporte" component={TransportesScreen} />
+      <Tab.Screen name="Transporte" component={TransportesScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
       <Tab.Screen name="Perfil" component={PerfilScreen} />
-      <Tab.Screen name="Atividades" component={AtividadesScreen} />
-      <Tab.Screen name="Receitas" component={ReceitasScreen} />
-      <Tab.Screen name="Lugares" component={LugaresScreen} />
+      <Tab.Screen name="Atividades" component={AtividadesScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Receitas" component={ReceitasScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Lugares" component={LugaresScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Amigo" component={AmigoScreen} />
-      <Tab.Screen name="Auth" component={AuthScreen} />
-      <Tab.Screen name="CriarCompromisso" component={CriarCompromissoScreen} />
-
+          
     </Tab.Navigator>
   );
 }
+
+function MainDrawer() {
+  return (
+    <Drawer.Navigator screenOptions={{ headerShown: false }}>
+      <Drawer.Screen name="Início" component={HomeScreen} />
+      <Drawer.Screen name="Agenda" component={AgendaScreen} />
+      <Drawer.Screen name="Perfil" component={PerfilScreen} />
+      <Drawer.Screen name="Medicamentos" component={MedicamentosScreen} />
+      <Drawer.Screen name="Tabs" component={MainTabs} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Transportes" component={TransportesScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Receitas" component={ReceitasScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Atividades" component={AtividadesScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Lugares" component={LugaresScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Amigo" component={AmigoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Auth" component={AuthScreen} options={{ drawerItemStyle: { display: 'none' } }} />     
+    </Drawer.Navigator>
+  );
+}
+
 
 // 🔹 Stack Navigator (envolve Auth + Tabs + extras)
 export default function App() {
@@ -88,10 +111,15 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Auth">
         <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="MainDrawer" component={MainDrawer} options={{ headerShown: false }} />
         <Stack.Screen name="ReceitaDetalhe" component={ReceitaDetalheScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ComplementoCadastro" component={ComplementoCadastroScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CriarCompromisso" component={CriarCompromissoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NovoMedicamento" component={NovoMedicamentoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NovoTransporte" component={NovoTransporteScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="EscolherMotorista" component={EscolherMotoristaScreen} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

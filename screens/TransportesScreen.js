@@ -1,64 +1,79 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import {
+  Alert,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Header from '../components/Header';
-import { getWeather } from '../services/weather';
+import styles from '../styles/AppScreens.styles';
 
-export default function TransportesScreen() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function TransporteScreen() {
+  const navigation = useNavigation();
+  const [transportes, setTransportes] = useState([
+    { id: '1', destino: 'Clínica São Lucas', horario: '13:30', status: 'pendente' },
+    { id: '2', destino: 'Farmácia Central', horario: '17:00', status: 'confirmado' },
+  ]);
 
-  const handlePanic = () => alert('Botão de pânico acionado!');
+  const atualizarStatus = (id) => {
+    const atualizados = transportes.map((t) =>
+      t.id === id
+        ? { ...t, status: t.status === 'pendente' ? 'confirmado' : 'concluído' }
+        : t
+    );
+    setTransportes(atualizados);
+    Alert.alert('Status atualizado com sucesso!');
+  };
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const data = await getWeather();
-      setWeather(data);
-      setLoading(false);
-    };
-    fetchWeather();
-  }, []);
-
-  const rides = [
-    { title: 'Motorista: Carlos - 09:00', icon: 'car-outline' },
-    { title: 'Motorista: Marina - 12:00', icon: 'car-outline' },
-    { title: 'Motorista: Pedro - 15:00', icon: 'car-outline' },
-  ];
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <Text style={styles.title}>{item.destino}</Text>
+      <Text>Horário: {item.horario}</Text>
+      <Text>Status: {item.status}</Text>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor:
+              item.status === 'pendente'
+                ? '#ffe2e2'
+                : item.status === 'confirmado'
+                ? '#fff7cc'
+                : '#d2ffd2',
+          },
+        ]}
+        onPress={() => atualizarStatus(item.id)}
+      >
+        <Text style={styles.buttonText}>
+          {item.status === 'pendente'
+            ? 'Confirmar transporte'
+            : item.status === 'confirmado'
+            ? 'Marcar como concluído'
+            : 'Concluído ✅'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <Header title="Transporte" iconName="car-outline" onPanicPress={handlePanic} weather={weather} />
+      <Header title="Transporte" iconName="car-outline" />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        )}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('EscolherMotorista')}
+      >
+        <Text style={styles.buttonText}>+ Solicitar transporte</Text>
+      </TouchableOpacity>
 
-        {rides.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Ionicons name={item.icon} size={28} color="#007AFF" />
-            <Text style={styles.cardText}>{item.title}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <FlatList
+        contentContainerStyle={styles.list}
+        data={transportes}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f4f8' },
-  scrollContainer: { paddingVertical: 15, alignItems: 'center', paddingBottom: 30 },
-  loadingContainer: { width: '100%', marginVertical: 20, alignItems: 'center' },
-  card: {
-    width: '90%',
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffe0a3',
-  },
-  cardText: { marginLeft: 15, fontSize: 18, fontWeight: '600', color: '#007AFF' },
-});

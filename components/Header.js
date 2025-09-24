@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import { Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -39,18 +39,21 @@ export default function Header({ title, iconName, panicNumber = '190' }) {
   };
 
   const goHome = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'Inicio' }],
-      })
-    );
+    navigation.navigate('MainDrawer', {
+      screen: 'Tabs',
+      params: { screen: 'Inicio' },
+    });
   };
 
   return (
     <View style={styles.container}>
       {/* Topo: logo (volta para Home) e botão de pânico */}
       <View style={styles.topRow}>
+        
+        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <Ionicons name="menu-outline" size={32} color="#374151" />
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={goHome}>
           <Image
             source={require('../assets/images/logo.png')}
