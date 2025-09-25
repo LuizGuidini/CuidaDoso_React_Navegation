@@ -15,7 +15,7 @@ import Header from '../components/Header';
 import { getWeather } from '../services/weather';
 
 const screenWidth = Dimensions.get('window').width;
-const cardWidth = (screenWidth - 155) / 2; // espaçamento para 2 colunas
+const cardWidth = (screenWidth - 120) / 2; // espaçamento para 2 colunas
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     elevation: 4,
-    marginHorizontal: 15,    
+    marginHorizontal: 10,    
   },
   cardText: {
     marginTop: 8,

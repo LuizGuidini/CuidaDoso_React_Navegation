@@ -56,15 +56,15 @@ export default function Header({ title, iconName, panicNumber = '190' }) {
 
         <TouchableOpacity onPress={goHome}>
           <Image
-            source={require('../assets/images/logo.png')}
+            source={require('../assets/images/Logo_semfundo.png')}
             style={styles.logo}
             resizeMode="contain"
           />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.panicButton} onPress={handlePanic}>
-          <Ionicons name="alert-circle" size={28} color="#fff" />
-          <Text style={styles.panicText}>PÂNICO</Text>
+          <Ionicons name="notifications-circle" size={28} color="#FF3B30" />
+          <Text style={styles.panicText}>AJUDA</Text> 
         </TouchableOpacity>
       </View>
 
@@ -98,15 +98,21 @@ const styles = StyleSheet.create({
   },
   logo: { width: 80, height: 80 },
   panicButton: {
-    backgroundColor: '#e90404',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
+    backgroundColor: '#a3d5ff', 
     paddingVertical: 8,
-    borderRadius: 50,
-    elevation: 8,
+    paddingHorizontal: 10,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: '#fff', 
   },
-  panicText: { color: '#fff', fontWeight: 'bold', marginLeft: 6, fontSize: 14 },
+  panicText: {
+    color: '#007AFF',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginLeft: 8,
+  },
   bottomRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
