@@ -72,6 +72,6 @@ const slides = [
   {
     title: 'Ajuda rápida',
     text: 'Em caso de emergência, toque no botão Ajuda.',
-    image: require('../assets/images/onboarding3.png'),
+    image: require('../assets/images/onboarding5.png'),
   },
 ];

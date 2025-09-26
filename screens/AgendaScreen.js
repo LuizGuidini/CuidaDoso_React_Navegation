@@ -38,6 +38,7 @@ export default function AgendaScreen() {
   };
 
   useEffect(() => {
+    console.log('useEffect chamado');
     setLoading(true);
     setTimeout(() => {
       setCompromissos(compromissosMock);

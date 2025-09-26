@@ -1,57 +1,52 @@
 import axios from 'axios';
 
-const SPOONACULAR_KEY = '618e80f8f0a94028bc3fc2d5e820e3a1'; // ou use @env
+const API_URL = 'https://api-receitas-pi.vercel.app';
 
-const API_URL = "https://api.spoonacular.com/recipes";
-
-export const getRandomRecipes = async (number = 4) => {
+// 🔹 Buscar receitas por descrição (ex: "frango", "salada")
+export const buscarReceitasPorDescricao = async (descricao, limit = 20) => {
   try {
-    const res = await axios.get(`${API_URL}/random`, {
+    const res = await axios.get(`${API_URL}/receitas/descricao`, {
       params: {
-        apiKey: SPOONACULAR_KEY,
-        number,
+        descricao: descricao.toLowerCase(),
+        page: 1,
+        limit,
       },
     });
-
-    if (!res.data.recipes) return [];
-
-    return res.data.recipes.map((r) => ({
-      id: r.id,
-      title: r.title || "Sem título",
-      image: r.image,
-      summary: r.summary || "",
-      instructions: r.instructions || "",
-      extendedIngredients: r.extendedIngredients || [],
-    }));
+    return res.data.data || [];
   } catch (error) {
-    console.error("Erro getRandomRecipes:", error.message);
+    console.error('Erro ao buscar por descrição:', error.message);
     return [];
   }
 };
 
-export const searchRecipes = async (query, number = 4) => {
+
+// 🔹 Buscar receitas por tipo (ex: "doce", "salgado", "agridoce")
+export const buscarReceitasPorTipo = async (tipo) => {
   try {
-    const res = await axios.get(`${API_URL}/complexSearch`, {
-      params: {
-        apiKey: SPOONACULAR_KEY,
-        query,
-        number,
-        addRecipeInformation: true,
-      },
-    });
-
-    if (!res.data.results) return [];
-
-    return res.data.results.map((r) => ({
-      id: r.id,
-      title: r.title || "Sem título",
-      image: r.image,
-      summary: r.summary || "",
-      instructions: r.instructions || "",
-      extendedIngredients: r.extendedIngredients || [],
-    }));
+    const res = await axios.get(`${API_URL}/receitas/tipo/${tipo}`);
+    return res.data || [];
   } catch (error) {
-    console.error("Erro searchRecipes:", error.message);
+    console.error('Erro ao buscar por tipo:', error.message);
     return [];
   }
 };
+
+// 🔹 Buscar 3 receitas aleatórias de tipos variados
+export const buscarReceitasAleatorias = async () => {
+  try {
+    const tipos = ['doce', 'salgado', 'agridoce'];
+    const todas = await Promise.all(
+      tipos.map(async (tipo) => {
+        const res = await axios.get(`${API_URL}/receitas/tipo/${tipo}`);
+        return res.data || [];
+      })
+    );
+    const combinadas = todas.flat().filter((r) => r?.receita && r?.link_imagem);
+    const embaralhadas = combinadas.sort(() => 0.5 - Math.random());
+    return embaralhadas.slice(0, 3);
+  } catch (error) {
+    console.error('Erro ao buscar receitas aleatórias:', error.message);
+    return [];
+  }
+};
+

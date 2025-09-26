@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getWeather } from '../services/weather';
 
-export default function Header({ title, iconName, panicNumber = '190' }) {
+export default function Header({ title, iconName, panicNumber = '190', showBackButton = false }) {
   const [weather, setWeather] = useState(null);
   const navigation = useNavigation();
 
@@ -47,12 +47,17 @@ export default function Header({ title, iconName, panicNumber = '190' }) {
 
   return (
     <View style={styles.container}>
-      {/* Topo: logo (volta para Home) e botão de pânico */}
+      {/* Topo: botão de voltar ou menu, logo e botão de pânico */}
       <View style={styles.topRow}>
-        
-        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-          <Ionicons name="menu-outline" size={32} color="#374151" />
-        </TouchableOpacity>
+        {showBackButton ? (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={32} color="#374151" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Ionicons name="menu-outline" size={32} color="#374151" />
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity onPress={goHome}>
           <Image
@@ -63,7 +68,7 @@ export default function Header({ title, iconName, panicNumber = '190' }) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.panicButton} onPress={handlePanic}>
-          <Ionicons name="notifications-circle" size={28} color="#FF3B30" />
+          <Ionicons name="notifications-circle" size={25} color="#ee1414ff" />
           <Text style={styles.panicText}>AJUDA</Text> 
         </TouchableOpacity>
       </View>
@@ -84,6 +89,7 @@ export default function Header({ title, iconName, panicNumber = '190' }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -95,20 +101,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 15,
   },
   logo: { width: 80, height: 80 },
   panicButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#a3d5ff', 
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: '#fff', 
+    backgroundColor: '#fff', 
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    borderRadius: 18,
+    borderWidth: 3,
+    borderColor: '#ee1414ff', 
   },
   panicText: {
-    color: '#007AFF',
+    color: '#ee1414ff',
     fontSize: 12,
     fontWeight: 'bold',
     marginLeft: 8,
