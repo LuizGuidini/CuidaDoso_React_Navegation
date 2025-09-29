@@ -1,26 +1,41 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Header from '../components/Header';
+import { atividadesFisicasFixas } from '../data/atividadesFisicas';
 
 const screenWidth = Dimensions.get('window').width;
-const cardWidth = (screenWidth - 170) / 2; // Margens e espaçamento
+const cardWidth = (screenWidth - 170) / 2;
 
 export default function AtividadesScreen() {
   const navigation = useNavigation();
 
-  const atividadesFisicas = [
-    { id: '1', title: 'Caminhada leve de 15 minutos', icon: 'walk-outline' },
-    { id: '2', title: 'Alongamento matinal', icon: 'body-outline' },
-    { id: '3', title: 'Subir escadas devagar', icon: 'fitness-outline' },
-    { id: '4', title: 'Exercícios de respiração e postura', icon: 'heart-outline' },
+  const getAtividadesFisicasAleatorias = () => {
+    return atividadesFisicasFixas.sort(() => 0.5 - Math.random()).slice(0, 4);
+  };
+
+  const [atividadesFisicas, setAtividadesFisicas] = useState(getAtividadesFisicasAleatorias());
+
+  const atividadesCognitivas = [
+    { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline', route: 'Palavras' },
+    { id: '2', title: 'Sudoku', icon: 'help-circle-outline', route: 'Sudoku' },
+    { id: '3', title: 'Memória: lembrar 6 objetos', icon: 'school-outline', route: 'Memoria' },
+    { id: '4', title: 'Sequência de cores', icon: 'color-palette-outline', route: 'Sequencia' },
   ];
 
-  const atividadesMentais = [
-    { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline' },
-    { id: '2', title: 'Sudoku', icon: 'help-circle-outline' },
-    { id: '3', title: 'Memória: lembrar 10 objetos', icon: 'school-outline' },
-  ];
+  useFocusEffect(
+    useCallback(() => {
+      setAtividadesFisicas(getAtividadesFisicasAleatorias());
+    }, [])
+  );
 
   const renderCardFisica = ({ item }) => (
     <TouchableOpacity style={[styles.card, { backgroundColor: '#d2ecff' }]}>
@@ -29,8 +44,11 @@ export default function AtividadesScreen() {
     </TouchableOpacity>
   );
 
-  const renderCardMental = ({ item }) => (
-    <TouchableOpacity style={[styles.card, { backgroundColor: '#d2ffd2' }]}>
+  const renderCardCognitiva = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: '#d2ffd2' }]}
+      onPress={() => navigation.navigate(item.route)}
+    >
       <Ionicons name={item.icon} size={30} color="#007AFF" />
       <Text style={styles.cardText}>{item.title}</Text>
     </TouchableOpacity>
@@ -50,11 +68,11 @@ export default function AtividadesScreen() {
         contentContainerStyle={styles.listContainer}
       />
 
-      <Text style={styles.sectionTitle}>Atividades Mentais</Text>
+      <Text style={styles.sectionTitle}>Atividades Cognitivas</Text>
       <FlatList
-        data={atividadesMentais}
+        data={atividadesCognitivas}
         keyExtractor={(item) => item.id}
-        renderItem={renderCardMental}
+        renderItem={renderCardCognitiva}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentContainerStyle={styles.listContainer}
@@ -65,7 +83,7 @@ export default function AtividadesScreen() {
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingHorizontal: 55,
+    paddingHorizontal: 40,
     paddingBottom: 20,
   },
   sectionTitle: {
@@ -76,7 +94,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   card: {
-    width: cardWidth,
+    width: cardWidth + 25,
     height: cardWidth,
     borderRadius: 15,
     marginBottom: 10,
@@ -84,7 +102,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
   },
-  
   cardText: {
     marginTop: 8,
     fontSize: 14,

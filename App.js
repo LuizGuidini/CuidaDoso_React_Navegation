@@ -37,6 +37,12 @@ import InicioWrapper from "./wrappers/InicioWrapper";
 import MedicamentosWrapper from "./wrappers/MedicamentosWrapper";
 import PerfilWrapper from "./wrappers/PerfilWrapper";
 
+// Telas de jogos
+import MemoriaScreen from './screens/Jogos/MemoriaScreen';
+import PalavrasScreen from './screens/Jogos/PalavrasScreen';
+import SequenciaScreen from './screens/Jogos/SequenciaScreen';
+import SudokuScreen from './screens/Jogos/SudokuScreen';
+
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -133,6 +139,11 @@ export default function App() {
         <Stack.Screen name="NovoTransporte" component={NovoTransporteScreen} options={{ headerShown: false }} />
         <Stack.Screen name="EscolherMotorista" component={EscolherMotoristaScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
+        {/* Telas de jogos */}
+        <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Sudoku" component={SudokuScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Memoria" component={MemoriaScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Sequencia" component={SequenciaScreen} options={{ headerShown: false }} />
        
       </Stack.Navigator>
     </NavigationContainer>

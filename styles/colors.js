@@ -17,6 +17,9 @@ export default {
   colorButton5: "#d2ffd2",
   colorButton6: "#ffe0e0",
   colorButton7: "#e0e0ff",
+  colorButton8: "#f0e0ff",
+  colorButton9: "#e0ffe0",
+  colorButton10: "#ffe0f0",
 
   
 };
