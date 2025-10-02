@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -13,7 +13,8 @@ import {
   View
 } from 'react-native';
 import Header from '../components/Header';
-import { getPlaces } from '../services/geoapify';
+import { geocodeCity } from '../services/opencage';
+import { searchPlaces } from '../services/overpass';
 import { getWeather } from '../services/weather';
 
 export default function LugaresScreen({ navigation }) {
@@ -24,6 +25,7 @@ export default function LugaresScreen({ navigation }) {
   const [places, setPlaces] = useState([]);
   const [loadingPlaces, setLoadingPlaces] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('hospital');
+  const inputRef = useRef(null);
 
   const categories = [
     { label: 'Hospitais', value: 'hospital', icon: 'medkit-outline', color: '#ffb3b3' },
@@ -35,12 +37,7 @@ export default function LugaresScreen({ navigation }) {
 
   const handlePanic = () => alert('🚨 Botão de pânico acionado!');
 
-  // Limpa a cidade ao entrar na aba Lugares
-  useFocusEffect(
-    useCallback(() => {
-      setCity('');
-    }, [])
-  );
+  useFocusEffect(useCallback(() => setCity(''), []));
 
   // Busca clima
   useEffect(() => {
@@ -68,22 +65,29 @@ export default function LugaresScreen({ navigation }) {
     fetchWeather();
   }, []);
 
-  // Função para buscar lugares
-  const fetchPlacesHandler = useCallback(async (category = selectedCategory) => {
+  const fetchPlacesHandler = useCallback(async (category = selectedCategory, cityOverride = city) => {
     try {
       setLoadingPlaces(true);
+      let lat, lon;
 
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permissão negada', 'Não foi possível acessar a localização.');
-        return;
+      if (cityOverride.trim()) {
+        const coords = await geocodeCity(cityOverride.trim());
+        if (!coords) return;
+        lat = coords.lat;
+        lon = coords.lon;
+      } else {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Permissão negada', 'Não foi possível acessar a localização.');
+          return;
+        }
+
+        const loc = await Location.getCurrentPositionAsync({});
+        lat = loc.coords.latitude;
+        lon = loc.coords.longitude;
       }
 
-      const loc = await Location.getCurrentPositionAsync({});
-      const lat = loc.coords.latitude;
-      const lon = loc.coords.longitude;
-
-      const data = await getPlaces(lat, lon, category);
+      const data = await searchPlaces(category, lat, lon);
       setPlaces(data);
       return data;
     } catch (error) {
@@ -93,12 +97,12 @@ export default function LugaresScreen({ navigation }) {
     } finally {
       setLoadingPlaces(false);
     }
-  }, [selectedCategory]);
+  }, [city, selectedCategory]);
 
   // Busca ao alterar categoria
   useEffect(() => {
-    fetchPlacesHandler();
-  }, [selectedCategory, fetchPlacesHandler]);
+    fetchPlacesHandler(selectedCategory, city);
+  }, [selectedCategory, city, fetchPlacesHandler]);
 
   // Botão de localização
   const handleLocationPress = async () => {
@@ -111,9 +115,13 @@ export default function LugaresScreen({ navigation }) {
 
       const loc = await Location.getCurrentPositionAsync({});
       const cityName = await Location.reverseGeocodeAsync(loc.coords);
-      if (cityName[0]?.city) setCity(cityName[0].city);
+      const cidadeDetectada = cityName[0]?.city;
 
-      fetchPlacesHandler();
+      if (cidadeDetectada) {
+        setCity(cidadeDetectada);
+        Alert.alert('Localização detectada', `Cidade atual: ${cidadeDetectada}`);
+        fetchPlacesHandler(selectedCategory, cidadeDetectada);
+      }
     } catch (error) {
       console.log('Erro ao obter localização:', error);
       Alert.alert('Erro', 'Não foi possível obter a localização.');
@@ -121,27 +129,28 @@ export default function LugaresScreen({ navigation }) {
   };
 
   return (
+  <View style={styles.container}>
+    <Header 
+      title="Lugares" 
+      iconName="location-outline" 
+      onPanicPress={handlePanic} 
+      weather={weather} 
+    />
+    {loadingWeather && (
+      <ActivityIndicator size="large" color="#007AFF" style={{ marginVertical: 20 }} />
+    )}
+    
     <ScrollView style={styles.container}>
-      <Header 
-        title="Lugares" 
-        iconName="location-outline" 
-        onPanicPress={handlePanic} 
-        weather={weather} 
-      />
-
-      {loadingWeather && (
-        <ActivityIndicator size="large" color="#007AFF" style={{ marginVertical: 20 }} />
-      )}
-
-      {/* Caixa de pesquisa */}
+      
       <View style={styles.searchContainer}>
         <TextInput
+          ref={inputRef}
           style={styles.input}
           placeholder="Digite a cidade"
           value={city}
           onChangeText={setCity}
         />
-        <TouchableOpacity style={styles.searchButton} onPress={() => fetchPlacesHandler()}>
+        <TouchableOpacity style={styles.searchButton} onPress={() => fetchPlacesHandler(selectedCategory, city)}>
           <Ionicons name="search" size={24} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.locationButton} onPress={handleLocationPress}> 
@@ -177,11 +186,15 @@ export default function LugaresScreen({ navigation }) {
         {places.map((item, index) => (
           <View key={index} style={styles.placeCard}>
             <Ionicons name="location-outline" size={28} color="#007AFF" />
-            <Text style={styles.placeText}>{item.name}</Text>
+            <View>
+              <Text style={styles.placeText}>{item.name}</Text>
+              <Text style={styles.placeAddress}>{item.address}</Text>
+            </View>
           </View>
         ))}
       </View>
     </ScrollView>
+  </View>
   );
 }
 
@@ -213,13 +226,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  categoriesContainer: { paddingHorizontal: 15, marginBottom: 10 },
+  categoriesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    marginBottom: 10,
+  },
   categoryButton: {
+    width: '48%',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
     borderRadius: 12,
-    marginVertical: 5
+    marginVertical: 5,
   },
   categorySelected: { borderWidth: 2, borderColor: '#007AFF' },
   categoryText: { marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#007AFF' },
@@ -232,5 +252,6 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
   },
-  placeText: { marginLeft: 12, fontSize: 18, fontWeight: '600', color: '#007AFF' }
+  placeText: { fontSize: 18, fontWeight: '600', color: '#007AFF' },
+  placeAddress: { fontSize: 14, color: '#555', marginTop: 4, marginLeft: 12 }
 });

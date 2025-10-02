@@ -7,7 +7,7 @@ export default function CustomDrawerContent(props) {
       {/* Topo com avatar e nome */}
       <View style={styles.header}>
         <Image
-          source={require('../assets/images/logo.png')} // substitua pelo seu avatar
+          source={require('../assets/images/logo.png')} // substitua pela foto do usuário
           style={styles.avatar}
         />
         <Text style={styles.name}>Olá, Luiz</Text>
@@ -19,9 +19,9 @@ export default function CustomDrawerContent(props) {
         <DrawerItemList {...props} />
       </View>
 
-      {/* Rodapé opcional */}
+      {/* Rodapé */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>CuidaDoso v1.0</Text>
+        <Text style={styles.footerText}>CuidaDoso v1.0 By L2M DeploySmart</Text>
       </View>
     </DrawerContentScrollView>
   );

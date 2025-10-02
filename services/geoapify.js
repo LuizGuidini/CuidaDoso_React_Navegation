@@ -6,40 +6,42 @@ const BASE_URL = 'https://api.geoapify.com/v2/places';
 const categoryMapping = {
   hospital: 'healthcare.hospital',
   pharmacy: 'healthcare.pharmacy',
-  gym: 'sports.fitness',
+  gym: 'sport.fitness',
   restaurant: 'catering.restaurant',
   tourism: 'tourism.attraction',
 };
 
-// Busca lugares por coordenadas
+// 🔍 Busca lugares por coordenadas (localização atual)
 export async function getPlaces(lat, lon, category = 'tourism') {
   try {
     const type = categoryMapping[category] || 'tourism.attraction';
+
     const response = await axios.get(BASE_URL, {
       params: {
         categories: type,
-        'filter[circle]': `${lon},${lat},5000`, // 5km
+        'filter[circle]': `${lon},${lat},5000`, // raio de 5km
         limit: 20,
         apiKey: API_KEY,
       },
     });
+
     return response.data.features.map((item) => ({
       id: item.properties.place_id,
       name: item.properties.name,
       address: item.properties.formatted,
     }));
   } catch (error) {
-    console.log('Erro na API Geoapify:', error.response?.data || error.message);
+    console.log('Erro na API Geoapify (coordenadas):', error.response?.data || error.message);
     return [];
   }
 }
 
-// Busca lugares por cidade
+// 🏙️ Busca lugares por nome de cidade
 export async function getPlacesByCity(city, category = 'tourism') {
   try {
     const type = categoryMapping[category] || 'tourism.attraction';
 
-    // Geocodificar a cidade
+    // Geocodifica a cidade para obter lat/lon
     const geoResponse = await axios.get('https://api.geoapify.com/v1/geocode/search', {
       params: {
         text: city,
@@ -48,14 +50,14 @@ export async function getPlacesByCity(city, category = 'tourism') {
       },
     });
 
-    if (!geoResponse.data.features || geoResponse.data.features.length === 0) {
-      console.log('Cidade não encontrada');
+    if (!geoResponse.data.results || geoResponse.data.results.length === 0) {
+      console.log('Cidade não encontrada:', city);
       return [];
     }
 
-    const { lat, lon } = geoResponse.data.features[0].properties;
+    const { lat, lon } = geoResponse.data.results[0];
 
-    // Busca lugares usando coordenadas da cidade
+    // Busca lugares com base nas coordenadas da cidade
     const response = await axios.get(BASE_URL, {
       params: {
         categories: type,

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'https://api-receitas-pi.vercel.app';
 
-// 🔹 Buscar receitas por descrição (ex: "frango", "salada")
+// Buscar receitas por descrição
 export const buscarReceitasPorDescricao = async (descricao, limit = 20) => {
   try {
     const res = await axios.get(`${API_URL}/receitas/descricao`, {
@@ -20,7 +20,7 @@ export const buscarReceitasPorDescricao = async (descricao, limit = 20) => {
 };
 
 
-// 🔹 Buscar receitas por tipo (ex: "doce", "salgado", "agridoce")
+// Buscar receitas por tipo ("doce", "salgado", "agridoce")
 export const buscarReceitasPorTipo = async (tipo) => {
   try {
     const res = await axios.get(`${API_URL}/receitas/tipo/${tipo}`);
@@ -31,7 +31,7 @@ export const buscarReceitasPorTipo = async (tipo) => {
   }
 };
 
-// 🔹 Buscar 3 receitas aleatórias de tipos variados
+// Buscar 3 receitas aleatórias de tipos variados
 export const buscarReceitasAleatorias = async () => {
   try {
     const tipos = ['doce', 'salgado', 'agridoce'];

@@ -66,7 +66,7 @@ const slides = [
   },
   {
     title: 'Organize sua rotina',
-    text: 'Medicamentos, compromissos e transportes em um só lugar.',
+    text: 'Medicamentos, compromissos, atividades e transportes em um só lugar.',
     image: require('../assets/images/onboarding2.png'),
   },
   {
