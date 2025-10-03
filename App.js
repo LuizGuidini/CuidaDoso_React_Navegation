@@ -12,6 +12,7 @@ import { auth } from "./config/firebaseInit";
 // Telas principais
 import AgendaScreen from "./screens/AgendaScreen";
 import AmigoScreen from "./screens/AmigoScreen";
+import AtividadeDetalheScreen from './screens/AtividadeDetalheScreen';
 import AtividadesScreen from "./screens/AtividadesScreen";
 import AuthScreen from "./screens/AuthScreen";
 import ComplementoCadastroScreen from "./screens/ComplementoCadastroScreen";
@@ -27,6 +28,7 @@ import PerfilScreen from "./screens/PerfilScreen";
 import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
+
 
 //Componentes
 import CustomDrawerContent from "./components/CustomDrawerContent";
@@ -144,6 +146,7 @@ export default function App() {
         <Stack.Screen name="Sudoku" component={SudokuScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Memoria" component={MemoriaScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Sequencia" component={SequenciaScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AtividadeDetalhe" component={AtividadeDetalheScreen} options={{ headerShown: false }} />
        
       </Stack.Navigator>
     </NavigationContainer>

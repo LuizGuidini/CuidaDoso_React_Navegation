@@ -10,7 +10,12 @@ import {
   View,
 } from 'react-native';
 import Header from '../components/Header';
-import { atividadesFisicasFixas } from '../data/atividadesFisicas';
+import {
+  atividadesCriativas,
+  atividadesCulturais,
+  atividadesFisicas,
+  atividadesRelaxamento,
+} from '../data/atividadesFisicas'; // ainda usando esse nome
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = (screenWidth - 170) / 2;
@@ -18,11 +23,18 @@ const cardWidth = (screenWidth - 170) / 2;
 export default function AtividadesScreen() {
   const navigation = useNavigation();
 
-  const getAtividadesFisicasAleatorias = () => {
-    return atividadesFisicasFixas.sort(() => 0.5 - Math.random()).slice(0, 4);
+  const sortearAtividades = () => {
+    const embaralhar = (lista) => [...lista].sort(() => 0.5 - Math.random());
+
+    return [
+      ...embaralhar(atividadesFisicas).slice(0, 2),
+      ...embaralhar(atividadesRelaxamento).slice(0, 2),
+      ...embaralhar(atividadesCriativas).slice(0, 1),
+      ...embaralhar(atividadesCulturais).slice(0, 1),
+    ];
   };
 
-  const [atividadesFisicas, setAtividadesFisicas] = useState(getAtividadesFisicasAleatorias());
+  const [atividadesSorteadas, setAtividadesSorteadas] = useState(sortearAtividades());
 
   const atividadesCognitivas = [
     { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline', route: 'Palavras' },
@@ -33,23 +45,26 @@ export default function AtividadesScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      setAtividadesFisicas(getAtividadesFisicasAleatorias());
+      setAtividadesSorteadas(sortearAtividades());
     }, [])
   );
 
-  const renderCardFisica = ({ item }) => (
-    <TouchableOpacity style={[styles.card, { backgroundColor: '#d2ecff' }]}>
-      <Ionicons name={item.icon} size={30} color="#007AFF" />
+  const renderCardSorteado = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: item.color }]}
+      onPress={() => navigation.navigate('AtividadeDetalhe', { atividade: item })}
+    >
+      <Ionicons name={item.icon} size={20} color="#007AFF" />
       <Text style={styles.cardText}>{item.title}</Text>
     </TouchableOpacity>
   );
 
   const renderCardCognitiva = ({ item }) => (
     <TouchableOpacity
-      style={[styles.card, { backgroundColor: '#d2ffd2' }]}
+      style={[styles.card, { backgroundColor: '#ffe0f0' }]}
       onPress={() => navigation.navigate(item.route)}
     >
-      <Ionicons name={item.icon} size={30} color="#007AFF" />
+      <Ionicons name={item.icon} size={20} color="#007AFF" />
       <Text style={styles.cardText}>{item.title}</Text>
     </TouchableOpacity>
   );
@@ -58,11 +73,11 @@ export default function AtividadesScreen() {
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title="Atividades" iconName="barbell-outline" />
 
-      <Text style={styles.sectionTitle}>Atividades Físicas</Text>
+      <Text style={styles.sectionTitle}>Sugestões do dia</Text>
       <FlatList
-        data={atividadesFisicas}
+        data={atividadesSorteadas}
         keyExtractor={(item) => item.id}
-        renderItem={renderCardFisica}
+        renderItem={renderCardSorteado}
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         contentContainerStyle={styles.listContainer}
@@ -83,7 +98,7 @@ export default function AtividadesScreen() {
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 30,
     paddingBottom: 20,
   },
   sectionTitle: {
@@ -94,13 +109,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   card: {
-    width: cardWidth + 25,
-    height: cardWidth,
+    width: cardWidth + 45,
+    height: cardWidth - 15,
     borderRadius: 15,
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5,
+    padding: 10,
   },
   cardText: {
     marginTop: 8,

@@ -1,10 +1,22 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f4f8' },
+  container: { 
+    flex: 1,
+    backgroundColor: '#f1f4f8' 
+  },
   content: { padding: 20 },
-  fotoContainer: { alignItems: 'center', marginBottom: 20 },
-  foto: { width: 120, height: 120, borderRadius: 60, borderWidth: 2, borderColor: '#007AFF' },
+  fotoContainer: { 
+    alignItems: 'center', 
+    marginBottom: 20 
+  },
+  foto: { 
+    width: 120, 
+    height: 120, 
+    borderRadius: 60, 
+    borderWidth: 2, 
+    borderColor: '#007AFF' 
+  },
   fotoPlaceholder: {
     width: 120,
     height: 120,
@@ -13,9 +25,17 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  fotoTexto: { marginTop: 6, fontSize: 14, color: '#555' },
+  fotoTexto: { 
+    marginTop: 6, 
+    fontSize: 14, 
+    color: '#555' 
+  },
   campo: { marginBottom: 15 },
-  label: { fontSize: 16, fontWeight: '600', marginBottom: 6, color: '#333' },
+  label: { fontSize: 16, 
+    fontWeight: '600', 
+    marginBottom: 6, 
+    color: '#333' 
+  },
   input: {
     backgroundColor: '#fff',
     padding: 12,
