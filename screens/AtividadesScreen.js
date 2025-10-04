@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useCallback, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -38,16 +38,19 @@ export default function AtividadesScreen() {
 
   const atividadesCognitivas = [
     { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline', route: 'Palavras' },
-    { id: '2', title: 'Sudoku', icon: 'help-circle-outline', route: 'Sudoku' },
+    { id: '2', title: 'Sudoku', icon: 'help-circle-outline', route: 'DificuldadeSudoku' },
     { id: '3', title: 'Memória: lembrar 6 objetos', icon: 'school-outline', route: 'Memoria' },
-    { id: '4', title: 'Sequência de cores', icon: 'color-palette-outline', route: 'Sequencia' },
+    { id: '4', title: 'Jogo da Diferença', icon: 'color-palette-outline', route: 'Sequencia' },
   ];
 
-  useFocusEffect(
-    useCallback(() => {
-      setAtividadesSorteadas(sortearAtividades());
-    }, [])
-  );
+  //useFocusEffect(
+  //  useCallback(() => {
+  //    setAtividadesSorteadas(sortearAtividades());
+  //  }, [])
+  //);
+  useEffect(() => {
+    setAtividadesSorteadas(sortearAtividades());
+  }, []);
 
   const renderCardSorteado = ({ item }) => (
     <TouchableOpacity
@@ -73,7 +76,13 @@ export default function AtividadesScreen() {
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title="Atividades" iconName="barbell-outline" />
 
-      <Text style={styles.sectionTitle}>Sugestões do dia</Text>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Sugestões do dia</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Favoritas')}>
+          <Ionicons name="heart-outline" size={20} color="#007AFF"/>
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={atividadesSorteadas}
         keyExtractor={(item) => item.id}
@@ -110,7 +119,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: cardWidth + 45,
-    height: cardWidth - 15,
+    height: cardWidth - 25,
     borderRadius: 15,
     marginBottom: 10,
     justifyContent: 'center',
@@ -123,5 +132,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
     color: '#333',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 15,
+    marginVertical: 10,
   },
 });

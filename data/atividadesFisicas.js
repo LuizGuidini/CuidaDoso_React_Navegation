@@ -451,7 +451,7 @@ export const atividadesRelaxamento = [
   {
     id: 'r30',
     title: 'Respiração com toque nas mãos',
-    icon: 'hand-outline',
+    icon: 'hand-left-sharp',
     instrucao: 'Toque levemente as mãos enquanto respira fundo, focando na sensação e no ritmo.',
     color: '#d2ffd2',
   },
@@ -581,7 +581,7 @@ export const atividadesCriativas = [
   {
     id: 'c18',
     title: 'Desenhar uma paisagem',
-    icon: 'landscape-outline',
+    icon: 'phone-landscape-outline',
     instrucao: 'Desenhe uma paisagem que te acalma: campo, praia, montanha ou floresta.',
     color: '#ffe0a3',
   },
@@ -651,7 +651,7 @@ export const atividadesCriativas = [
   {
     id: 'c28',
     title: 'Criar uma escultura com objetos recicláveis',
-    icon: 'recycle-outline',
+    icon: 'leaf-outline',
     instrucao: 'Use rolos de papel, tampas e caixas para montar uma escultura criativa.',
     color: '#ffe0a3',
   },
@@ -864,7 +864,7 @@ export const atividadesCulturais = [
   {
     id: 'u28',
     title: 'Explorar fotos de festas religiosas',
-    icon: 'hand-outline',
+    icon: 'hand-right-outline',
     instrucao: 'Veja imagens de procissões, missas e celebrações religiosas e observe os rituais.',
     color: '#f0e0ff',
   },

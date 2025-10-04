@@ -18,6 +18,7 @@ import AuthScreen from "./screens/AuthScreen";
 import ComplementoCadastroScreen from "./screens/ComplementoCadastroScreen";
 import CriarCompromissoScreen from "./screens/CriarCompromissoScreen";
 import EscolherMotoristaScreen from "./screens/EscolherMotoristaScreen";
+import FavoritasScreen from './screens/FavoritasScreen';
 import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
 import MedicamentosScreen from "./screens/MedicamentosScreen";
@@ -40,8 +41,10 @@ import MedicamentosWrapper from "./wrappers/MedicamentosWrapper";
 import PerfilWrapper from "./wrappers/PerfilWrapper";
 
 // Telas de jogos
+import DificuldadeSudoku from './screens/Jogos/DificuldadeSudoku';
 import MemoriaScreen from './screens/Jogos/MemoriaScreen';
 import PalavrasScreen from './screens/Jogos/PalavrasScreen';
+import ParabensScreen from "./screens/Jogos/ParabensScreen";
 import SequenciaScreen from './screens/Jogos/SequenciaScreen';
 import SudokuScreen from './screens/Jogos/SudokuScreen';
 
@@ -141,14 +144,19 @@ export default function App() {
         <Stack.Screen name="NovoTransporte" component={NovoTransporteScreen} options={{ headerShown: false }} />
         <Stack.Screen name="EscolherMotorista" component={EscolherMotoristaScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AtividadeDetalhe" component={AtividadeDetalheScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Favoritas" component={FavoritasScreen} options={{ headerShown: false }} />
+        
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Sudoku" component={SudokuScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Memoria" component={MemoriaScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Sequencia" component={SequenciaScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="AtividadeDetalhe" component={AtividadeDetalheScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="DificuldadeSudoku" component={DificuldadeSudoku} options={{ headerShown: false }} />
+        <Stack.Screen name="Parabens" component={ParabensScreen} options={{ headerShown: false }} />
        
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }

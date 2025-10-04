@@ -2,13 +2,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { favoritas } from '../data/favoritas';
 
 export default function AtividadeDetalheScreen() {
   const navigation = useNavigation();
@@ -18,8 +19,16 @@ export default function AtividadeDetalheScreen() {
   const [favorito, setFavorito] = useState(atividade.favorito || false);
 
   const toggleFavorito = () => {
-    setFavorito((prev) => !prev);
-    // Futuro: salvar favorito no perfil ou banco
+    atividade.favorito = !favorito;
+    setFavorito(atividade.favorito);
+
+    if (atividade.favorito) {
+      const jaExiste = favoritas.find((a) => a.id === atividade.id);
+      if (!jaExiste) favoritas.push(atividade);
+    } else {
+      const index = favoritas.findIndex((a) => a.id === atividade.id);
+      if (index !== -1) favoritas.splice(index, 1);
+    }
   };
 
   const salvarNaAgenda = () => {
