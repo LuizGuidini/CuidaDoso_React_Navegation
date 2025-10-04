@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../components/Header';
+import styles from '../../styles/jogos.styles';
 
 export default function ParabensScreen() {
   const navigation = useNavigation();
@@ -33,44 +34,3 @@ export default function ParabensScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  voltar: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-    zIndex: 10,
-  },
-  conteudo: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-  },
-  jogo: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#007AFF',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  mensagem: {
-    fontSize: 16,
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-  botao: {
-    flexDirection: 'row',
-    backgroundColor: '#a3d5ff',
-    padding: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  botaoTexto: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#007AFF',
-    fontWeight: '600',
-  },
-});

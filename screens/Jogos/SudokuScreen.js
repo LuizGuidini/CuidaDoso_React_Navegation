@@ -3,7 +3,6 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import {
   Alert,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import sudoku from 'sudoku';
 import Header from '../../components/Header';
+import styles from '../../styles/jogos.styles';
 
 export default function SudokuScreen() {
   const navigation = useNavigation();
@@ -177,71 +177,3 @@ export default function SudokuScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  voltarBotao: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  voltarTexto: {
-    marginLeft: 8,
-    fontSize: 16,
-    color: '#007AFF',
-    fontWeight: '500',
-  },
-  voltarInline: {
-    paddingHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  grade: {
-    marginTop: 80,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-  },
-  linha: {
-    flexDirection: 'row',
-  },
-  celula: {
-    width: 40,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    textAlign: 'center',
-    fontSize: 16,
-    margin: 0.5,
-    borderRadius: 6,
-  },
-  celulaBase: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    textAlign: 'center',
-    borderRadius: 6,
-  },
-  celulaFixa: {
-    backgroundColor: '#d2ffd2',
-    color: '#333',
-    fontWeight: 'bold',
-  },
-  celulaEditavel: {
-    backgroundColor: '#fff',
-    color: '#007AFF',
-    fontWeight: 'bold',
-  },
-  botao: {
-    flexDirection: 'row',
-    backgroundColor: '#a3d5ff',
-    padding: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 30,
-    marginHorizontal: 60,
-  },
-  botaoTexto: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#007AFF',
-    fontWeight: '600',
-  },
-});

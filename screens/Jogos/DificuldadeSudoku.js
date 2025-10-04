@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../components/Header';
+import styles from '../../styles/jogos.styles';
 
 export default function DificuldadeSudoku() {
   const navigation = useNavigation();
@@ -41,45 +42,3 @@ export default function DificuldadeSudoku() {
   );
 }
 
-const styles = StyleSheet.create({
-  voltarBotao: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  voltarTexto: {
-    marginLeft: 8,
-    fontSize: 16,
-    color: '#007AFF',
-    fontWeight: '500',
-  },
-  voltarInline: {
-    paddingHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  subtitulo: {
-    fontSize: 16,
-    color: '#333',
-    textAlign: 'center',
-    marginTop: 80,
-    marginBottom: 20,
-  },
-  opcoes: {
-    paddingHorizontal: 40,
-    gap: 15,
-  },
-  botao: {
-    flexDirection: 'row',
-    backgroundColor: '#007AFF',
-    padding: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  botaoTexto: {
-    marginLeft: 10,
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
-  },
-});

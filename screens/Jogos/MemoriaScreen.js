@@ -1,16 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Header from '../../components/Header';
 import { memoriaItensFixos } from '../../data/memoriaItens';
+import styles from '../../styles/jogos.styles';
 
 export default function MemoriaScreen() {
   const getItensAleatorios = () => {
@@ -143,105 +143,3 @@ export default function MemoriaScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { padding: 20 },
-  instruction: {
-    textAlign: 'center',
-    paddingVertical: 10,
-    paddingBottom: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#007AFF',
-  },
-  contador: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FF3B30',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  cardContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  card: {
-    width: '47%',
-    height: 100,
-    borderRadius: 12,
-    marginBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  cardIndex: {
-    position: 'absolute',
-    top: 6,
-    left: 10,
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#007AFF',
-  },
-  cardText: {
-    marginTop: 8,
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#007AFF',
-  },
-  input: {
-    height: 50,
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  inputCorreto: {
-    color: '#007AFF',
-  },
-  inputErro: {
-    color: '#FF3B30',
-  },
-  reverButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  reverText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  verificarButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  verificarText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  result: {
-    marginTop: 15,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007AFF',
-    textAlign: 'center',
-  },
-  reiniciarButton: {
-      backgroundColor: '#34d399',
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 10,
-    },
-  reiniciarText: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-
-});
