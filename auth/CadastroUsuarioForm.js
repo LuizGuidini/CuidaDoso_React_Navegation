@@ -3,8 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { loginComApple } from "../auth/authApple";
-import { loginComGoogle } from "../auth/authGoogle";
 import { auth } from "../config/firebaseInit";
 import { cadastrarUsuario } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
@@ -50,7 +48,7 @@ export default function CadastroUsuarioForm({
     Linking.openURL(url);
 
     alert("Cadastro realizado com sucesso!");
-    navigation.replace("MainTabs");
+    navigation.replace("MainDrawer");
   } catch (error) {
     console.error("Erro ao cadastrar:", error.message);
     alert("Erro ao cadastrar usuário");
@@ -125,7 +123,7 @@ export default function CadastroUsuarioForm({
       </TouchableOpacity>
 
       {/* Botões sociais para cadastro */}
-      <TouchableOpacity
+      {/*<TouchableOpacity
         style={[styles.socialButton, { backgroundColor: "#fff" }]}
         onPress={() => loginComGoogle(navigation, "Usuario")}
       >
@@ -144,6 +142,7 @@ export default function CadastroUsuarioForm({
       <TouchableOpacity onPress={onVoltar} style={{ marginTop: 10 }}>
         <Text style={{ color: "#2563eb", textAlign: "center" }}>Voltar</Text>
       </TouchableOpacity>
+      */}
     </View>
   );
 }

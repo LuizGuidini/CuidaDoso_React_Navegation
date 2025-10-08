@@ -1,14 +1,48 @@
 import { Picker } from "@react-native-picker/picker";
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { cadastrarParceiro } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
 
 export default function CadastroParceiroForm({ onVoltar }) {
+  const navigation = useNavigation();
   const [nome, setNome] = useState("");
   const [tipo, setTipo] = useState("Clinica");
   const [identificacao, setIdentificacao] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
+
+  const handleSalvar = async () => {
+    if (!nome || !tipo || !identificacao || !telefone || !email) {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    try {
+      const { uid } = await cadastrarParceiro({
+        nome,
+        tipo,
+        identificacao,
+        telefone,
+        email,
+      });
+
+      alert("Cadastro realizado com sucesso!");
+
+      // Redireciona conforme tipo
+      if (tipo === "Motorista") {
+        navigation.replace("MotoristaDashboardScreen");
+      } else if (tipo === "Clinica" || tipo === "Consultorio") {
+        navigation.replace("ClinicaDashboardScreen");
+      }else {
+        navigation.replace("ClinicaDashboardScreen"); // aqui muda se tiver outra tela para profissional
+      }  
+    } catch (error) {
+      console.error("Erro ao cadastrar parceiro:", error.message);
+      alert("Erro ao cadastrar parceiro");
+    }
+  };
 
   return (
     <View>
@@ -19,7 +53,6 @@ export default function CadastroParceiroForm({ onVoltar }) {
         value={nome}
         onChangeText={setNome}
       />
-      {/* Seleção do tipo de parceiro */}
       <View style={[styles.input, { padding: 0 }]}>
         <Picker
           selectedValue={tipo}
@@ -53,7 +86,7 @@ export default function CadastroParceiroForm({ onVoltar }) {
         keyboardType="email-address"
         autoCapitalize="none"
       />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSalvar}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onVoltar} style={{ marginTop: 10 }}>

@@ -1,19 +1,38 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { loginComApple } from '../auth/authApple';
-import { loginComGoogle } from '../auth/authGoogle';
+import { loginUsuario } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
 
-
 export default function LoginForm() {
-
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  // Aqui você vai colocar a lógica de login com Firebase depois
+  const handleLogin = async () => {
+    if (!email || !senha) {
+      alert("Preencha e-mail e senha");
+      return;
+    }
+
+    try {
+      const { uid, tipo } = await loginUsuario(email, senha);
+      console.log("Usuário detectado:", uid);
+
+      if (tipo === "usuario" || tipo === "amigo") {
+        navigation.replace("MainDrawer");
+      } else if (tipo === "motorista") {
+        navigation.replace("MotoristaDashboardScreen");
+      } else if (tipo === "clinica" || tipo === "consultorio") {
+        navigation.replace("ClinicaDashboardScreen");
+      } else {
+        alert("Tipo de usuário não reconhecido");
+      }
+    } catch (error) {
+      console.error("Erro ao logar:", error.message);
+      alert("Erro ao fazer login. Verifique e-mail e senha.");
+    }
+  };
 
   return (
     <View>
@@ -33,26 +52,19 @@ export default function LoginForm() {
         value={senha}
         onChangeText={setSenha}
       />
-      <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('MainDrawer')}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>Entrar</Text>
       </TouchableOpacity>
 
       {/* Botões sociais */}
-      <TouchableOpacity
+      {/*<TouchableOpacity
         style={[styles.socialButton, { backgroundColor: "#fff" }]}
         onPress={() => loginComGoogle(navigation, null)}
       >
         <Ionicons name="logo-google" size={20} color="#e90404" />
         <Text style={{ color: "#333", fontWeight: "bold" }}>   Entrar com Google</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.socialButton, { backgroundColor: "#000" }]}
-        onPress={() => loginComApple(navigation, null)}
-      >
-        <Ionicons name="logo-apple" size={20} color="#fff" />
-        <Text style={{ color: "#fff", fontWeight: "bold" }}>   Entrar com Apple</Text>
-      </TouchableOpacity>
+      */}
       
     </View>
   );

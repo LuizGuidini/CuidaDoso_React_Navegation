@@ -10,12 +10,12 @@ import { auth } from "./config/firebaseInit";
 
 
 // Telas principais
+import AuthScreen from "./auth/AuthScreen";
+import ComplementoCadastroScreen from "./auth/ComplementoCadastroScreen";
 import AgendaScreen from "./screens/AgendaScreen";
 import AmigoScreen from "./screens/AmigoScreen";
 import AtividadeDetalheScreen from './screens/AtividadeDetalheScreen';
 import AtividadesScreen from "./screens/AtividadesScreen";
-import AuthScreen from "./screens/AuthScreen";
-import ComplementoCadastroScreen from "./screens/ComplementoCadastroScreen";
 import CriarCompromissoScreen from "./screens/CriarCompromissoScreen";
 import EscolherMotoristaScreen from "./screens/EscolherMotoristaScreen";
 import FavoritasScreen from './screens/FavoritasScreen';
@@ -30,8 +30,11 @@ import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
 
+//Tela do motorista
+import MotoristaDashboardScreen from "./screens/MotoristaDashboardScreen";
 
 //Componentes
+import CardChamado from "./components/CardChamado";
 import CustomDrawerContent from "./components/CustomDrawerContent";
 
 // Wrappers para navegação via Drawer mantendo tabBar visível
@@ -154,6 +157,10 @@ export default function App() {
         <Stack.Screen name="Sequencia" component={SequenciaScreen} options={{ headerShown: false }} />
         <Stack.Screen name="DificuldadeSudoku" component={DificuldadeSudoku} options={{ headerShown: false }} />
         <Stack.Screen name="Parabens" component={ParabensScreen} options={{ headerShown: false }} />
+
+        {/* Tela do motorista - pode ser acessada via navegação condicional após login */}
+        <Stack.Screen name="MotoristaDashboard" component={MotoristaDashboardScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="CardChamado" component={CardChamado} options={{ headerShown: false }} />
        
       </Stack.Navigator>
 

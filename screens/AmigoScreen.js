@@ -1,64 +1,142 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import {
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import Header from '../components/Header';
-import { getWeather } from '../services/weather';
+import styles from '../styles/PerfilScreen.styles';
 
-export default function PerfilScreen() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function AmigoScreen() {
+  const navigation = useNavigation();
 
-  const handlePanic = () => alert('Botão de pânico acionado!');
+  const [dados, setDados] = useState({
+    nome: '',
+    telefone: '',
+    foto: null,
+    cep: '',
+    rua: '',
+    numeroCasa: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+  });
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const data = await getWeather();
-      setWeather(data);
-      setLoading(false);
-    };
-    fetchWeather();
-  }, []);
-
-  const info = [
-    { title: 'Nome: Maria Guidini', icon: 'person-outline' },
-    { title: 'Idade: 38 anos', icon: 'person-outline' },
-    { title: 'Telefone: (11) 99999-9999', icon: 'call-outline' },
-  ];
+  const atualizarCampo = (campo, valor) => {
+    setDados({ ...dados, [campo]: valor });
+  };
 
   return (
     <View style={styles.container}>
-      <Header title="Perfil" iconName="person-outline" onPanicPress={handlePanic} weather={weather} />
+      <Header title="Amigo" iconName="people-outline" />
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {loading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-          </View>
-        )}
+      <ScrollView style={styles.content}>
+        <View style={styles.fotoContainer}>
+          {dados.foto ? (
+            <Image source={{ uri: dados.foto }} style={styles.foto} />
+          ) : (
+            <View style={styles.fotoPlaceholder}>
+              <Ionicons name="person-circle-outline" size={100} color="#ccc" />
+            </View>
+          )}
+          <Text style={styles.fotoTexto}>Foto do amigo</Text>
+        </View>
 
-        {info.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Ionicons name={item.icon} size={28} color="#007AFF" />
-            <Text style={styles.cardText}>{item.title}</Text>
-          </View>
-        ))}
+        <View style={styles.campo}>
+          <Text style={styles.label}>Nome</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.nome}
+            onChangeText={(text) => atualizarCampo('nome', text)}
+            placeholder="Nome completo"
+          />
+        </View>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>Telefone</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.telefone}
+            onChangeText={(text) => atualizarCampo('telefone', text)}
+            placeholder="(XX) XXXXX-XXXX"
+            keyboardType="phone-pad"
+          />
+        </View>
+
+        <Text style={styles.secao}>Endereço</Text>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>CEP</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.cep}
+            onChangeText={(text) => atualizarCampo('cep', text)}
+            placeholder="XXXXX-XXX"
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>Rua</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.rua}
+            onChangeText={(text) => atualizarCampo('rua', text)}
+            placeholder="Nome da rua"
+          />
+        </View>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>Número</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.numeroCasa}
+            onChangeText={(text) => atualizarCampo('numeroCasa', text)}
+            placeholder="Número da casa"
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>Bairro</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.bairro}
+            onChangeText={(text) => atualizarCampo('bairro', text)}
+            placeholder="Bairro"
+          />
+        </View>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>Cidade</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.cidade}
+            onChangeText={(text) => atualizarCampo('cidade', text)}
+            placeholder="Cidade"
+          />
+        </View>
+
+        <View style={styles.campo}>
+          <Text style={styles.label}>Estado</Text>
+          <TextInput
+            style={styles.input}
+            value={dados.estado}
+            onChangeText={(text) => atualizarCampo('estado', text)}
+            placeholder="Estado"
+          />
+        </View>
+
+        <TouchableOpacity style={styles.botaoSalvar}>
+          <Ionicons name="save-outline" size={24} color="#fff" />
+          <Text style={styles.botaoTexto}>Salvar dados</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f4f8' },
-  scrollContainer: { paddingVertical: 15, alignItems: 'center', paddingBottom: 30 },
-  loadingContainer: { width: '100%', marginVertical: 20, alignItems: 'center' },
-  card: {
-    width: '90%',
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffd2ec',
-  },
-  cardText: { marginLeft: 15, fontSize: 18, fontWeight: '600', color: '#007AFF' },
-});

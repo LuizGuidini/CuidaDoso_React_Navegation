@@ -43,6 +43,7 @@ export default function HomeScreen() {
     { id: '7', title: 'Lugares', icon: 'map-outline', screen: 'Lugares', color: '#e0e0ff' },
     { id: '8', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#ffb3b3' },
     { id: '9', title: 'Auth', icon: 'alert-circle-outline', screen: 'Auth', color: '#ffcccc' },
+    { id: '10', title: 'MotoristaDashboard', icon: 'walk-outline', screen: 'MotoristaDashboard', color: '#ccffcc' },
   ];
 
   const renderCard = ({ item }) => (
