@@ -1,4 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -9,8 +12,13 @@ import {
   View
 } from 'react-native';
 import Header from '../components/Header';
+import { auth, db } from '../config/firebaseInit';
 import styles from "../styles/AppScreens.styles";
 
+// Formata data e hora atuais
+const agora = new Date();
+const dataFormatada = format(agora, "EEEE, dd 'de' MMMM 'de' yyyy", { locale: ptBR });
+const horaFormatada = format(agora, "HH:mm");
 
 export default function AgendaScreen() {
   const navigation = useNavigation();
@@ -19,15 +27,57 @@ export default function AgendaScreen() {
   const [filtro, setFiltro] = useState('');
   const [searchText, setSearchText] = useState('');
 
-  const compromissosMock = [
-    { id: '1', tipo: 'consulta', titulo: 'Consulta com Dr. Silva', data: '21/09', hora: '14:30' },
-    { id: '2', tipo: 'transporte', titulo: 'Transporte para clínica', data: '21/09', hora: '13:30', motorista: 'Carlos' },
-    { id: '3', tipo: 'medicamento', titulo: 'Tomar Losartana', data: '21/09', hora: '08:00' },
-    { id: '4', tipo: 'pessoal', titulo: 'Caminhada no parque', data: '21/09', hora: '17:00' },
-  ];
+  // 🔍 Identifica o UID correto (principal se for amigo)
+  const getUidPrincipal = async () => {
+    const usuarioAtual = auth.currentUser.uid;
+    const q = query(collection(db, 'usuarios'), where('uid', '==', usuarioAtual));
+    const snapshot = await getDocs(q);
 
+    if (!snapshot.empty) {
+      const dados = snapshot.docs[0].data();
+      if (dados.tipo === 'amigo' && dados.vinculo) {
+        return dados.vinculo;
+      }
+    }
+
+    return usuarioAtual;
+  };
+
+  // 🔄 Carrega compromissos reais do Firestore
+  useEffect(() => {
+    const carregarCompromissos = async () => {
+      setLoading(true);
+      try {
+        const uidFinal = await getUidPrincipal();
+        const q = query(collection(db, 'agenda'), where('uid', '==', uidFinal));
+        const snapshot = await getDocs(q);
+        const lista = [];
+
+        snapshot.forEach(doc => {
+          const dados = doc.data();
+          lista.push({
+            id: doc.id,
+            tipo: dados.tipo,
+            titulo: dados.titulo,
+            data: dados.data,
+            hora: dados.hora,
+            motorista: dados.motorista || null,
+          });
+        });
+
+        setCompromissos(lista);
+      } catch (error) {
+        console.error('Erro ao carregar compromissos:', error);
+      }
+      setLoading(false);
+    };
+
+    carregarCompromissos();
+  }, []);
+
+  // 🔍 Filtros e busca
   const filtrarCompromissos = () => {
-    let lista = compromissosMock;
+    let lista = compromissos;
     if (filtro) {
       lista = lista.filter(item => item.tipo === filtro);
     }
@@ -37,15 +87,7 @@ export default function AgendaScreen() {
     return lista;
   };
 
-  useEffect(() => {
-    console.log('useEffect chamado');
-    setLoading(true);
-    setTimeout(() => {
-      setCompromissos(compromissosMock);
-      setLoading(false);
-    }, 1000);
-  }, []);
-
+  // 🧾 Renderiza cada compromisso
   const renderCard = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.titulo}</Text>
@@ -59,11 +101,23 @@ export default function AgendaScreen() {
     <View style={styles.container}>
       <Header title="Agenda" iconName="calendar-outline" />
 
+      <View style={styles.containerData}>
+        <Text style={styles.dataText}>{dataFormatada}</Text>
+        <Text style={styles.horaText}>Horário atual: {horaFormatada}</Text>
+      </View>
+
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('CriarCompromisso')}
       >
-      <Text style={styles.buttonText}>+ Novo compromisso</Text>
+        <Text style={styles.buttonText}>+ Novo compromisso</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('AgendaSemanal')}
+      >
+        <Text style={styles.buttonText}>📅 Visualizar semana</Text>
       </TouchableOpacity>
 
       <View style={styles.searchContainer}>

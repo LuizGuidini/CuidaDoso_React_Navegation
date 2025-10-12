@@ -38,7 +38,12 @@ export const cadastrarAmigo = async ({ nome, email, senha, telefone, token }) =>
   const credenciais = await createUserWithEmailAndPassword(auth, email, senha);
   const uid = credenciais.user.uid;
 
-  // Busca usuário principal pelo token
+  // 🔐 Força login com o novo usuário
+  await signInWithEmailAndPassword(auth, email, senha);
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  // 🔍 Busca usuário principal pelo token
   const querySnapshot = await getDocs(collection(db, 'usuarios'));
   let vinculo = null;
 
@@ -51,6 +56,11 @@ export const cadastrarAmigo = async ({ nome, email, senha, telefone, token }) =>
 
   if (!vinculo) throw new Error('Token inválido ou usuário não encontrado');
 
+  console.log("Auth UID:", auth.currentUser?.uid);
+  console.log("Documento UID:", uid);
+  console.log("Vínculo encontrado:", vinculo);
+  
+  // ✅ Agora o request.auth.uid está sincronizado
   await setDoc(doc(db, 'usuarios', uid), {
     uid,
     tipo: 'amigo',

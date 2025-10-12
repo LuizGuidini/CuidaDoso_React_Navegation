@@ -1,18 +1,20 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
+import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import {
-    Alert,
-    Platform,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Alert,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
-
 import Header from '../components/Header';
+import { auth, db } from '../config/firebaseInit';
+import { agendarNotificacao } from '../services/notificacaoService';
 import styles from '../styles/AppScreens.styles';
 
 export default function CriarCompromissoScreen() {
@@ -25,28 +27,37 @@ export default function CriarCompromissoScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const salvarCompromisso = () => {
+  const salvarCompromisso = async () => {
     if (!titulo || !tipo || !data || !hora) {
       Alert.alert('Preencha todos os campos obrigatórios.');
       return;
     }
 
-    console.log({
-      titulo,
-      tipo,
-      data: data.toLocaleDateString(),
-      hora: hora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      observacoes,
-    });
+    try {
+      await addDoc(collection(db, 'agenda'), {
+        uid: auth.currentUser.uid,
+        titulo,
+        tipo,
+        data: data.toLocaleDateString('pt-BR'),
+        hora: hora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        observacoes,
+        confirmado: false,
+      });
 
-    Alert.alert('Compromisso salvo com sucesso!');
+      await agendarNotificacao({ titulo, tipo, data, hora });
+
+      Alert.alert('Compromisso salvo com sucesso!');
+      navigation.goBack();
+    } catch (error) {
+      console.error('Erro ao salvar compromisso:', error);
+      Alert.alert('Erro ao salvar compromisso.');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Header title="Novo Compromisso" iconName="calendar-outline" />
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-      <View style={styles.contentContainer}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.title}>Título</Text>
         <TextInput
           style={styles.inputCriar}
@@ -57,10 +68,7 @@ export default function CriarCompromissoScreen() {
 
         <Text style={styles.title}>Tipo</Text>
         <View style={styles.pickerCriar}>
-          <Picker
-            selectedValue={tipo}
-            onValueChange={(itemValue) => setTipo(itemValue)}
-          >
+          <Picker selectedValue={tipo} onValueChange={(itemValue) => setTipo(itemValue)}>
             <Picker.Item label="Consulta" value="consulta" />
             <Picker.Item label="Transporte" value="transporte" />
             <Picker.Item label="Medicamento" value="medicamento" />
@@ -115,8 +123,7 @@ export default function CriarCompromissoScreen() {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>Voltar</Text>
         </TouchableOpacity>
-      </View>
-        </ScrollView>
+      </ScrollView>
     </View>
   );
 }

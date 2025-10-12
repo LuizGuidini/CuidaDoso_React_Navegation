@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as Notifications from 'expo-notifications';
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 
@@ -13,6 +14,7 @@ import { auth } from "./config/firebaseInit";
 import AuthScreen from "./auth/AuthScreen";
 import ComplementoCadastroScreen from "./auth/ComplementoCadastroScreen";
 import AgendaScreen from "./screens/AgendaScreen";
+import AgendaSemanalScreen from "./screens/AgendaSemanalScreen";
 import AmigoScreen from "./screens/AmigoScreen";
 import AtividadeDetalheScreen from './screens/AtividadeDetalheScreen';
 import AtividadesScreen from "./screens/AtividadesScreen";
@@ -30,8 +32,12 @@ import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
 
+
 //Tela do motorista
 import MotoristaDashboardScreen from "./screens/MotoristaDashboardScreen";
+
+//Telas de parceiro
+import ClinicaDashboardScreen from "./screens/ClinicaDashboardScreen";
 
 //Componentes
 import CardChamado from "./components/CardChamado";
@@ -54,6 +60,15 @@ import SudokuScreen from './screens/Jogos/SudokuScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+
+// Configuração para exibir notificações quando o app estiver em primeiro plano
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 function MainTabs() {
   return (
@@ -149,6 +164,7 @@ export default function App() {
         <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AtividadeDetalhe" component={AtividadeDetalheScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Favoritas" component={FavoritasScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AgendaSemanal" component={AgendaSemanalScreen} options={{ headerShown: false }} />
         
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />
@@ -161,7 +177,10 @@ export default function App() {
         {/* Tela do motorista - pode ser acessada via navegação condicional após login */}
         <Stack.Screen name="MotoristaDashboard" component={MotoristaDashboardScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CardChamado" component={CardChamado} options={{ headerShown: false }} />
-       
+        
+        {/* Telas de parceiro - pode ser acessada via navegação condicional após login */}
+        <Stack.Screen name="ClinicaDashboard" component={ClinicaDashboardScreen} options={{ headerShown: false }} />
+
       </Stack.Navigator>
 
     </NavigationContainer>

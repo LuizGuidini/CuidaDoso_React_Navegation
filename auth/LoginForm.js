@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { loginUsuario } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
 
@@ -8,12 +8,17 @@ export default function LoginForm() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
 
   const handleLogin = async () => {
     if (!email || !senha) {
-      alert("Preencha e-mail e senha");
+      setErro("Preencha e-mail e senha");
       return;
     }
+
+    setCarregando(true);
+    setErro("");
 
     try {
       const { uid, tipo } = await loginUsuario(email, senha);
@@ -26,11 +31,13 @@ export default function LoginForm() {
       } else if (tipo === "clinica" || tipo === "consultorio") {
         navigation.replace("ClinicaDashboardScreen");
       } else {
-        alert("Tipo de usuário não reconhecido");
+        setErro("Tipo de usuário não reconhecido");
       }
     } catch (error) {
       console.error("Erro ao logar:", error.message);
-      alert("Erro ao fazer login. Verifique e-mail e senha.");
+      setErro("Erro ao fazer login. Verifique e-mail e senha.");
+    } finally {
+      setCarregando(false);
     }
   };
 
@@ -52,20 +59,16 @@ export default function LoginForm() {
         value={senha}
         onChangeText={setSenha}
       />
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.loginButtonText}>Entrar</Text>
-      </TouchableOpacity>
 
-      {/* Botões sociais */}
-      {/*<TouchableOpacity
-        style={[styles.socialButton, { backgroundColor: "#fff" }]}
-        onPress={() => loginComGoogle(navigation, null)}
-      >
-        <Ionicons name="logo-google" size={20} color="#e90404" />
-        <Text style={{ color: "#333", fontWeight: "bold" }}>   Entrar com Google</Text>
+      {erro ? <Text style={{ color: "red", marginBottom: 10 }}>{erro}</Text> : null}
+
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={carregando}>
+        {carregando ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.loginButtonText}>Entrar</Text>
+        )}
       </TouchableOpacity>
-      */}
-      
     </View>
   );
 }

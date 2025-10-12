@@ -151,4 +151,16 @@ pickerCriar: {
     fontSize: 14,
     color: '#555',
   },
+  containerData: { 
+    paddingHorizontal: 20,
+    paddingBottom: 10 
+  },
+  dataText: { 
+    fontSize: 16,
+    color: '#555' 
+  },
+  horaText: {
+    fontSize: 14,
+    color: '#888' 
+  },
 });
