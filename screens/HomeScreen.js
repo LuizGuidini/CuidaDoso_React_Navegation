@@ -13,6 +13,7 @@ import {
 
 import Header from '../components/Header';
 import { getWeather } from '../services/weather';
+import verificarCompromissosMensais from '../utils/verificarCompromissosMensais';
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = (screenWidth - 120) / 2; // espaçamento para 2 colunas
@@ -31,6 +32,7 @@ export default function HomeScreen() {
       setLoading(false);
     };
     fetchWeather();
+    verificarCompromissosMensais();
   }, []);
 
   const features = [

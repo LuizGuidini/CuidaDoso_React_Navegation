@@ -1,47 +1,63 @@
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import {
-  Alert,
+  ActivityIndicator,
   FlatList,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
 import Header from '../components/Header';
+import { auth, db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
 
 export default function MedicamentosScreen() {
-   const navigation = useNavigation();
-  const [medicamentos, setMedicamentos] = useState([
-    { id: '1', nome: 'Losartana', horario: '08:00', tomado: false },
-    { id: '2', nome: 'Metformina', horario: '12:00', tomado: false },
-    { id: '3', nome: 'Omeprazol', horario: '18:00', tomado: false },
-  ]);
+  const navigation = useNavigation();
+  const [medicamentos, setMedicamentos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const marcarComoTomado = (id) => {
-    const atualizados = medicamentos.map((med) =>
-      med.id === id ? { ...med, tomado: !med.tomado } : med
-    );
-    setMedicamentos(atualizados);
-    const status = atualizados.find(m => m.id === id).tomado ? 'tomado' : 'não tomado';
-    Alert.alert(`Medicamento marcado como ${status}.`);
-  };
+  useEffect(() => {
+    const carregarMedicamentos = async () => {
+      setLoading(true);
+      try {
+        const uid = auth.currentUser.uid;
+        const q = query(collection(db, 'medicamentos'), where('uid', '==', uid));
+        const snapshot = await getDocs(q);
+        const lista = [];
+
+        snapshot.forEach(doc => {
+          const dados = doc.data();
+          lista.push({
+            id: doc.id,
+            nome: dados.nome,
+            frequenciaHoras: dados.frequenciaHoras,
+            inicioDataHora: new Date(dados.inicioDataHora),
+            observacoes: dados.observacoes || '',
+            usoContinuo: dados.usoContinuo || false,
+          });
+        });
+
+        setMedicamentos(lista);
+      } catch (error) {
+        console.error('Erro ao carregar medicamentos:', error);
+      }
+      setLoading(false);
+    };
+
+    carregarMedicamentos();
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.nome}</Text>
-      <Text>Horário: {item.horario}</Text>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          { backgroundColor: item.tomado ? '#d2ffd2' : '#ffe2e2' },
-        ]}
-        onPress={() => marcarComoTomado(item.id)}
-      >
-        <Text style={styles.buttonText}>
-          {item.tomado ? 'Tomado ✅' : 'Marcar como tomado'}
-        </Text>
-      </TouchableOpacity>
+      <Text>Frequência: a cada {item.frequenciaHoras}h</Text>
+      <Text>
+        Início: {item.inicioDataHora.toLocaleDateString('pt-BR')} às{' '}
+        {item.inicioDataHora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+      </Text>
+      {item.usoContinuo && <Text>Uso contínuo ✅</Text>}
+      {item.observacoes !== '' && <Text>Obs: {item.observacoes}</Text>}
     </View>
   );
 
@@ -56,13 +72,17 @@ export default function MedicamentosScreen() {
         <Text style={styles.buttonText}>+ Novo medicamento</Text>
       </TouchableOpacity>
 
-      <View contentContainerStyle={styles.list}>
+      {loading ? (
+        <ActivityIndicator size="large" color="#007AFF" style={{ marginTop: 20 }} />
+      ) : (
         <FlatList
           data={medicamentos}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
+          contentContainerStyle={styles.list}
         />
-      </View>
+      )}
     </View>
   );
+  
 }

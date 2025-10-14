@@ -1,6 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import {
@@ -11,14 +9,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
 import { auth, db } from '../config/firebaseInit';
 import styles from "../styles/AppScreens.styles";
-
-// Formata data e hora atuais
-const agora = new Date();
-const dataFormatada = format(agora, "EEEE, dd 'de' MMMM 'de' yyyy", { locale: ptBR });
-const horaFormatada = format(agora, "HH:mm");
 
 export default function AgendaScreen() {
   const navigation = useNavigation();
@@ -101,10 +95,7 @@ export default function AgendaScreen() {
     <View style={styles.container}>
       <Header title="Agenda" iconName="calendar-outline" />
 
-      <View style={styles.containerData}>
-        <Text style={styles.dataText}>{dataFormatada}</Text>
-        <Text style={styles.horaText}>Horário atual: {horaFormatada}</Text>
-      </View>
+      <DataHoraAtual />
 
       <TouchableOpacity
         style={styles.button}
