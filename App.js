@@ -16,14 +16,17 @@ import ComplementoCadastroScreen from "./auth/ComplementoCadastroScreen";
 import AgendaScreen from "./screens/AgendaScreen";
 import AgendaSemanalScreen from "./screens/AgendaSemanalScreen";
 import AmigoScreen from "./screens/AmigoScreen";
+import AnotacoesScreen from "./screens/AnotacoesScreen";
 import AtividadeDetalheScreen from './screens/AtividadeDetalheScreen';
 import AtividadesScreen from "./screens/AtividadesScreen";
 import CriarCompromissoScreen from "./screens/CriarCompromissoScreen";
+import DetalheAnotacaoScreen from "./screens/DetalheAnotacaoScreen";
 import EscolherMotoristaScreen from "./screens/EscolherMotoristaScreen";
 import FavoritasScreen from './screens/FavoritasScreen';
 import HomeScreen from "./screens/HomeScreen";
 import LugaresScreen from "./screens/LugaresScreen";
 import MedicamentosScreen from "./screens/MedicamentosScreen";
+import NovaAnotacaoScreen from "./screens/NovaAnotacaoScreen";
 import NovoMedicamentoScreen from "./screens/NovoMedicamentoScreen";
 import NovoTransporteScreen from "./screens/NovoTransporteScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
@@ -31,7 +34,6 @@ import PerfilScreen from "./screens/PerfilScreen";
 import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
-
 
 //Tela do motorista
 import MotoristaDashboardScreen from "./screens/MotoristaDashboardScreen";
@@ -91,6 +93,7 @@ function MainTabs() {
             case "Receitas": iconName = "restaurant-outline"; break;
             case "Lugares": iconName = "location-outline"; break;
             case "Amigo": iconName = "people-outline"; break;
+            case "Anotações": iconName = "document-text-outline"; break;
             default: iconName = "ellipse-outline";
           }
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -106,6 +109,7 @@ function MainTabs() {
       <Tab.Screen name="Amigo" component={AmigoScreen} />
       <Tab.Screen name="Receitas" component={ReceitasScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Lugares" component={LugaresScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Anotações" component={AnotacoesScreen} options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 }
@@ -130,6 +134,10 @@ function MainDrawer() {
         options={{ drawerIcon: ({ color, size }) => <Ionicons name="medkit-outline" size={size} color={color} />,}}
       />
 
+      <Drawer.Screen name="Anotações" component={AnotacoesScreen} 
+        options={{ drawerIcon: ({ color, size }) => <Ionicons name="document-text-outline" size={size} color={color} />,}}
+      />
+
       {/* Ocultos no menu, mas acessíveis via navegação */}
       <Drawer.Screen name="Tabs" component={MainTabs} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Transporte" component={TransportesScreen} options={{ drawerItemStyle: { display: 'none' } }} />
@@ -138,6 +146,7 @@ function MainDrawer() {
       <Drawer.Screen name="Lugares" component={LugaresScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Amigo" component={AmigoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Auth" component={AuthScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      
     </Drawer.Navigator>
   );
 }
@@ -165,6 +174,8 @@ export default function App() {
         <Stack.Screen name="AtividadeDetalhe" component={AtividadeDetalheScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Favoritas" component={FavoritasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AgendaSemanal" component={AgendaSemanalScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ headerShown: false }} />
         
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />

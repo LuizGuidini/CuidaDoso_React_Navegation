@@ -13,6 +13,7 @@ import {
 
 import Header from '../components/Header';
 import { getWeather } from '../services/weather';
+import { limparMedicamentosAntigos } from '../utils/limparMedicamentosAntigos';
 import verificarCompromissosMensais from '../utils/verificarCompromissosMensais';
 
 const screenWidth = Dimensions.get('window').width;
@@ -33,6 +34,7 @@ export default function HomeScreen() {
     };
     fetchWeather();
     verificarCompromissosMensais();
+    limparMedicamentosAntigos();
   }, []);
 
   const features = [
@@ -43,9 +45,11 @@ export default function HomeScreen() {
     { id: '5', title: 'Saúde e Bem-Estar', icon: 'bicycle-outline', screen: 'Atividades', color: '#d2ffd2' },
     { id: '6', title: 'Receitas', icon: 'restaurant-outline', screen: 'Receitas', color: '#ffe0e0' },
     { id: '7', title: 'Lugares', icon: 'map-outline', screen: 'Lugares', color: '#e0e0ff' },
-    { id: '8', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#ffb3b3' },
-    { id: '9', title: 'Auth', icon: 'alert-circle-outline', screen: 'Auth', color: '#ffcccc' },
-    { id: '10', title: 'MotoristaDashboard', icon: 'walk-outline', screen: 'MotoristaDashboard', color: '#ccffcc' },
+    { id: '8', title: 'Anotações', icon: 'document-text-outline', screen: 'NovaAnotacao', color: '#ffb3b3' },
+    { id: '9', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#f0e68c' },
+    { id: '10', title: 'Auth', icon: 'alert-circle-outline', screen: 'Auth', color: '#ffcccc' },
+    { id: '11', title: 'MotoristaDashboard', icon: 'walk-outline', screen: 'MotoristaDashboard', color: '#ccffcc' },
+    
   ];
 
   const renderCard = ({ item }) => (
