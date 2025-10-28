@@ -1,22 +1,25 @@
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import {
-    Alert,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  Alert,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
 import { auth, db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
+import { getUidPrincipal } from '../utils/uidHelper';
 
 export default function NovaAnotacaoScreen() {
   const navigation = useNavigation();
   const [texto, setTexto] = useState('');
-  const [dataNotificacao, setDataNotificacao] = useState(null);
+  //const [dataNotificacao, setDataNotificacao] = useState(null);
   const [mostrarPicker, setMostrarPicker] = useState(false);
 
   const extrairPalavrasChave = (texto) => {
@@ -34,14 +37,16 @@ export default function NovaAnotacaoScreen() {
       return;
     }
 
+    const uidFinal = await getUidPrincipal();
     const palavrasChave = extrairPalavrasChave(texto);
+
     const anotacao = {
-      uid: auth.currentUser.uid,
+      uid: uidFinal,
       texto,
       dataCriacao: new Date(),
       palavrasChave,
       notificar: false,
-      autor: 'usuario',
+      autor: auth.currentUser.uid === uidFinal ? 'usuario' : 'amigo',
     };
 
     try {
@@ -54,6 +59,7 @@ export default function NovaAnotacaoScreen() {
     }
   };
 
+
   const agendarNotificacao = async () => {
     if (texto.trim() === '') {
       Alert.alert('Digite a anotação antes de agendar.');
@@ -65,15 +71,17 @@ export default function NovaAnotacaoScreen() {
   const onEscolherData = async (event, selectedDate) => {
     setMostrarPicker(false);
     if (selectedDate) {
+      const uidFinal = await getUidPrincipal();
       const palavrasChave = extrairPalavrasChave(texto);
+
       const anotacao = {
-        uid: auth.currentUser.uid,
+        uid: uidFinal,
         texto,
         dataCriacao: new Date(),
         palavrasChave,
         notificar: true,
         dataNotificacao: selectedDate,
-        autor: 'usuario',
+        autor: auth.currentUser.uid === uidFinal ? 'usuario' : 'amigo',
       };
 
       try {
@@ -87,18 +95,23 @@ export default function NovaAnotacaoScreen() {
     }
   };
 
+
   return (
     <View style={styles.container}>
       <Header title="Nova Anotação" iconName="document-text-outline" />
-
-      <Text style={{ marginBottom: 10 }}>
-        Data: {new Date().toLocaleDateString('pt-BR')}
-      </Text>
+      
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <DataHoraAtual />
+      </View>
 
       <TextInput
-        style={[styles.input, { height: 120, textAlignVertical: 'top' }]}
+        style={[styles.input, { minHeight: 60, maxHeight: 120, textAlignVertical: 'top' }]}
         placeholder="Lembrei de..."
         multiline
+        scrollEnabled={true}
         value={texto}
         onChangeText={setTexto}
       />

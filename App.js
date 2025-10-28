@@ -109,7 +109,7 @@ function MainTabs() {
       <Tab.Screen name="Amigo" component={AmigoScreen} />
       <Tab.Screen name="Receitas" component={ReceitasScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Lugares" component={LugaresScreen} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="Anotações" component={AnotacoesScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Anotacoes" component={AnotacoesScreen} options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 }
@@ -134,7 +134,7 @@ function MainDrawer() {
         options={{ drawerIcon: ({ color, size }) => <Ionicons name="medkit-outline" size={size} color={color} />,}}
       />
 
-      <Drawer.Screen name="Anotações" component={AnotacoesScreen} 
+      <Drawer.Screen name="Anotacoes" component={AnotacoesScreen} 
         options={{ drawerIcon: ({ color, size }) => <Ionicons name="document-text-outline" size={size} color={color} />,}}
       />
 
@@ -146,6 +146,8 @@ function MainDrawer() {
       <Drawer.Screen name="Lugares" component={LugaresScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Amigo" component={AmigoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Auth" component={AuthScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       
     </Drawer.Navigator>
   );
@@ -176,6 +178,7 @@ export default function App() {
         <Stack.Screen name="AgendaSemanal" component={AgendaSemanalScreen} options={{ headerShown: false }} />
         <Stack.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Anotacoes" component={AnotacoesScreen} options={{ headerShown: false }} />  
         
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />

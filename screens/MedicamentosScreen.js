@@ -9,8 +9,9 @@ import {
   View
 } from 'react-native';
 import Header from '../components/Header';
-import { auth, db } from '../config/firebaseInit';
+import { db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
+import { getUidPrincipal } from '../utils/uidHelper';
 
 export default function MedicamentosScreen() {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ export default function MedicamentosScreen() {
     const carregarMedicamentos = async () => {
       setLoading(true);
       try {
-        const uid = auth.currentUser.uid;
+        const uid = await getUidPrincipal();
         const q = query(collection(db, 'medicamentos'), where('uid', '==', uid));
         const snapshot = await getDocs(q);
         const lista = [];

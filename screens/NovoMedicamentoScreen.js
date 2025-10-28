@@ -15,6 +15,7 @@ import Header from '../components/Header';
 import { auth, db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
 import gerarCompromissosMedicamento from '../utils/gerarCompromissosMedicamento'; // Parte 2
+import { getUidPrincipal } from '../utils/uidHelper';
 
 export default function NovoMedicamentoScreen() {
   const navigation = useNavigation();
@@ -25,8 +26,10 @@ export default function NovoMedicamentoScreen() {
   const [duracaoDias, setDuracaoDias] = useState('');
   const [usoContinuo, setUsoContinuo] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-
+  
   const salvarMedicamento = async () => {
+    const uidFinal = await getUidPrincipal();
+    
     if (!nome || !horario || !frequenciaHoras || (!usoContinuo && !duracaoDias)) {
       Alert.alert('Preencha todos os campos obrigatórios.');
       return;
@@ -37,7 +40,8 @@ export default function NovoMedicamentoScreen() {
       inicioDataHora.setHours(horario.getHours(), horario.getMinutes(), 0);
 
       await addDoc(collection(db, 'medicamentos'), {
-        uid: auth.currentUser.uid,
+        uid: uidFinal,
+        autor: auth.currentUser.uid === uidFinal ? 'usuario' : 'amigo',
         nome,
         observacoes,
         frequenciaHoras: parseInt(frequenciaHoras),

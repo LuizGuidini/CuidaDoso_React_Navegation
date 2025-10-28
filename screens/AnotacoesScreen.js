@@ -1,17 +1,20 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    FlatList,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
-import { auth, db } from '../config/firebaseInit';
+import { db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
+import { getUidPrincipal } from '../utils/uidHelper';
 
 export default function AnotacoesScreen() {
   const navigation = useNavigation();
@@ -23,10 +26,8 @@ export default function AnotacoesScreen() {
     const carregarAnotacoes = async () => {
       setLoading(true);
       try {
-        const q = query(
-          collection(db, 'anotacoes'),
-          where('uid', '==', auth.currentUser.uid)
-        );
+        const uid = await getUidPrincipal();
+        const q = query(collection(db, 'anotacoes'), where('uid', '==', uid));
         const snapshot = await getDocs(q);
         const lista = [];
 
@@ -72,8 +73,15 @@ export default function AnotacoesScreen() {
     <View style={styles.container}>
       <Header title="Minhas Anotações" iconName="document-text-outline" />
 
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <DataHoraAtual />
+      </View>
+
       <TextInput
-        style={styles.input}
+        style={[styles.input, { minHeight: 60, maxHeight: 120, textAlignVertical: 'top' }]}
         placeholder="Buscar por palavra-chave..."
         value={busca}
         onChangeText={setBusca}
