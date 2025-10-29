@@ -1,8 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
-import { useState } from 'react';
+import { doc, setDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Image,
   ScrollView,
@@ -12,28 +15,64 @@ import {
   View
 } from 'react-native';
 import Header from '../components/Header';
+import { db } from '../config/firebaseInit';
 import styles from '../styles/PerfilScreen.styles';
+import { getUidPrincipal } from '../utils/uidHelper';
 
 export default function PerfilScreen() {
-  const [userData, setUserData] = useState({
-    nome: '',
-    foto: null,
-    cep: '',
-    rua: '',
-    numeroCasa: '',
-    bairro: '',
-    cidade: '',
-    estado: '',
-    tipoSanguineo: '',
-    planoSaude: '',
-    condicoesMedicas: '',
-    historicoMedico: '',
-    vacinas: '',
-    preferenciasCuidado: '',
-    emoji: '',
-    fraseEmocional: '',
-  });
+  const route = useRoute();
+  const navigation = useNavigation();
+  //const { dadosIniciais } = route.params || {};
+  const [userData, setUserData] = useState(null);
 
+  
+  useEffect(() => {
+    if (route.params?.dadosIniciais) {
+      setUserData(route.params.dadosIniciais);
+    } else {
+      setUserData({
+        nome: '',
+        foto: null,
+        cep: '',
+        rua: '',
+        numeroCasa: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        tipoSanguineo: '',
+        planoSaude: '',
+        condicoesMedicas: '',
+        historicoMedico: '',
+        vacinas: '',
+        preferenciasCuidado: '',
+        emoji: '',
+        fraseEmocional: '',
+      });
+    }
+  }, [route.params?.dadosIniciais]);
+
+  if (!userData) {
+    return <ActivityIndicator size="large" color="#007AFF" style={{ marginTop: 40 }} />;
+  }  
+  //const [userData, setUserData] = useState(dadosIniciais || {
+  //  nome: '',
+  //  foto: null,
+  //  cep: '',
+  //  rua: '',
+  //  numeroCasa: '',
+  //  bairro: '',
+  //  cidade: '',
+  //  estado: '',
+  //  tipoSanguineo: '',
+  //  planoSaude: '',
+  //  condicoesMedicas: '',
+  //  historicoMedico: '',
+  //  vacinas: '',
+  //  preferenciasCuidado: '',
+  //  emoji: '',
+  //  fraseEmocional: '',
+  //});
+  
   const emojis = ['😀', '😢', '😴', '😡', '😍', '😐'];
   const frasesSugeridas = [
     'Hoje estou tranquilo',
@@ -96,12 +135,20 @@ export default function PerfilScreen() {
     }
   };
 
-  const salvarPerfil = () => {
-    Alert.alert('Perfil atualizado', 'Suas informações foram salvas com sucesso.');
-    // Futuro: salvar no Firebase ou AsyncStorage
+  const salvarPerfil = async () => {
+    try {
+      const uid = await getUidPrincipal();
+      await setDoc(doc(db, 'usuarios', uid), userData, { merge: true });
+      Alert.alert('Perfil atualizado com sucesso!');
+      navigation.replace('Perfil');
+    } catch (error) {
+      Alert.alert('Erro ao salvar perfil.');
+      console.error(error);
+    }
   };
-
+  
   return (
+
   <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
     <Header title="Meu Perfil" iconName="person-circle-outline" /> 
 

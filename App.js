@@ -31,6 +31,7 @@ import NovoMedicamentoScreen from "./screens/NovoMedicamentoScreen";
 import NovoTransporteScreen from "./screens/NovoTransporteScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import PerfilScreen from "./screens/PerfilScreen";
+import PerfilVisualizacaoScreen from "./screens/PerfilVisualizacaoScreen";
 import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
@@ -105,7 +106,8 @@ function MainTabs() {
       <Tab.Screen name="Inicio" component={HomeScreen} />
       <Tab.Screen name="Agenda" component={AgendaScreen} />      
       <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
-      <Tab.Screen name="Perfil" component={PerfilScreen} />      
+      <Tab.Screen name="Perfil" component={PerfilVisualizacaoScreen} />
+      <Tab.Screen name="PerfilEdicao" component={PerfilScreen} options={{ tabBarButton: () => null }} />      
       <Tab.Screen name="Amigo" component={AmigoScreen} />
       <Tab.Screen name="Receitas" component={ReceitasScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Lugares" component={LugaresScreen} options={{ tabBarButton: () => null }} />
@@ -179,7 +181,14 @@ export default function App() {
         <Stack.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Anotacoes" component={AnotacoesScreen} options={{ headerShown: false }} />  
-        
+        <Stack.Screen name="Medicamentos" component={MedicamentosScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Transportes" component={TransportesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Receitas" component={ReceitasScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Lugares" component={LugaresScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Amigo" component={AmigoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="PerfilEdicao" component={PerfilScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Perfil" component={PerfilVisualizacaoScreen} options={{ headerShown: false }} />
+
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Sudoku" component={SudokuScreen} options={{ headerShown: false }} />
