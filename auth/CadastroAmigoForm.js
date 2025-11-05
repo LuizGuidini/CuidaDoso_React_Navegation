@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { cadastrarAmigo } from "../services/authService";
 import styles from "../styles/AuthScreen.styles";
+import { vincularAmigoAoUsuario } from '../utils/vinculoAmigoUsuario';
 
 export default function CadastroAmigoForm({ onVoltar }) {
   const navigation = useNavigation();
@@ -28,6 +29,7 @@ export default function CadastroAmigoForm({ onVoltar }) {
       });
 
       alert("Cadastro realizado com sucesso!");
+      await vincularAmigoAoUsuario(codigo, uid);
       navigation.replace("MainDrawer");
     } catch (error) {
       console.error("Erro ao cadastrar amigo:", error.message);

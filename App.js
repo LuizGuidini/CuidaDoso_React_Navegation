@@ -16,6 +16,7 @@ import ComplementoCadastroScreen from "./auth/ComplementoCadastroScreen";
 import AgendaScreen from "./screens/AgendaScreen";
 import AgendaSemanalScreen from "./screens/AgendaSemanalScreen";
 import AmigoScreen from "./screens/AmigoScreen";
+import AmigoVisualizacaoScreen from "./screens/AmigoVisualizacaoScreen";
 import AnotacoesScreen from "./screens/AnotacoesScreen";
 import AtividadeDetalheScreen from './screens/AtividadeDetalheScreen';
 import AtividadesScreen from "./screens/AtividadesScreen";
@@ -108,7 +109,8 @@ function MainTabs() {
       <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
       <Tab.Screen name="Perfil" component={PerfilVisualizacaoScreen} />
       <Tab.Screen name="PerfilEdicao" component={PerfilScreen} options={{ tabBarButton: () => null }} />      
-      <Tab.Screen name="Amigo" component={AmigoScreen} />
+      <Tab.Screen name="Amigo" component={AmigoVisualizacaoScreen} />
+      <Tab.Screen name="AmigoEdicao" component={AmigoScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Receitas" component={ReceitasScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Lugares" component={LugaresScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Anotacoes" component={AnotacoesScreen} options={{ tabBarButton: () => null }} />
@@ -146,7 +148,7 @@ function MainDrawer() {
       <Drawer.Screen name="Receitas" component={ReceitasScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Atividades" component={AtividadesScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Lugares" component={LugaresScreen} options={{ drawerItemStyle: { display: 'none' } }} />
-      <Drawer.Screen name="Amigo" component={AmigoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Amigo" component={AmigoVisualizacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Auth" component={AuthScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
@@ -185,7 +187,10 @@ export default function App() {
         <Stack.Screen name="Transportes" component={TransportesScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Receitas" component={ReceitasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Lugares" component={LugaresScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Amigo" component={AmigoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Atividades" component={AtividadesScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Agenda" component={AgendaScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AmigoEdicao" component={AmigoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Amigo" component={AmigoVisualizacaoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="PerfilEdicao" component={PerfilScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Perfil" component={PerfilVisualizacaoScreen} options={{ headerShown: false }} />
 

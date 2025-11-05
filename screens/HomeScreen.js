@@ -41,14 +41,14 @@ export default function HomeScreen() {
     { id: '1', title: 'Agenda', icon: 'calendar-outline', screen: 'Agenda', color: '#a3d5ff' },
     { id: '2', title: 'Transporte', icon: 'car-outline', screen: 'Transporte', color: '#ffe0a3' },
     { id: '3', title: 'Meus Cuidados', icon: 'fitness-outline', screen: 'Medicamentos', color: '#d2ecff' },
-    { id: '4', title: 'Perfil', icon: 'person-outline', screen: 'Perfil', color: '#ffd2ec' },
+    { id: '4', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#ffd2ec' },
     { id: '5', title: 'Saúde e Bem-Estar', icon: 'bicycle-outline', screen: 'Atividades', color: '#d2ffd2' },
     { id: '6', title: 'Receitas', icon: 'restaurant-outline', screen: 'Receitas', color: '#ffe0e0' },
     { id: '7', title: 'Lugares', icon: 'map-outline', screen: 'Lugares', color: '#e0e0ff' },
     { id: '8', title: 'Anotações', icon: 'document-text-outline', screen: 'NovaAnotacao', color: '#ffb3b3' },
-    { id: '9', title: 'Amigo', icon: 'people-outline', screen: 'Amigo', color: '#f0e68c' },
-    { id: '10', title: 'Auth', icon: 'alert-circle-outline', screen: 'Auth', color: '#ffcccc' },
-    { id: '11', title: 'MotoristaDashboard', icon: 'walk-outline', screen: 'MotoristaDashboard', color: '#ccffcc' },
+    { id: '9', title: 'Perfil', icon: 'person-outline', screen: 'Perfil', color: '#f0e68c' },
+    //{ id: '10', title: 'Auth', icon: 'alert-circle-outline', screen: 'Auth', color: '#ffcccc' },
+    //{ id: '11', title: 'MotoristaDashboard', icon: 'walk-outline', screen: 'MotoristaDashboard', color: '#ccffcc' },
     
   ];
 
