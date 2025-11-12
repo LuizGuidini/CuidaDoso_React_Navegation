@@ -136,6 +136,11 @@ export default function LugaresScreen({ navigation }) {
       onPanicPress={handlePanic} 
       weather={weather} 
     />
+    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+      <TouchableOpacity onPress={() => navigation.navigate("Inicio")}>
+        <Ionicons name="arrow-back" size={24} color="#007AFF" />
+      </TouchableOpacity>
+    </View>
     {loadingWeather && (
       <ActivityIndicator size="large" color="#007AFF" style={{ marginVertical: 20 }} />
     )}

@@ -163,4 +163,22 @@ pickerCriar: {
     fontSize: 14,
     color: '#888' 
   },
+  tipoButton: {
+    flex: 1,
+    padding: 10,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#f1f1f1',
+    alignItems: 'center',
+  },
+  tipoButtonAtivo: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF',
+  },
+  tipoButtonText: {
+    color: '#333',
+    fontWeight: 'bold',
+  },
 });

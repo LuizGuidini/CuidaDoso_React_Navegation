@@ -1,14 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 import * as Contacts from "expo-contacts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import Header from "../components/Header";
+import AuthHeader from "../components/AuthHeader";
 import styles from "../styles/AuthScreen.styles";
 import CadastroAmigoForm from "./CadastroAmigoForm";
 import CadastroParceiroForm from "./CadastroParceiroForm";
 import CadastroUsuarioForm from "./CadastroUsuarioForm";
 import LoginForm from "./LoginForm";
-
 
 export default function AuthScreen() {
   const [tab, setTab] = useState("entrar");
@@ -18,6 +18,13 @@ export default function AuthScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [contatos, setContatos] = useState([]);
   const [busca, setBusca] = useState("");
+  const navigation = useNavigation();
+  
+  useEffect(() => {
+    navigation.setOptions({
+      swipeEnabled: false, // bloqueia gesto de abrir o Drawer
+    });
+  }, [navigation]);
 
   // Função para abrir contatos
   const escolherContato = async () => {
@@ -55,7 +62,7 @@ export default function AuthScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title="Bem-vindo" />
+      <AuthHeader title="Bem-vindo" />
 
       {/* Modal para escolher contato */}
       <Modal visible={modalVisible} animationType="slide">

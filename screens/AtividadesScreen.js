@@ -75,7 +75,12 @@ export default function AtividadesScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title="Atividades" iconName="barbell-outline" />
-
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate("Inicio")}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+      </View>
+      
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Sugestões do dia</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Favoritas')}>

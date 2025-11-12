@@ -102,18 +102,28 @@ function MainTabs() {
         },
       })}
     >
-      <Tab.Screen name="Transporte" component={TransportesScreen} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="Atividades" component={AtividadesScreen} options={{ tabBarButton: () => null }} />
+      
       <Tab.Screen name="Inicio" component={HomeScreen} />
       <Tab.Screen name="Agenda" component={AgendaScreen} />      
       <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
-      <Tab.Screen name="Perfil" component={PerfilVisualizacaoScreen} />
-      <Tab.Screen name="PerfilEdicao" component={PerfilScreen} options={{ tabBarButton: () => null }} />      
+      <Tab.Screen name="Perfil" component={PerfilVisualizacaoScreen} />  
+      <Tab.Screen name="Amigo" component={AmigoVisualizacaoScreen} />
+      <Tab.Screen name="Atividades" component={AtividadesScreen} />
+      
+      {/* Telas temporariamente removidas da tabBar principal */}
+      {/* <Tab.Screen name="Transporte" component={TransportesScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Atividades" component={AtividadesScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="PerfilEdicao" component={PerfilScreen} options={{ tabBarButton: () => null }} />  
+      <Tab.Screen name="Inicio" component={HomeScreen} />
+      <Tab.Screen name="Agenda" component={AgendaScreen} />      
+      <Tab.Screen name="Medicamentos" component={MedicamentosScreen} />
+      <Tab.Screen name="Perfil" component={PerfilVisualizacaoScreen} />  
       <Tab.Screen name="Amigo" component={AmigoVisualizacaoScreen} />
       <Tab.Screen name="AmigoEdicao" component={AmigoScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Receitas" component={ReceitasScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen name="Lugares" component={LugaresScreen} options={{ tabBarButton: () => null }} />
-      <Tab.Screen name="Anotacoes" component={AnotacoesScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Anotacoes" component={AnotacoesScreen} options={{ tabBarButton: () => null }} /> */}
+
     </Tab.Navigator>
   );
 }
@@ -193,6 +203,8 @@ export default function App() {
         <Stack.Screen name="Amigo" component={AmigoVisualizacaoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="PerfilEdicao" component={PerfilScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Perfil" component={PerfilVisualizacaoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Inicio" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Tabs" component={MainTabs} options={{ headerShown: false }} />
 
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />

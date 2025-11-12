@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -12,48 +13,36 @@ import styles from '../styles/AppScreens.styles';
 
 export default function TransporteScreen() {
   const navigation = useNavigation();
-  const [transportes, setTransportes] = useState([
-    { id: '1', destino: 'Clínica São Lucas', horario: '13:30', status: 'pendente' },
-    { id: '2', destino: 'Farmácia Central', horario: '17:00', status: 'confirmado' },
-  ]);
+  const db = getFirestore();
+  const [transportes, setTransportes] = useState([]);
+  const [carregando, setCarregando] = useState(true);
 
-  const atualizarStatus = (id) => {
-    const atualizados = transportes.map((t) =>
-      t.id === id
-        ? { ...t, status: t.status === 'pendente' ? 'confirmado' : 'concluído' }
-        : t
-    );
-    setTransportes(atualizados);
-    Alert.alert('Status atualizado com sucesso!');
+  const carregarTransportes = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'transportes'));
+      const lista = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTransportes(lista);
+    } catch (error) {
+      Alert.alert('Erro ao carregar transportes', error.message);
+    } finally {
+      setCarregando(false);
+    }
   };
+
+  useEffect(() => {
+    carregarTransportes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.destino}</Text>
       <Text>Horário: {item.horario}</Text>
+      <Text>Tipo: {item.tipo === 'encomenda' ? 'Encomenda' : 'Pessoal'}</Text>
       <Text>Status: {item.status}</Text>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          {
-            backgroundColor:
-              item.status === 'pendente'
-                ? '#ffe2e2'
-                : item.status === 'confirmado'
-                ? '#fff7cc'
-                : '#d2ffd2',
-          },
-        ]}
-        onPress={() => atualizarStatus(item.id)}
-      >
-        <Text style={styles.buttonText}>
-          {item.status === 'pendente'
-            ? 'Confirmar transporte'
-            : item.status === 'confirmado'
-            ? 'Marcar como concluído'
-            : 'Concluído ✅'}
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 
@@ -63,17 +52,26 @@ export default function TransporteScreen() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('EscolherMotorista')}
+        onPress={() => navigation.navigate('NovoTransporte')}
       >
         <Text style={styles.buttonText}>+ Solicitar transporte</Text>
       </TouchableOpacity>
 
-      <FlatList
-        contentContainerStyle={styles.list}
-        data={transportes}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-      />
+      {carregando ? (
+        <Text style={{ textAlign: 'center', marginTop: 20 }}>Carregando transportes...</Text>
+      ) : (
+        <FlatList
+          contentContainerStyle={styles.list}
+          data={transportes}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          ListEmptyComponent={
+            <Text style={{ textAlign: 'center', marginTop: 20 }}>
+              Nenhum transporte solicitado ainda.
+            </Text>
+          }
+        />
+      )}
     </View>
   );
 }

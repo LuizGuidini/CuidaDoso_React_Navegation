@@ -58,6 +58,12 @@ export default function AmigoVisualizacaoScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title="Amigo" iconName="heart-outline" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate("Inicio")}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+       </TouchableOpacity>
+              
+      </View>
 
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.fotoContainer}>

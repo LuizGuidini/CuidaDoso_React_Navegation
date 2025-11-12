@@ -1,22 +1,24 @@
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { db } from '../config/firebaseInit';
 import { getWeather } from '../services/weather';
+import { getUidPrincipal } from '../utils/uidHelper';
 
 export default function Header({ title, iconName, panicNumber = '190', showBackButton = false }) {
   const [weather, setWeather] = useState(null);
+  const [numeroAjuda, setNumeroAjuda] = useState(panicNumber);
+  const [nomeAjuda, setNomeAjuda] = useState(null);
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
         const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          Alert.alert('Permissão negada', 'Não foi possível acessar a localização.');
-          return;
-        }
+        if (status !== 'granted') return;
         const loc = await Location.getCurrentPositionAsync({});
         const data = await getWeather(loc.coords.latitude, loc.coords.longitude);
         setWeather(data);
@@ -24,16 +26,56 @@ export default function Header({ title, iconName, panicNumber = '190', showBackB
         console.log('Erro ao buscar o tempo:', error);
       }
     };
+
+    const buscarTelefoneDoAmigo = async () => {
+      try {
+        const uidUsuario = await getUidPrincipal();
+        const docUsuario = await getDoc(doc(db, 'usuarios', uidUsuario));
+        const dadosUsuario = docUsuario.data();
+
+        const uidAmigo = dadosUsuario?.uidAmigo;
+        if (!uidAmigo) return;
+
+        const docAmigo = await getDoc(doc(db, 'usuarios', uidAmigo));
+        const dadosAmigo = docAmigo.data();
+
+        if (dadosAmigo?.telefone) {
+          setNumeroAjuda(dadosAmigo.telefone);
+        }
+
+        if (dadosAmigo?.telefone) {
+          setNumeroAjuda(dadosAmigo.telefone);
+          setNomeAjuda(dadosAmigo.nome); // 👈 salva o nome
+        }
+      } catch (error) {
+        console.log('Erro ao buscar telefone do amigo:', error);
+      }
+    };
+
     fetchWeather();
+    buscarTelefoneDoAmigo();
   }, []);
 
   const handlePanic = () => {
+    const nome = nomeAjuda || 'contato de emergência';
+    const numero = numeroAjuda;
+
     Alert.alert(
       'Pânico',
-      `Deseja ligar para ${panicNumber}?`,
+      `Deseja entrar em contato com ${nome} no numero ${numero} ?`,
       [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Ligar', onPress: () => Linking.openURL(`tel:${panicNumber}`) },
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Ligar',
+          onPress: () => Linking.openURL(`tel:${numero}`),
+        },
+        {
+          text: 'WhatsApp',
+          onPress: () => Linking.openURL(`https://wa.me/${numero.replace(/\D/g, '')}`),
+        },
       ]
     );
   };
