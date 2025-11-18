@@ -18,7 +18,7 @@ export default function CadastroAmigoForm({ onVoltar }) {
       alert("Preencha todos os campos");
       return;
     }
-
+    
     try {
       const { uid } = await cadastrarAmigo({
         nome,

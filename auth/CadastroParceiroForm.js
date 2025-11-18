@@ -12,9 +12,10 @@ export default function CadastroParceiroForm({ onVoltar }) {
   const [identificacao, setIdentificacao] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const handleSalvar = async () => {
-    if (!nome || !tipo || !identificacao || !telefone || !email) {
+    if (!nome || !tipo || !identificacao || !telefone || !email || !senha) {
       alert("Preencha todos os campos");
       return;
     }
@@ -26,6 +27,7 @@ export default function CadastroParceiroForm({ onVoltar }) {
         identificacao,
         telefone,
         email,
+        senha,
       });
 
       alert("Cadastro realizado com sucesso!");
@@ -36,7 +38,7 @@ export default function CadastroParceiroForm({ onVoltar }) {
       } else if (tipo === "Clinica" || tipo === "Consultorio") {
         navigation.replace("ClinicaDashboardScreen");
       }else {
-        navigation.replace("ClinicaDashboardScreen"); // aqui muda se tiver outra tela para profissional
+        navigation.replace("ClinicaDashboardScreen"); 
       }  
     } catch (error) {
       console.error("Erro ao cadastrar parceiro:", error.message);
@@ -85,6 +87,13 @@ export default function CadastroParceiroForm({ onVoltar }) {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+      />
+      <TextInput
+        placeholder="Senha"
+        style={styles.input}
+        value={senha}
+        onChangeText={setSenha}
+        secureTextEntry
       />
       <TouchableOpacity style={styles.button} onPress={handleSalvar}>
         <Text style={styles.buttonText}>Cadastrar</Text>

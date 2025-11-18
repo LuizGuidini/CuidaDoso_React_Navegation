@@ -74,8 +74,9 @@ export const cadastrarAmigo = async ({ nome, email, senha, telefone, token }) =>
 };
 
 // 🚗 Cadastro de parceiro (motorista ou clínica)
-export const cadastrarParceiro = async ({ nome, tipo, identificacao, telefone, email }) => {
-  const credenciais = await createUserWithEmailAndPassword(auth, email, 'cuidadoso123'); // senha padrão ou gerada
+export const cadastrarParceiro = async ({ nome, tipo, identificacao, telefone, email, senha }) => {
+  
+  const credenciais = await createUserWithEmailAndPassword(auth, email, senha);
   const uid = credenciais.user.uid;
 
   await setDoc(doc(db, 'usuarios', uid), {

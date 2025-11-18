@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const FOURSQUARE_KEY = 'fsq3H/AeNnfvK9tqF7QR2Zl508oAn4lJ9LFdFGwXGz20j5c='; // sua chave válida
+const FOURSQUARE_KEY = 'fsq3H/AeNnfvK9tqF7QR2Zl508oAn4lJ9LFdFGwXGz20j5c=';
 const BASE_URL = 'https://api.foursquare.com/v3/places/search';
 
 // Mapeamento de categorias para termos de busca
