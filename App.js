@@ -38,10 +38,10 @@ import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
 
 //Tela do motorista
-import MotoristaDashboardScreen from "./screens/MotoristaDashboardScreen";
+import MotoristaDashboardScreen from "./screens/DashBoards/MotoristaDashboardScreen";
 
 //Telas de parceiro
-import ClinicaDashboardScreen from "./screens/ClinicaDashboardScreen";
+import ClinicaDashboardScreen from "./screens/DashBoards/ClinicaDashboardScreen";
 
 //Componentes
 import CardChamado from "./components/CardChamado";
@@ -55,6 +55,7 @@ import PerfilWrapper from "./wrappers/PerfilWrapper";
 
 // Telas de jogos
 import DificuldadeSudoku from './screens/Jogos/DificuldadeSudoku';
+import ForcaScreen from './screens/Jogos/ForcaScreen';
 import MemoriaScreen from './screens/Jogos/MemoriaScreen';
 import PalavrasScreen from './screens/Jogos/PalavrasScreen';
 import ParabensScreen from "./screens/Jogos/ParabensScreen";
@@ -162,6 +163,7 @@ function MainDrawer() {
       <Drawer.Screen name="Auth" component={AuthScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Forca" component={ForcaScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       
     </Drawer.Navigator>
   );
@@ -213,6 +215,7 @@ export default function App() {
         <Stack.Screen name="Sequencia" component={SequenciaScreen} options={{ headerShown: false }} />
         <Stack.Screen name="DificuldadeSudoku" component={DificuldadeSudoku} options={{ headerShown: false }} />
         <Stack.Screen name="Parabens" component={ParabensScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Forca" component={ForcaScreen} options={{ headerShown: false }} />
 
         {/* Tela do motorista - pode ser acessada via navegação condicional após login */}
         <Stack.Screen name="MotoristaDashboard" component={MotoristaDashboardScreen} options={{ headerShown: false }} />

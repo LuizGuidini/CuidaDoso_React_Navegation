@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import CardChamado from '../components/CardChamado';
-import Header from '../components/Header';
-import { auth, db } from '../config/firebaseInit';
+import { FlatList, Text, View } from 'react-native';
+import CardChamado from '../../components/CardChamado';
+import Header from '../../components/Header';
+import { auth, db } from '../../config/firebaseInit';
+import styles from '../../styles/Dashboard.styles';
 
 export default function MotoristaDashboardScreen() {
   const navigation = useNavigation();
@@ -13,8 +14,8 @@ export default function MotoristaDashboardScreen() {
   const uidMotorista = auth.currentUser?.uid;
 
   useEffect(() => {
-    const carregarChamados = async () => {
-      const snapshot = await getDocs(collection(db, 'pedidosTransporte'));
+    // Listener em tempo real
+    const unsub = onSnapshot(collection(db, 'pedidosTransporte'), (snapshot) => {
       const pendentes = [];
       const agenda = [];
 
@@ -29,10 +30,10 @@ export default function MotoristaDashboardScreen() {
 
       setChamadosPendentes(pendentes);
       setAgendaMotorista(agenda);
-    };
+    });
 
-    carregarChamados();
-  }, []);
+    return () => unsub(); // limpa listener ao desmontar
+  }, [uidMotorista]);
 
   const aceitarChamado = async (chamado) => {
     const ref = doc(db, 'pedidosTransporte', chamado.id);
@@ -50,10 +51,14 @@ export default function MotoristaDashboardScreen() {
       hora: chamado.hora,
       motorista: uidMotorista,
     });
+  };
 
-    // Atualiza localmente
-    setChamadosPendentes((prev) => prev.filter((c) => c.id !== chamado.id));
-    setAgendaMotorista((prev) => [...prev, { ...chamado, status: 'aceito', idMotorista: uidMotorista }]);
+  const recusarChamado = async (chamado) => {
+    const ref = doc(db, 'pedidosTransporte', chamado.id);
+    await updateDoc(ref, {
+      status: 'recusado',
+      idMotorista: uidMotorista,
+    });
   };
 
   return (
@@ -68,7 +73,11 @@ export default function MotoristaDashboardScreen() {
           data={chamadosPendentes}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <CardChamado chamado={item} onAceitar={() => aceitarChamado(item)} />
+            <CardChamado
+              chamado={item}
+              onAceitar={() => aceitarChamado(item)}
+              onRecusar={() => recusarChamado(item)}
+            />
           )}
         />
       )}
@@ -93,38 +102,3 @@ export default function MotoristaDashboardScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f1f4f8', padding: 20 },
-  secao: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginTop: 20,
-    marginBottom: 10,
-    color: '#007AFF',
-  },
-  vazio: {
-    fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  cardAgenda: {
-    backgroundColor: '#fff',
-    padding: 14,
-    borderRadius: 10,
-    marginBottom: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#007AFF',
-  },
-  agendaTexto: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-  },
-  agendaStatus: {
-    fontSize: 14,
-    color: '#555',
-    marginTop: 4,
-  },
-});

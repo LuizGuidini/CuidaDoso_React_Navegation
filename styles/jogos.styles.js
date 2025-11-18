@@ -214,5 +214,61 @@ export default StyleSheet.create({
     color: '#007AFF',
     fontWeight: 'bold',
   },
+  // ForcaScreen
+
+  palavraContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+    flexWrap: 'wrap',
+  },
+  letra: {
+    fontSize: 24,
+    marginHorizontal: 6,
+    borderBottomWidth: 2,
+    borderColor: '#ccc',
+    paddingHorizontal: 4,
+  },
+  teclado: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  botaoLetra: {
+    width: 36,
+    height: 36,
+    margin: 4,
+    backgroundColor: '#007AFF',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  botaoDesativado: {
+    backgroundColor: '#ccc',
+  },
+  letraBotao: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  dica: {
+    fontSize: 16,
+    marginBottom: 12,
+    color: '#333',
+    textAlign: 'center',
+  },
+  erros: {
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 12,
+    color: '#FF3B30',
+  },
+  dicaTitulo: {
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    color: '#007AFF', 
+    textAlign: 'center', 
+    marginBottom: 6 
+  },
 
 });

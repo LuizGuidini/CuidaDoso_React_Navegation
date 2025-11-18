@@ -40,7 +40,7 @@ export default function AtividadesScreen() {
     { id: '1', title: 'Palavras cruzadas', icon: 'grid-outline', route: 'Palavras' },
     { id: '2', title: 'Sudoku', icon: 'help-circle-outline', route: 'DificuldadeSudoku' },
     { id: '3', title: 'Memória: lembrar 6 objetos', icon: 'school-outline', route: 'Memoria' },
-    { id: '4', title: 'Jogo da Diferença', icon: 'color-palette-outline', route: 'Sequencia' },
+    { id: '4', title: 'Jogo da Forca', icon: 'accessibility-outline', route: 'Forca' },
   ];
 
   //useFocusEffect(

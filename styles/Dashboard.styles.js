@@ -1,0 +1,118 @@
+import { StyleSheet } from "react-native";
+
+export default StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#f1f4f8', padding: 20 },
+  secao: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginTop: 20,
+    marginBottom: 10,
+    color: '#007AFF',
+  },
+  vazio: {
+    fontSize: 16,
+    color: '#555',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  cardAgenda: {
+    backgroundColor: '#fff',
+    padding: 14,
+    borderRadius: 10,
+    marginBottom: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: '#007AFF',
+  },
+  agendaTexto: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  agendaStatus: {
+    fontSize: 14,
+    color: '#555',
+    marginTop: 4,
+  },
+   card: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 14,
+    borderRadius: 10,
+    marginBottom: 10,
+    alignItems: 'center',
+    borderLeftWidth: 4,
+    borderLeftColor: '#FF9500',
+  },
+  titulo: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  subtitulo: {
+    fontSize: 14,
+    color: '#555',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 12,
+    width: '80%',
+  },
+  modalTitulo: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 10,
+    color: '#007AFF',
+  },
+  modalTexto: {
+    fontSize: 16,
+    marginBottom: 6,
+    color: '#333',
+  },
+  botoes: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  botaoAceitar: {
+    flexDirection: 'row',
+    backgroundColor: '#34C759',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 6,
+    justifyContent: 'center',
+  },
+  botaoRecusar: {
+    flexDirection: 'row',
+    backgroundColor: '#FF3B30',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: 1,
+    marginLeft: 6,
+    justifyContent: 'center',
+  },
+  botaoCancelar: {
+    flexDirection: 'row',
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 15,
+    justifyContent: 'center',
+  },
+  botaoTexto: {
+    marginLeft: 6,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  
+});
