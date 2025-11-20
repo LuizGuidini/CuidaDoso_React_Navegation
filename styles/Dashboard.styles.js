@@ -102,7 +102,7 @@ export default StyleSheet.create({
   },
   botaoCancelar: {
     flexDirection: 'row',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#ffe0e0',
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',
@@ -111,8 +111,42 @@ export default StyleSheet.create({
   },
   botaoTexto: {
     marginLeft: 6,
-    color: '#fff',
+    color: "#007AFF",
     fontWeight: '600',
+  },
+  label: { 
+    fontSize: 16, 
+    fontWeight: '600', 
+    marginTop: 12 
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 6,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  botao: {
+    backgroundColor: '#a3d5ff',
+    padding: 14,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  botaoPerfil: {
+    backgroundColor: "#d2ffd2",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  botaoLogoff: {
+    backgroundColor: "#ffe0e0",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
   },
   
 });

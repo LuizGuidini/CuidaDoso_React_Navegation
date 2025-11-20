@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import Header from '../../components/AuthHeader';
 import CardChamado from '../../components/CardChamado';
-import Header from '../../components/Header';
 import { auth, db } from '../../config/firebaseInit';
 import styles from '../../styles/Dashboard.styles';
 
@@ -64,7 +64,13 @@ export default function MotoristaDashboardScreen() {
   return (
     <View style={styles.container}>
       <Header title="Painel do Motorista" iconName="car-outline" />
-
+      <TouchableOpacity
+        style={styles.botaoPerfil}
+        onPress={() => navigation.navigate('MotoristaPerfilScreen')}
+      >
+        <Text style={styles.botaoTexto}>Meu Perfil</Text>
+      </TouchableOpacity>
+           
       <Text style={styles.secao}>Chamados pendentes</Text>
       {chamadosPendentes.length === 0 ? (
         <Text style={styles.vazio}>Nenhum chamado no momento.</Text>
@@ -99,6 +105,15 @@ export default function MotoristaDashboardScreen() {
           )}
         />
       )}
+
+      <TouchableOpacity style={styles.botaoLogoff} onPress={async () => {
+          await auth.signOut();
+          navigation.replace('Auth'); // volta para login
+        }}
+      >
+        <Text style={styles.botaoTexto}>Sair</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

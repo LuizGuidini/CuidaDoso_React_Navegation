@@ -1,4 +1,5 @@
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { Ionicons } from '@expo/vector-icons';
+import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -12,10 +13,15 @@ export default function CustomDrawerContent(props) {
   const [primeiroNome, setPrimeiroNome] = useState('');
   const email = usuario?.email || '';
 
+  const logoff = async () => {
+    await auth.signOut();
+    props.navigation.replace('Auth');
+  };
+
   useEffect(() => {
     const buscarNome = async () => {
       if (usuario) {
-        const ref = doc(db, 'usuarios', usuario.uid); // ajuste o nome da coleção se for diferente
+        const ref = doc(db, 'usuarios', usuario.uid); 
         const snap = await getDoc(ref);
         if (snap.exists()) {
           const nomeCompleto = snap.data().nome || 'Usuário';
@@ -31,7 +37,7 @@ export default function CustomDrawerContent(props) {
       {/* Topo com avatar e nome */}
       <View style={styles.header}>
         <Image
-          source={require('../assets/images/logo.png')} // substitua pela foto do usuário se quiser
+          source={require('../assets/images/logo.png')} 
           style={styles.avatar}
         />
         <Text style={styles.name}>Olá, {primeiroNome}</Text>
@@ -42,7 +48,18 @@ export default function CustomDrawerContent(props) {
       <View style={styles.menu}>
         <DrawerItemList {...props} />
       </View>
-
+      
+      <View style={styles.menu}>
+      <DrawerItem
+        label="Sair"
+        labelStyle={{ color: '#FF9500', fontWeight: '700' }}
+        icon={({ color, size }) => (
+          <Ionicons name="log-out-outline" size={size} color="#FF9500" />
+        )}
+        onPress={logoff}
+      />
+      </View>
+      
       {/* Rodapé */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>CuidaDoso v1.0{"\n"}By L2M DeploySmart</Text>

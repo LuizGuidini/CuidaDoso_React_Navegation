@@ -39,9 +39,11 @@ import TransportesScreen from "./screens/TransportesScreen";
 
 //Tela do motorista
 import MotoristaDashboardScreen from "./screens/DashBoards/MotoristaDashboardScreen";
+import MotoristaPerfilScreen from "./screens/DashBoards/MotoristaPerfilScreen";
 
 //Telas de parceiro
 import ClinicaDashboardScreen from "./screens/DashBoards/ClinicaDashboardScreen";
+import ClinicaPerfilScreen from "./screens/DashBoards/ClinicaPerfilScreen";
 
 //Componentes
 import CardChamado from "./components/CardChamado";
@@ -220,9 +222,12 @@ export default function App() {
         {/* Tela do motorista - pode ser acessada via navegação condicional após login */}
         <Stack.Screen name="MotoristaDashboard" component={MotoristaDashboardScreen} options={{ headerShown: false }} />
         <Stack.Screen name="CardChamado" component={CardChamado} options={{ headerShown: false }} />
+        <Stack.Screen name="MotoristaPerfilScreen" component={MotoristaPerfilScreen} options={{ headerShown: false }} />
+
         
         {/* Telas de parceiro - pode ser acessada via navegação condicional após login */}
         <Stack.Screen name="ClinicaDashboard" component={ClinicaDashboardScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ClinicaPerfilScreen" component={ClinicaPerfilScreen} options={{ headerShown: false }} />
 
       </Stack.Navigator>
 

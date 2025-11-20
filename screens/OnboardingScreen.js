@@ -24,13 +24,13 @@ export default function OnboardingScreen({ navigation }) {
         }),
       ])
     ).start();
-  }, []);
+  }, [scaleAnim]);
 
   const nextSlide = () => {
     if (index < slides.length - 1) {
       setIndex(index + 1);
     } else {
-      navigation.replace('Auth'); // ou 'MainDrawer' se já estiver logado
+      navigation.replace('Auth'); 
     }
   };
 

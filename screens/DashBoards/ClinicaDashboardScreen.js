@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import AuthHeader from '../../components/AuthHeader'; // substitui Header
 import CardChamado from '../../components/CardChamado';
-import Header from '../../components/Header';
 import { auth, db } from '../../config/firebaseInit';
 import styles from '../../styles/Dashboard.styles';
 
@@ -14,7 +14,6 @@ export default function ClinicaDashboardScreen() {
   const uidClinica = auth.currentUser?.uid;
 
   useEffect(() => {
-    // Listener em tempo real para agendamentos
     const unsub = onSnapshot(collection(db, 'agendamentos'), (snapshot) => {
       const pendentes = [];
       const agenda = [];
@@ -51,9 +50,21 @@ export default function ClinicaDashboardScreen() {
     });
   };
 
+  const logoff = async () => {
+    await auth.signOut();
+    navigation.replace('Auth'); // volta para login
+  };
+
   return (
     <View style={styles.container}>
-      <Header title="Dashboard Clínica" iconName="medkit-outline" />
+      <AuthHeader title="Dashboard Clínica" iconName="medkit-outline" />
+
+      <TouchableOpacity
+        style={styles.botao}
+        onPress={() => navigation.navigate('ClinicaPerfilScreen')}
+      >
+        <Text style={styles.botaoTexto}>Meu Perfil</Text>
+      </TouchableOpacity>
 
       <Text style={styles.secao}>Agendamentos pendentes</Text>
       {agendamentosPendentes.length === 0 ? (
@@ -89,6 +100,12 @@ export default function ClinicaDashboardScreen() {
           )}
         />
       )}
+      <TouchableOpacity
+        style={styles.botaoLogoff}
+        onPress={logoff}
+      >
+        <Text style={styles.botaoTexto}>Sair</Text>
+      </TouchableOpacity>
     </View>
   );
 }

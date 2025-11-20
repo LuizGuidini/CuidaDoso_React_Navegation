@@ -27,9 +27,9 @@ export default function LoginForm() {
       if (tipo === "usuario" || tipo === "amigo") {
         navigation.replace("MainDrawer");
       } else if (tipo === "motorista") {
-        navigation.replace("MotoristaDashboardScreen");
+        navigation.replace("MotoristaDashboard");
       } else if (tipo === "clinica" || tipo === "consultorio") {
-        navigation.replace("ClinicaDashboardScreen");
+        navigation.replace("ClinicaDashboard");
       } else {
         setErro("Tipo de usuário não reconhecido");
       }
