@@ -57,6 +57,7 @@ import MedicamentosWrapper from "./wrappers/MedicamentosWrapper";
 import PerfilWrapper from "./wrappers/PerfilWrapper";
 
 // Telas de jogos
+import * as ScreenCapture from 'expo-screen-capture';
 import DificuldadeSudoku from './screens/Jogos/DificuldadeSudoku';
 import ForcaScreen from './screens/Jogos/ForcaScreen';
 import MemoriaScreen from './screens/Jogos/MemoriaScreen';
@@ -64,6 +65,9 @@ import PalavrasScreen from './screens/Jogos/PalavrasScreen';
 import ParabensScreen from "./screens/Jogos/ParabensScreen";
 import SequenciaScreen from './screens/Jogos/SequenciaScreen';
 import SudokuScreen from './screens/Jogos/SudokuScreen';
+
+//ScreenCapture.preventScreenCaptureAsync(); // ativa bloqueio
+ScreenCapture.allowScreenCaptureAsync();   // libera captura
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();

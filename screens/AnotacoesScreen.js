@@ -50,6 +50,7 @@ export default function AnotacoesScreen() {
             texto: dados.texto,
             dataCriacao,
             palavrasChave: dados.palavrasChave || [],
+            autor: dados.autor || 'Usuario principal',
           });
         });
 

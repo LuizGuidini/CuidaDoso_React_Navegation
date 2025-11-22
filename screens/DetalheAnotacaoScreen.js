@@ -46,6 +46,11 @@ export default function DetalheAnotacaoScreen({ route }) {
         </Text>
       </View>
 
+      <View style={{ marginTop: 20, marginHorizontal: 20 }}>
+        <Text style={{ fontWeight: 'bold' }}>Autor:</Text>
+        <Text>{anotacao.autor === "amigo" ? "Amigo" : "Usuário Principal"}</Text>
+      </View>
+
       <ScrollView style={{ marginTop: 10, marginHorizontal: 20 }}>
         <Text style={{ fontSize: 16, lineHeight: 24 }}>
           {anotacao.texto}
