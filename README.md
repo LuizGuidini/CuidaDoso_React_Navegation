@@ -21,18 +21,16 @@
 
 ## 📲 Demonstração do App
 
-> Substitua os GIFs abaixo pelos seus próprios, exportados do Expo Go ou de emuladores.
-
-![Home Screen GIF](assets/S6.jpg)  
+<img src="assets/images/S6.jpg" alt="Home Screen" width="300"/>  
 *Tela inicial com cards de funcionalidades.*
 
-![Agenda GIF](assets/S7.jpg)  
+<img src="assets/images/S7.jpg" alt="Agenda GIF" width="300"/>  
 *Agenda de consultas e exercícios.*
 
-![Transporte GIF](assets/gifs/transporte.gif)  
+<img src="assets/gifs/transporte.gif" alt="Transporte GIF" width="300"/>  
 *Agendamento de transporte.*
 
-![Medicamentos GIF](assets/gifs/medicamentos.gif)  
+<img src="assets/gifs/medicamentos.gif" alt="Medicamentos GIF" width="300"/>  
 *Controle de medicamentos.*
 
 ---
