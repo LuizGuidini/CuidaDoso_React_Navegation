@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
 import styles from '../styles/AppScreens.styles';
 
@@ -49,6 +51,12 @@ export default function TransporteScreen() {
   return (
     <View style={styles.container}>
       <Header title="Transporte" iconName="car-outline" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <DataHoraAtual />
+      </View>
 
       <TouchableOpacity
         style={styles.button}

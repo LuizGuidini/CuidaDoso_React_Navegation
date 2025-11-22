@@ -151,7 +151,12 @@ export default function PerfilScreen() {
 
   <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
     <Header title="Meu Perfil" iconName="person-circle-outline" /> 
-
+    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+     <TouchableOpacity onPress={() => navigation.goBack()}>
+       <Ionicons name="arrow-back" size={24} color="#007AFF" />
+     </TouchableOpacity>
+    </View>
+  
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* 👤 Nome e Foto */}
       <TouchableOpacity style={styles.fotoContainer} onPress={escolherFoto}>

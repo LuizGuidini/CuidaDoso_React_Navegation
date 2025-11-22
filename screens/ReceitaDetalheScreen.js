@@ -1,12 +1,20 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../components/Header';
 
 export default function ReceitaDetalheScreen({ route }) {
   const { recipe } = route.params;
+  const navigation = useNavigation(); // <-- aqui você cria o navigation
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title={recipe.receita} iconName="restaurant-outline" showBackButton />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+      </View>
       <ScrollView contentContainerStyle={styles.container}>
         <Image source={{ uri: recipe.link_imagem }} style={styles.image} />
 

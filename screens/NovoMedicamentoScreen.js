@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection } from 'firebase/firestore';
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
 import { auth, db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
@@ -69,6 +71,12 @@ export default function NovoMedicamentoScreen() {
   return (
     <View style={styles.container}>
       <Header title="Novo Medicamento" iconName="medkit-outline" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="#007AFF" />
+              </TouchableOpacity>
+              <DataHoraAtual />
+            </View>
 
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Nome do medicamento</Text>

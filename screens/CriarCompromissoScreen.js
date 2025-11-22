@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +13,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
 import { auth, db } from '../config/firebaseInit';
 import { agendarNotificacao } from '../services/notificacaoService';
@@ -57,6 +59,13 @@ export default function CriarCompromissoScreen() {
   return (
     <View style={styles.container}>
       <Header title="Novo Compromisso" iconName="calendar-outline" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <DataHoraAtual />
+      </View>
+
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.title}>Título</Text>
         <TextInput

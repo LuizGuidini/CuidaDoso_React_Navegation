@@ -31,12 +31,24 @@ export default function AnotacoesScreen() {
         const snapshot = await getDocs(q);
         const lista = [];
 
-        snapshot.forEach(doc => {
-          const dados = doc.data();
+        snapshot.forEach(docSnap => {
+          const dados = docSnap.data();
+
+          let dataCriacao;
+          if (dados.dataCriacao?.toDate) {
+            dataCriacao = dados.dataCriacao.toDate();
+          } else if (dados.dataCriacao instanceof Date) {
+            dataCriacao = dados.dataCriacao;
+          } else if (dados.dataCriacao) {
+            dataCriacao = new Date(dados.dataCriacao);
+          } else {
+            dataCriacao = new Date();
+          }
+
           lista.push({
-            id: doc.id,
+            id: docSnap.id,
             texto: dados.texto,
-            dataCriacao: dados.dataCriacao.toDate(),
+            dataCriacao,
             palavrasChave: dados.palavrasChave || [],
           });
         });

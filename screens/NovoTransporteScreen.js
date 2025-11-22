@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DataHoraAtual from '../components/DataHoraAtual';
 import Header from '../components/Header';
 import styles from '../styles/AppScreens.styles';
 
@@ -88,6 +90,13 @@ export default function NovoTransporteScreen() {
   return (
     <View style={styles.container}>
       <Header title="Solicitar Transporte" iconName="car-outline" />
+
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+        <DataHoraAtual />
+      </View>
 
       <View style={styles.contentContainer}>
         {/* Tipo de transporte */}

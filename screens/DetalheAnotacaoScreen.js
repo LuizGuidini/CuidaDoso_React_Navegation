@@ -21,6 +21,18 @@ export default function DetalheAnotacaoScreen({ route }) {
     }
   };
 
+  // Tratamento seguro da data
+  const formatarData = () => {
+    if (!anotacao.dataCriacao) return 'Data não disponível';
+    if (anotacao.dataCriacao instanceof Date) {
+      return anotacao.dataCriacao.toLocaleDateString('pt-BR');
+    }
+    if (anotacao.dataCriacao.toDate) {
+      return anotacao.dataCriacao.toDate().toLocaleDateString('pt-BR');
+    }
+    return new Date(anotacao.dataCriacao).toLocaleDateString('pt-BR');
+  };
+
   return (
     <View style={styles.container}>
       <Header title="Anotação" iconName="document-text-outline" />
@@ -30,7 +42,7 @@ export default function DetalheAnotacaoScreen({ route }) {
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
         </TouchableOpacity>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>
-          {anotacao.dataCriacao.toDate().toLocaleDateString('pt-BR')}
+          {formatarData()}
         </Text>
       </View>
 

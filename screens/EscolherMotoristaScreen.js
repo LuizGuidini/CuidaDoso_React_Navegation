@@ -1,12 +1,13 @@
+import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import {
-    Platform,
-    Text,
-    TouchableOpacity,
-    View,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Header from '../components/Header';
 import styles from '../styles/AppScreens.styles';
@@ -35,6 +36,12 @@ export default function EscolherMotoristaScreen() {
   return (
     <View style={styles.container}>
       <Header title="Escolher Motorista" iconName="car-outline" />
+      
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#007AFF" />
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Motorista</Text>

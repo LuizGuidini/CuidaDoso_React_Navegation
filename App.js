@@ -37,6 +37,7 @@ import ReceitaDetalheScreen from "./screens/ReceitaDetalheScreen";
 import ReceitasScreen from "./screens/ReceitasScreen";
 import TransportesScreen from "./screens/TransportesScreen";
 
+
 //Tela do motorista
 import MotoristaDashboardScreen from "./screens/DashBoards/MotoristaDashboardScreen";
 import MotoristaPerfilScreen from "./screens/DashBoards/MotoristaPerfilScreen";
@@ -166,7 +167,24 @@ function MainDrawer() {
       <Drawer.Screen name="NovaAnotacao" component={NovaAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="DetalheAnotacao" component={DetalheAnotacaoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="Forca" component={ForcaScreen} options={{ drawerItemStyle: { display: 'none' } }} />
-      
+      <Drawer.Screen name="Palavras" component={PalavrasScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Sudoku" component={SudokuScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Memoria" component={MemoriaScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="DificuldadeSudoku" component={DificuldadeSudoku} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Parabens" component={ParabensScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Sequencia" component={SequenciaScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="AtividadeDetalhe" component={AtividadeDetalheScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Favoritas" component={FavoritasScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="AgendaSemanal" component={AgendaSemanalScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="CriarCompromisso" component={CriarCompromissoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="EscolherMotorista" component={EscolherMotoristaScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="NovoMedicamento" component={NovoMedicamentoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="NovoTransporte" component={NovoTransporteScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="ComplementoCadastro" component={ComplementoCadastroScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="ReceitaDetalhe" component={ReceitaDetalheScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="AmigoEdicao" component={AmigoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="PerfilEdicao" component={PerfilScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+           
     </Drawer.Navigator>
   );
 }
@@ -209,7 +227,7 @@ export default function App() {
         <Stack.Screen name="Perfil" component={PerfilVisualizacaoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Inicio" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Tabs" component={MainTabs} options={{ headerShown: false }} />
-
+       
         {/* Telas de jogos */}
         <Stack.Screen name="Palavras" component={PalavrasScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Sudoku" component={SudokuScreen} options={{ headerShown: false }} />
