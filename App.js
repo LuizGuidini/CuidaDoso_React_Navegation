@@ -188,6 +188,7 @@ function MainDrawer() {
       <Drawer.Screen name="ReceitaDetalhe" component={ReceitaDetalheScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="AmigoEdicao" component={AmigoScreen} options={{ drawerItemStyle: { display: 'none' } }} />
       <Drawer.Screen name="PerfilEdicao" component={PerfilScreen} options={{ drawerItemStyle: { display: 'none' } }} />
+      <Drawer.Screen name="Transportes" component={TransportesScreen} options={{ drawerItemStyle: { display: 'none' } }} />
            
     </Drawer.Navigator>
   );

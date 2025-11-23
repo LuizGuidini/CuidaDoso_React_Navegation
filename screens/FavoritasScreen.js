@@ -21,7 +21,7 @@ export default function FavoritasScreen() {
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title="Favoritas" iconName="heart-outline" />
       <View style={styles.voltarInline}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltarBotao}>
+        <TouchableOpacity onPress={() => navigation.navigate('Atividades')} style={styles.voltarBotao}>
             <Ionicons name="arrow-back-outline" size={24} color="#007AFF" />
             <Text style={styles.voltarTexto}>Voltar</Text>
         </TouchableOpacity>

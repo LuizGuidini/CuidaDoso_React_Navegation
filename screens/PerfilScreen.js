@@ -152,7 +152,7 @@ export default function PerfilScreen() {
   <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
     <Header title="Meu Perfil" iconName="person-circle-outline" /> 
     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-     <TouchableOpacity onPress={() => navigation.goBack()}>
+     <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>
        <Ionicons name="arrow-back" size={24} color="#007AFF" />
      </TouchableOpacity>
     </View>

@@ -60,7 +60,7 @@ export default function CriarCompromissoScreen() {
     <View style={styles.container}>
       <Header title="Novo Compromisso" iconName="calendar-outline" />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate("Agenda")}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
         </TouchableOpacity>
         <DataHoraAtual />

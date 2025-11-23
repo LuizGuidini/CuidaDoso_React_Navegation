@@ -91,7 +91,7 @@ export default function ReceitasScreen() {
           <Header title="Receitas" iconName="restaurant-outline" />
           
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate('Inicio')}>
               <Ionicons name="arrow-back" size={24} color="#007AFF" />
             </TouchableOpacity>
           </View>

@@ -43,7 +43,7 @@ export default function AtividadeDetalheScreen() {
     <View style={[styles.container, { backgroundColor: atividade.color }]}>
       <ScrollView contentContainerStyle={styles.content}>
         {/* 🔙 Voltar */}
-        <TouchableOpacity style={styles.voltar} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.voltar} onPress={() => navigation.navigate("Atividades")}>
           <Ionicons name="arrow-back-outline" size={28} color="#007AFF" />
         </TouchableOpacity>
 

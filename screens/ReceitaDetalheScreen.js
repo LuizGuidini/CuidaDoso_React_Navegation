@@ -11,7 +11,7 @@ export default function ReceitaDetalheScreen({ route }) {
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title={recipe.receita} iconName="restaurant-outline" showBackButton />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Receitas')}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
         </TouchableOpacity>
       </View>

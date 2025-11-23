@@ -38,7 +38,7 @@ export default function DetalheAnotacaoScreen({ route }) {
       <Header title="Anotação" iconName="document-text-outline" />
 
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Anotacoes')}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
         </TouchableOpacity>
         <Text style={{ fontSize: 16, marginLeft: 10 }}>

@@ -150,7 +150,7 @@ export default function SudokuScreen() {
     <View style={{ flex: 1, backgroundColor: '#f1f4f8' }}>
       <Header title="Sudoku" iconName="help-circle-outline" />
       <View style={styles.voltarInline}>
-        <TouchableOpacity style={styles.voltarBotao} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.voltarBotao} onPress={() => navigation.navigate('Atividades')}>
           <Ionicons name="arrow-back-outline" size={28} color="#007AFF" />
           <Text style={styles.voltarTexto}>Voltar</Text>
         </TouchableOpacity>

@@ -72,7 +72,7 @@ export default function NovoMedicamentoScreen() {
     <View style={styles.container}>
       <Header title="Novo Medicamento" iconName="medkit-outline" />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
+              <TouchableOpacity onPress={() => navigation.navigate("Medicamentos")}>
                 <Ionicons name="arrow-back" size={24} color="#007AFF" />
               </TouchableOpacity>
               <DataHoraAtual />

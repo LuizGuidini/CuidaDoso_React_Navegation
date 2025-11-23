@@ -2,29 +2,46 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Platform,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Header from '../components/Header';
+import { db } from '../config/firebaseInit';
 import styles from '../styles/AppScreens.styles';
 
 export default function EscolherMotoristaScreen() {
-    
   const navigation = useNavigation();
   const [motorista, setMotorista] = useState('qualquer');
   const [modo, setModo] = useState('agendar');
   const [horario, setHorario] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [motoristasDisponiveis, setMotoristasDisponiveis] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const motoristasDisponiveis = [
-    { id: '1', nome: 'Carlos' },
-    { id: '2', nome: 'Fernanda' },
-    { id: '3', nome: 'João' },
-  ];
+  // 🔎 Carregar motoristas cadastrados do Firestore
+  useEffect(() => {
+    const carregarMotoristas = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'motoristas'));
+        const lista = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMotoristasDisponiveis(lista);
+      } catch (error) {
+        console.error('Erro ao carregar motoristas:', error);
+      }
+      setLoading(false);
+    };
+
+    carregarMotoristas();
+  }, []);
 
   const continuar = () => {
     navigation.navigate('NovoTransporte', {
@@ -36,7 +53,7 @@ export default function EscolherMotoristaScreen() {
   return (
     <View style={styles.container}>
       <Header title="Escolher Motorista" iconName="car-outline" />
-      
+
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
@@ -46,15 +63,19 @@ export default function EscolherMotoristaScreen() {
       <View style={styles.contentContainer}>
         <Text style={styles.title}>Motorista</Text>
         <View style={styles.pickerCriar}>
-          <Picker
-            selectedValue={motorista}
-            onValueChange={(value) => setMotorista(value)}
-          >
-            <Picker.Item label="Qualquer disponível" value="qualquer" />
-            {motoristasDisponiveis.map((m) => (
-              <Picker.Item key={m.id} label={m.nome} value={m.nome} />
-            ))}
-          </Picker>
+          {loading ? (
+            <ActivityIndicator size="small" color="#007AFF" />
+          ) : (
+            <Picker
+              selectedValue={motorista}
+              onValueChange={(value) => setMotorista(value)}
+            >
+              <Picker.Item label="Qualquer disponível" value="qualquer" />
+              {motoristasDisponiveis.map((m) => (
+                <Picker.Item key={m.id} label={m.nome} value={m.nome} />
+              ))}
+            </Picker>
+          )}
         </View>
 
         <Text style={styles.title}>Modo de chamada</Text>

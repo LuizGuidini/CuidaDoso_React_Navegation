@@ -101,7 +101,7 @@ export default function NovaAnotacaoScreen() {
       <Header title="Nova Anotação" iconName="document-text-outline" />
       
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10, marginLeft: 10 }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Anotacoes')}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
         </TouchableOpacity>
         <DataHoraAtual />
