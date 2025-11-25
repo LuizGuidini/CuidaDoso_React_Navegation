@@ -12,10 +12,11 @@ export default function MotoristaDashboardScreen() {
   const [chamadosPendentes, setChamadosPendentes] = useState([]);
   const [agendaMotorista, setAgendaMotorista] = useState([]);
   const uidMotorista = auth.currentUser?.uid;
+  const nomeMotorista = auth.currentUser?.displayName || "Motorista";
 
   useEffect(() => {
-    // Listener em tempo real
-    const unsub = onSnapshot(collection(db, 'pedidosTransporte'), (snapshot) => {
+    // Listener em tempo real na coleção "transportes"
+    const unsub = onSnapshot(collection(db, 'transportes'), (snapshot) => {
       const pendentes = [];
       const agenda = [];
 
@@ -23,7 +24,7 @@ export default function MotoristaDashboardScreen() {
         const dados = docSnap.data();
         if (dados.status === 'pendente') {
           pendentes.push({ id: docSnap.id, ...dados });
-        } else if (dados.idMotorista === uidMotorista) {
+        } else if (dados.motoristaId === uidMotorista) {
           agenda.push({ id: docSnap.id, ...dados });
         }
       });
@@ -36,10 +37,11 @@ export default function MotoristaDashboardScreen() {
   }, [uidMotorista]);
 
   const aceitarChamado = async (chamado) => {
-    const ref = doc(db, 'pedidosTransporte', chamado.id);
+    const ref = doc(db, 'transportes', chamado.id);
     await updateDoc(ref, {
       status: 'aceito',
-      idMotorista: uidMotorista,
+      motoristaId: uidMotorista,
+      motoristaNome: nomeMotorista,
     });
 
     // Cria evento na agenda do usuário
@@ -49,21 +51,24 @@ export default function MotoristaDashboardScreen() {
       destino: chamado.destino,
       data: chamado.data,
       hora: chamado.hora,
-      motorista: uidMotorista,
+      motoristaId: uidMotorista,
+      motoristaNome: nomeMotorista,
     });
   };
 
   const recusarChamado = async (chamado) => {
-    const ref = doc(db, 'pedidosTransporte', chamado.id);
+    const ref = doc(db, 'transportes', chamado.id);
     await updateDoc(ref, {
       status: 'recusado',
-      idMotorista: uidMotorista,
+      motoristaId: uidMotorista,
+      motoristaNome: nomeMotorista,
     });
   };
 
   return (
     <View style={styles.container}>
       <Header title="Painel do Motorista" iconName="car-outline" />
+
       <TouchableOpacity
         style={styles.botaoPerfil}
         onPress={() => navigation.navigate('MotoristaPerfilScreen')}
@@ -101,19 +106,21 @@ export default function MotoristaDashboardScreen() {
                 {item.data} às {item.hora} — {item.destino}
               </Text>
               <Text style={styles.agendaStatus}>Status: {item.status}</Text>
+              <Text style={styles.agendaStatus}>Passageiro: {item.uidUsuario}</Text>
             </View>
           )}
         />
       )}
 
-      <TouchableOpacity style={styles.botaoLogoff} onPress={async () => {
+      <TouchableOpacity
+        style={styles.botaoLogoff}
+        onPress={async () => {
           await auth.signOut();
           navigation.replace('Auth'); // volta para login
         }}
       >
         <Text style={styles.botaoTexto}>Sair</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
